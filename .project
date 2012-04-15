@@ -3,6 +3,7 @@
 	<name>CS3733_Server</name>
 	<comment></comment>
 	<projects>
+		<project>ClientServer</project>
 	</projects>
 	<buildSpec>
 	</buildSpec>
