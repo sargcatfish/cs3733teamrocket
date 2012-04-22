@@ -21,9 +21,10 @@ public class DecisionLineProtocolHandler implements IProtocolHandler {
 		Node child = request.contents.getFirstChild();
 		
 		if (child.getLocalName().equals ("connectRequest")) {
-			
+			System.out.println("Connected");
 		} else if(child.getLocalName().equals("signInRequest")){
 			// More message handling
+			System.out.println("Try to signin");
 		}
 
 		// unknown? no idea what to do
