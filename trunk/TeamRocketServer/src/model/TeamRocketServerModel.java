@@ -26,16 +26,11 @@ public class TeamRocketServerModel {
 	}
 	
 	/*You can create an event first as try to add or you can do this messy way pick?*/
-	public String addDLEvent(String name, String question, int numChoices, int numRounds){
+	public String addDLEvent(DLEvent d){
 		String id = Manager.generateMeetingID(); //generate ID for the event
-		DLEvent newEvent = null;
-		if (!Manager.insertDLEvent(name, question, numChoices, numRounds)) {
-			System.err.println("FAIL TO INSERT");
-		}
-		
-		else {
-			newEvent = new DLEvent(id, name, question, numChoices, numRounds);
-			table.put(id, newEvent);
+		table.put(id, d);	// add DLEvent to table
+		if (!Manager.insertDLEvent(id, d)) {
+			System.err.println("FAIL TO INSERT IN DB");
 		}
 		return id;
 	}
