@@ -30,9 +30,9 @@ public class DLEvent {
 	 * 
 	 *  
 	 *  */
-	DLEvent(String id, String name, String question, int numChoices, int numRounds){
+	public DLEvent(String id, String moderator, String question, int numChoices, int numRounds){
 		this.id = id;
-		this.moderatorName = name;
+		this.moderatorName = moderator;
 		this.eventQuestion = question;
 		this.numChoices = numChoices;
 		this.numRounds = numRounds;
@@ -78,6 +78,10 @@ public class DLEvent {
 	public ArrayList<DLChoice> getDLChoice(){
 		return choiceList;
 	}
+	
+	public String getModerator(){
+		return moderatorName;
+	}
 
 	//Setters
 
@@ -109,14 +113,14 @@ public class DLEvent {
 		return numEdges = numEdge;
 	}
 
-	public void addUserList(User user){
+	public void addUser(User user){
 		if (userList == null){
 			userList = new ArrayList<User>();			
 		}
 		userList.add(user);
 	}
 
-	public void addEdgeList(Edge edge){
+	public void addEdge(Edge edge){
 		if (edgeList == null){
 			edgeList = new ArrayList<Edge>();
 		}

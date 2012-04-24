@@ -5,7 +5,7 @@ public class Edge {
 	int rightChoice;
 	int height;
 	
-	Edge(int left, int right, int height){
+	public Edge(int left, int right, int height){
 		leftChoice = left;
 		rightChoice = right;
 		this.height = height;

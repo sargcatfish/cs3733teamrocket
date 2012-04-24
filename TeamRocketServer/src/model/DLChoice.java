@@ -9,12 +9,10 @@ package model;
 public class DLChoice {
 	int choiceIndex;
 	String choiceName;
-	String name;
 	
-public	DLChoice(int cIndex, String cName, String name){
+public	DLChoice(int cIndex, String cName){
 		choiceIndex = cIndex;
 		choiceName = cName;
-		this.name = name;
 	}
 
 }
