@@ -2,7 +2,7 @@ The database teamrocket has been created with meowth as the controlling user. A 
 
 mysql -hmysql.wpi.edu -umeowth -pxuguHN teamrocket
 
-dlevents (id, numChoices, numRounds, eventQuestion, dateCreated, eventType)
+dlevents (id, numChoices, numRounds, eventQuestion, dateCreated, eventType, moderator)
   users (name, password, isModerator, userIndex)
   choices (choiceIndex, choiceName)
   edges (leftChoice, rightChoice, height)
@@ -15,7 +15,8 @@ CREATE TABLE DLEvents (
   numRounds INTEGER NOT NULL,
   eventQuestion varchar(32) NOT NULL default 'My Question',
   dateCreated varchar(4) NOT NULL default '',
-  isOpen TINYINT(1) NOT NULL,
+  isOpen BOOLEAN NOT NULL,
+  moderator varchar(32) NOT NULL,
     
   PRIMARY KEY  (id)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1
@@ -24,7 +25,7 @@ CREATE TABLE users (
   id varchar(13) NOT NULL default '',
   name varchar(32) NOT NULL default '',
   password varchar(32) NOT NULL default '',
-  isModerator TINYINT(1) NOT NULL,
+  isModerator BOOLEAN NOT NULL,
   userIndex INTEGER NOT NULL,
   
   PRIMARY KEY  (id)
@@ -44,5 +45,5 @@ CREATE TABLE edges (
   rightChoice INTEGER NOT NULL,
   height INTEGER NOT NULL,
   
-  PRIMARY KEY  (id, user)
+  PRIMARY KEY  (id)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1
