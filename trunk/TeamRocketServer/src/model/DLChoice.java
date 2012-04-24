@@ -11,7 +11,7 @@ public class DLChoice {
 	String choiceName;
 	String name;
 	
-	DLChoice(int cIndex, String cName, String name){
+public	DLChoice(int cIndex, String cName, String name){
 		choiceIndex = cIndex;
 		choiceName = cName;
 		this.name = name;
