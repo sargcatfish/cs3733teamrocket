@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.sql.Date;
 
 /** Class that stores references to information for a decisionLine event
- * @author Wesley, gdmcconnell
+ * @author Wesley, gdmcconnell, nbosowski
  * */
 public class DLEvent {
 
