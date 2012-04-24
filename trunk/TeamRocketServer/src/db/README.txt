@@ -1,6 +1,6 @@
-The database when2meet has been created with when2meetmanager as the controlling user. A password of XAPn.b has been assigned. You could connect to the database by:
+The database teamrocket has been created with meowth as the controlling user. A password of xuguHN has been assigned. You could connect to the database by:
 
-mysql -hmysql.wpi.edu -uwhen2meetmanager -pXAPn.b when2meet
+mysql -hmysql.wpi.edu -umeowth -pxuguHN teamrocket
 
 Meetings (id, startH, numColumns, numRows)
   participants (names,passwords)
