@@ -119,18 +119,20 @@ public class Manager {
 			.println("Unable to locate db.config configuration file.");
 			return false;
 		}
-
+		/* TODO: For some reason this does not like the config file so i changed it to use the constants and it now works */
 		// Define URL for database server
 		// NOTE: must fill in DATABASE NAME
-		String url = "jdbc:" + DATABASE_TYPE + "://"
-				+ dbConfig.getProperty(SERVER) + "/"
-				+ dbConfig.getProperty(DATABASE);
+//		String url = "jdbc:" + DATABASE_TYPE + "://"
+//				+ dbConfig.getProperty(SERVER) + "/"
+//				+ dbConfig.getProperty(DATABASE);
 
+		String url = "jdbc:" + DATABASE_TYPE + "://" + SERVER +"/" + DATABASE;
 		try {
 			// Get a connection to the database for a
 			// user with the given user name and password.
-			con = DriverManager.getConnection(url, dbConfig.getProperty(USER),
-					dbConfig.getProperty(PASSWORD));
+		//	con = DriverManager.getConnection(url, dbConfig.getProperty(USER),
+		//			dbConfig.getProperty(PASSWORD));
+			con = DriverManager.getConnection(url, USER, PASSWORD);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -150,6 +152,7 @@ public class Manager {
 	public static boolean insertDLEvent(String id, int numChoices, int numRounds, String eventQuestion, 
 							Date dateCreated, boolean isOpen, String moderator) {
 		try {
+			/* TODO: Some error about date truncation occurs!" */
 			PreparedStatement pstmt = Manager
 					.getConnection()
 					.prepareStatement(
