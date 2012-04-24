@@ -1,5 +1,11 @@
 package model;
 
+/**
+ * Contains information relating to a user.
+ * 
+ * @author Wesley
+ *
+ */
 public class User {
 	String name;
 	String password = null;
