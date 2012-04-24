@@ -1,10 +1,10 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 
 /** Class that stores references to information for a decisionLine event
- * @author Wesley
+ * @author Wesley, gdmcconnell
  * */
 public class DLEvent {
 
@@ -51,8 +51,11 @@ public class DLEvent {
 		return dateCreated;
 	}
 
-	public boolean getIsOpen(){
-		return isOpen;
+	public int getIsOpen(){
+		if(isOpen){
+			return 1;
+		}
+		return 0;
 	}
 
 	public int getNumChoices(){
