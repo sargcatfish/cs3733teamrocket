@@ -12,6 +12,7 @@ import java.util.Properties;
 import java.util.UUID;
 import java.sql.Date;
 
+import model.DLChoice;
 import model.DLEvent;
 
 public class Manager {
@@ -235,13 +236,15 @@ public class Manager {
 	/**
 	 * Retrieve meeting from database for given id, returning null if invalid
 	 * id.
+	 * 
+	 *  TODO: Fix this!
 	 */
-	public static Meeting retrieveMeeting(String id) {
+	public static DLEvent retrieveMeeting(String id) {
 		try {
 			PreparedStatement pstmt = Manager
 					.getConnection()
 					.prepareStatement(
-							"SELECT id,name,startH,numColumns,numRows FROM meetings WHERE id = ?;");
+							"SELECT id,name,startH,numColumns,numRows FROM dlevents WHERE id = ?;");
 			pstmt.setString(1, id);
 
 			// Execute the SQL statement and store result into the ResultSet
@@ -259,7 +262,7 @@ public class Manager {
 			int numRows = result.getInt("numRows");
 
 			// construct meeting and return it
-			Meeting m = new Meeting(numColumns, numRows, startH, eventName);
+			DLEvent d = new DLEvent (numColumns, numRows, startH, eventName);
 
 			// TODO: Get all availability information and participants and all
 			// that...
@@ -314,6 +317,29 @@ public class Manager {
 
 		// some problem...
 		return null;
+	}
+	
+	public static boolean insertChoice(String id, int choiceIndex, String choiceName, String name, DLEvent event){
+		try {
+			PreparedStatement pstmt = Manager.getConnection().prepareStatement(
+					"INSERT into choices(id,choiceIndex,choiceName,name) VALUES(?,?,?,?);");
+			pstmt.setString(1, id);
+			pstmt.setInt(2, choiceIndex);
+			pstmt.setString(3, choiceName);
+			pstmt.setString(4,name);
+			
+			pstmt.executeUpdate();
+			
+			int numInserted = pstmt.getUpdateCount();
+			if (numInserted == 0) {
+				throw new IllegalArgumentException("Unable to insert choice "
+						+ id + ".");
+			}
+		} catch (SQLException e) {
+			throw new IllegalArgumentException(e.getMessage(), e);
+		}
+		event.addDLChoice(new DLChoice(choiceIndex, choiceName, name));
+		return true;
 	}
 
 	/**
