@@ -2,35 +2,44 @@ The database teamrocket has been created with meowth as the controlling user. A 
 
 mysql -hmysql.wpi.edu -umeowth -pxuguHN teamrocket
 
-Meetings (id, startH, numColumns, numRows)
-  participants (names,passwords)
-  availability (c, r, boolean)
+decisionLinesEvent (id, numChoices, numRounds, eventQuestion)
+  users (names,passwords)
+  choices (number, name)
+  edges (leftChoice, rightChoice, height)
   
-id is the first 13 characters of the UUID  
+id is the first 13 characters of the UUID
 
-CREATE TABLE meetings (
+CREATE TABLE decisionLinesEvent (
   id varchar(13) NOT NULL default '',
-  name varchar(32) NOT NULL default '',
-  startH INTEGER NOT NULL ,
-  numColumns INTEGER NOT NULL,
-  numRows INTEGER NOT NULL,
+  numChoices INTEGER NOT NULL,
+  numRounds INTEGER NOT NULL,
+  eventQuestion varchar(32) NOT NULL default 'My Question',
   
   PRIMARY KEY  (id)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1
 
-CREATE TABLE participants (
+CREATE TABLE users (
   id varchar(13) NOT NULL default '',
-  user varchar(32) NOT NULL default '',
+  name varchar(32) NOT NULL default '',
   password varchar(32) NOT NULL default '',
+  isModerator TINYINT(1) NOT NULL default 0, 
+  
+  PRIMARY KEY  (id)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1
+
+CREATE TABLE choices (
+  id varchar(13) NOT NULL default '',
+  choiceIndex INTEGER NOT NULL,
+  choiceName varchar(32) NOT NULL default '',
+  
+  PRIMARY KEY  (id)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1
+
+CREATE TABLE edges (
+  id varchar(13) NOT NULL default '',
+  leftChoice INTEGER NOT NULL,
+  rightChoice INTEGER NOT NULL,
+  height INTEGER NOT NULL,
   
   PRIMARY KEY  (id, user)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1
-
-// make note: If no tuple that defaults to NOT AVAILABLE
-CREATE TABLE availability (
-   id varchar(13) NOT NULL default '',
-   user varchar(32) NOT NULL default '',
-   col INTEGER NOT NULL,
-   row INTEGER NOT NULL,
-   PRIMARY KEY  (id, user, col, row)
-)
