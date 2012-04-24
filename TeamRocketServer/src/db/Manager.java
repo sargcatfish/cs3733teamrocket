@@ -431,9 +431,20 @@ public class Manager {
 	}
 
 	/*DONT DELETE!!!!*/
+	/**This function attempts to add the DLEvent info into the data base.
+	 * 
+	 * @param name
+	 * @param question
+	 * @param numChoices
+	 * @param numRounds
+	 * @return true if succeed;
+	 */
 	public static boolean insertDLEvent(String name, String question,
 			int numChoices, int numRounds) {
 		try{//TODO Add stuff to database
+			
+			
+			return true;
 			if(){ 
 				throw new IllegalArgumentException("Unable to create a new event");
 			}
