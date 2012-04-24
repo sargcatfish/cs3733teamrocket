@@ -106,7 +106,7 @@ public class Manager {
 			dbConfig.load(new FileReader(new File("db.config")));
 		} catch (Exception e1) {
 			System.err
-					.println("Unable to locate db.config configuration file.");
+			.println("Unable to locate db.config configuration file.");
 			return false;
 		}
 
@@ -145,7 +145,7 @@ public class Manager {
 							"INSERT into meetings(id,name,startH,numColumns,numRows) VALUES(?,?,?,?,?);");
 			pstmt.setString(1, id);
 			pstmt.setString(2, trimString(m.eventName, 32)); // no more than 32
-																// characters.
+			// characters.
 			pstmt.setInt(3, m.startH);
 			pstmt.setInt(4, m.numColumns);
 			pstmt.setInt(5, m.numRows);
@@ -428,6 +428,21 @@ public class Manager {
 		}
 
 		return s.substring(0, len);
+	}
+
+	/*DONT DELETE!!!!*/
+	public static boolean insertDLEvent(String name, String question,
+			int numChoices, int numRounds) {
+		try{//TODO Add stuff to database
+			if(){ 
+				throw new IllegalArgumentException("Unable to create a new event");
+			}
+		} catch(SQLException e){
+			//TODO make to do stuff
+			throw new IllegalArgumentException (e.getMessage(), e);
+		}
+
+		return false;
 	}
 
 }
