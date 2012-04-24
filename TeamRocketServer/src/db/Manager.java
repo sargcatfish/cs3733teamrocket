@@ -23,7 +23,7 @@ public class Manager {
 	 * 
 	 * updates to meetings/participants/availability
 	 * 
-	 * @author gdmcconnell
+	 * @author gdmcconnell, nbosowski
 	 */
 
 	/** Hard-coded database access information */
