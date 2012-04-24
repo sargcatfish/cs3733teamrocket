@@ -10,6 +10,9 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.UUID;
+import java.sql.Date;
+
+import model.DLEvent;
 
 public class Manager {
 	/**
@@ -136,26 +139,26 @@ public class Manager {
 		return id.substring(0, 13);
 	}
 
-	/** Insert meeting into database. */
-	public static boolean insertMeeting(String id, Meeting m) {
+	/** Insert DLEvent into database. */
+	public static boolean insertEvent(String id, DLEvent d) {
 		try {
 			PreparedStatement pstmt = Manager
 					.getConnection()
 					.prepareStatement(
-							"INSERT into meetings(id,name,startH,numColumns,numRows) VALUES(?,?,?,?,?);");
+							"INSERT into dlevents(id, numChoices, numRounds, eventQuestion, dateCreated, isOpen) VALUES(?,?,?,?,?,?);");
 			pstmt.setString(1, id);
-			pstmt.setString(2, trimString(m.eventName, 32)); // no more than 32
-			// characters.
-			pstmt.setInt(3, m.startH);
-			pstmt.setInt(4, m.numColumns);
-			pstmt.setInt(5, m.numRows);
+			pstmt.setInt(2, d.getNumChoices());
+			pstmt.setInt(3, d.getNumRounds());
+			pstmt.setString(4, trimString(d.getEventQuestion(), 32)); 	// no more than 32 characters.
+			pstmt.setDate(5, d.getDateCreated());
+			pstmt.setInt(6, d.getIsOpen());								// no more than 4 characters (OPEN or CLOSE)
 
 			// Execute the SQL statement and update database accordingly.
 			pstmt.executeUpdate();
 
 			int numInserted = pstmt.getUpdateCount();
 			if (numInserted == 0) {
-				throw new IllegalArgumentException("Unable to insert meeting "
+				throw new IllegalArgumentException("Unable to insert event "
 						+ id + ".");
 			}
 		} catch (SQLException e) {

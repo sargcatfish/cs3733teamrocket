@@ -2,20 +2,20 @@ The database teamrocket has been created with meowth as the controlling user. A 
 
 mysql -hmysql.wpi.edu -umeowth -pxuguHN teamrocket
 
-decisionLinesEvent (id, numChoices, numRounds, eventQuestion, dateCreated, eventType)
+dlevents (id, numChoices, numRounds, eventQuestion, dateCreated, eventType)
   users (name, password, isModerator, userIndex)
-  choices (choiceIndex, choiceName, name)
+  choices (choiceIndex, choiceName)
   edges (leftChoice, rightChoice, height)
   
 id is the first 13 characters of the UUID
 
-CREATE TABLE decisionLinesEvent (
+CREATE TABLE DLEvents (
   id varchar(13) NOT NULL default '',
   numChoices INTEGER NOT NULL,
   numRounds INTEGER NOT NULL,
   eventQuestion varchar(32) NOT NULL default 'My Question',
   dateCreated varchar(4) NOT NULL default '',
-  eventType varchar(4) NOT NULL default '',
+  isOpen TINYINT(1) NOT NULL,
     
   PRIMARY KEY  (id)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1
