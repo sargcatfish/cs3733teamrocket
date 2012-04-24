@@ -1,5 +1,7 @@
 package controller;
 
+import xml.Message;
+
 /**
  * 
  * @author Timothy Kolek
