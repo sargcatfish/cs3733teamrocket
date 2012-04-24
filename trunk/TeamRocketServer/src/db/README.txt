@@ -14,7 +14,7 @@ CREATE TABLE DLEvents (
   numChoices INTEGER NOT NULL,
   numRounds INTEGER NOT NULL,
   eventQuestion varchar(32) NOT NULL default 'My Question',
-  dateCreated varchar(4) NOT NULL default '',
+  dateCreated DATE NOT NULL default '1900-01-01',
   isOpen BOOLEAN NOT NULL,
   moderator varchar(32) NOT NULL,
     
