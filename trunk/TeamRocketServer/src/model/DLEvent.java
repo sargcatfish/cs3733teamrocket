@@ -51,11 +51,8 @@ public class DLEvent {
 		return dateCreated;
 	}
 
-	public int getIsOpen(){
-		if(isOpen){
-			return 1;
-		}
-		return 0;
+	public boolean getIsOpen(){
+		return isOpen;
 	}
 
 	public int getNumChoices(){

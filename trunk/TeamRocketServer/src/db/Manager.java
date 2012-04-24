@@ -137,7 +137,7 @@ public class Manager {
 	}
 
 	/** Generate unique meeting id. */
-	public static String generateMeetingID() {
+	public static String generateEventID() {
 		String id = UUID.randomUUID().toString();
 
 		// abcdefgh-abcd
@@ -177,7 +177,7 @@ public class Manager {
 	 * Register user with meeting AND check password if already exists. If
 	 * PASSWORD is null then treat as ""
 	 */
-	public static boolean signin(String meetingID, String user, String password) {
+	public static boolean signin(String eventID, String user, String password, boolean isModerator, int userIndex) {
 
 		// normalize no password.
 		if (password == null) {
@@ -190,8 +190,8 @@ public class Manager {
 			PreparedStatement pstmt = Manager
 					.getConnection()
 					.prepareStatement(
-							"SELECT password FROM participants WHERE id = ? and user=?;");
-			pstmt.setString(1, meetingID);
+							"SELECT password FROM users WHERE id = ? and user=?;");
+			pstmt.setString(1, eventID);
 			pstmt.setString(2, user);
 
 			// Execute the SQL statement and store result into the ResultSet
@@ -212,10 +212,13 @@ public class Manager {
 			pstmt = Manager
 					.getConnection()
 					.prepareStatement(
-							"INSERT into participants(id,user,password) VALUES(?,?,?);");
-			pstmt.setString(1, meetingID);
+							"INSERT into users(id,user,password,isModerator, userIndex) VALUES(?,?,?,?,?);");
+			pstmt.setString(1, eventID);
 			pstmt.setString(2, user);
 			pstmt.setString(3, password);
+			pstmt.setBoolean(4, isModerator);
+			pstmt.setInt(5, userIndex);
+			
 
 			// Execute the SQL statement and update database accordingly.
 			pstmt.executeUpdate();
@@ -223,7 +226,7 @@ public class Manager {
 			int numInserted = pstmt.getUpdateCount();
 			if (numInserted == 0) {
 				throw new IllegalArgumentException(
-						"Unable to insert participant for " + meetingID);
+						"Unable to insert participant for " + eventID);
 			}
 		} catch (SQLException e) {
 			throw new IllegalArgumentException(e.getMessage(), e);
@@ -239,12 +242,12 @@ public class Manager {
 	 * 
 	 *  TODO: Fix this!
 	 */
-	public static DLEvent retrieveMeeting(String id) {
+	public static DLEvent retrieveEvent(String id) {
 		try {
 			PreparedStatement pstmt = Manager
 					.getConnection()
 					.prepareStatement(
-							"SELECT id,name,startH,numColumns,numRows FROM dlevents WHERE id = ?;");
+							"SELECT id, numChoices, numRounds, eventQuestion, dateCreated, isOpen FROM DLEvents WHERE id = ?;");
 			pstmt.setString(1, id);
 
 			// Execute the SQL statement and store result into the ResultSet
@@ -256,13 +259,14 @@ public class Manager {
 			}
 
 			// pull out the values from the DATABASE
-			String eventName = result.getString("name");
-			int startH = result.getInt("startH");
-			int numColumns = result.getInt("numColumns");
-			int numRows = result.getInt("numRows");
+			int numChoices = result.getInt("numChoices");
+			int numRounds = result.getInt("numRounds");
+			String eventQuestion = result.getString("eventQuestion");
+			Date dateCreated = result.getDate("dateCreated");
+			boolean isOpen = result.getBoolean("isOpen");
 
 			// construct meeting and return it
-			DLEvent d = new DLEvent (numColumns, numRows, startH, eventName);
+			DLEvent d = new DLEvent(id, String name, String question, int numChoices, int numRounds));
 
 			// TODO: Get all availability information and participants and all
 			// that...
@@ -319,14 +323,13 @@ public class Manager {
 		return null;
 	}
 	
-	public static boolean insertChoice(String id, int choiceIndex, String choiceName, String name, DLEvent event){
+	public static boolean insertChoice(String id, int choiceIndex, String choiceName){
 		try {
 			PreparedStatement pstmt = Manager.getConnection().prepareStatement(
-					"INSERT into choices(id,choiceIndex,choiceName,name) VALUES(?,?,?,?);");
+					"INSERT into choices(id,choiceIndex,choiceName) VALUES(?,?,?);");
 			pstmt.setString(1, id);
 			pstmt.setInt(2, choiceIndex);
 			pstmt.setString(3, choiceName);
-			pstmt.setString(4,name);
 			
 			pstmt.executeUpdate();
 			
@@ -338,94 +341,11 @@ public class Manager {
 		} catch (SQLException e) {
 			throw new IllegalArgumentException(e.getMessage(), e);
 		}
-		event.addDLChoice(new DLChoice(choiceIndex, choiceName, name));
 		return true;
 	}
 
 	/**
-	 * if available is TRUE then we are adding tuples to the database. ==>
-	 * INSERT if available is FALSE then we are removing tuples from the
-	 * database. ==> DELETE
-	 * 
-	 */
-	public static boolean updateAvailability(String id, String user,
-			boolean available, int startCol, int startRow, int endCol,
-			int endRow) {
-
-		// delete tuples for entire range EVEN WHEN adding. This makes adding
-		// immediate and obvious.
-		try {
-			PreparedStatement pstmt = Manager
-					.getConnection()
-					.prepareStatement(
-							"DELETE from availability WHERE id = ? and user = ? and col >= ? and col <= ? and row >= ? and row <= ?;");
-			pstmt.setString(1, id);
-			pstmt.setString(2, user);
-			pstmt.setInt(3, startCol);
-			pstmt.setInt(4, endCol);
-			pstmt.setInt(5, startRow);
-			pstmt.setInt(6, endRow);
-
-			// Execute the SQL statement and update database accordingly.
-			pstmt.executeUpdate();
-
-			int numDeleted = pstmt.getUpdateCount();
-			if (numDeleted == 0) {
-				if (!available) {
-					throw new IllegalArgumentException(
-							"Unable to delete availability: " + id);
-				}
-			}
-		} catch (SQLException e) {
-			throw new IllegalArgumentException(e.getMessage(), e);
-		}
-
-		// HEY, I was trying to remove availability so leave now.
-		if (!available) {
-			return true;
-		}
-
-		// available
-		try {
-			for (int c = startCol; c <= endCol; c++) {
-				StringBuilder sql = new StringBuilder(
-						"INSERT into availability(id, user, col, row) VALUES");
-				for (int r = startRow; r <= endRow; r++) {
-					sql.append("(?,?," + c + "," + r + ")");
-					if (r < endRow) {
-						sql.append(",");
-					} else {
-						sql.append(";");
-					} // be sure to terminate sql
-				}
-
-				// bulk-prepare all inserts by setting id/user
-				PreparedStatement pstmt = Manager.getConnection()
-						.prepareStatement(sql.toString());
-				int idx = 1;
-				for (int r = startRow; r <= endRow; r++) {
-					pstmt.setString(idx, id);
-					pstmt.setString(idx + 1, user);
-					idx += 2;
-				}
-
-				// Execute the SQL statement and update database accordingly.
-				pstmt.executeUpdate();
-
-				int numInserted = pstmt.getUpdateCount();
-				if (numInserted == 0) {
-					throw new IllegalArgumentException(
-							"Unable to insert availability: " + id);
-				}
-			}
-
-		} catch (SQLException e) {
-			throw new IllegalArgumentException(e.getMessage(), e);
-		}
-
-		return true;
-	}
-
+	
 	/**
 	 * Remove event from the database along with any corresponding users, choices, and edges.
 	 * 
@@ -434,10 +354,10 @@ public class Manager {
 	 * @param eventID
 	 * @return true if the deletions were successful; false otherwise
 	 */
-	public static boolean deleteMeeting(String meetingID) {
+	public static boolean deleteEvent(String meetingID) {
 		try {
 			PreparedStatement pstmt = Manager.getConnection().prepareStatement(
-					"DELETE from dlevents WHERE id = ?;");
+					"DELETE from DLEvents WHERE id = ?;");
 			pstmt.setString(1, meetingID);
 
 			// Execute the SQL statement and update database accordingly.
