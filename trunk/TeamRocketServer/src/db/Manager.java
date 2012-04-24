@@ -147,19 +147,20 @@ public class Manager {
 	}
 
 	/** Insert DLEvent into database. */
-	public static boolean insertDLEvent(String id, DLEvent d) {
+	public static boolean insertDLEvent(String id, int numChoices, int numRounds, String eventQuestion, 
+							Date dateCreated, boolean isOpen, String moderator) {
 		try {
 			PreparedStatement pstmt = Manager
 					.getConnection()
 					.prepareStatement(
 							"INSERT into dlevents(id, numChoices, numRounds, eventQuestion, dateCreated, isOpen, moderator) VALUES(?,?,?,?,?,?,?);");
 			pstmt.setString(1, id);
-			pstmt.setInt(2, d.getNumChoices());
-			pstmt.setInt(3, d.getNumRounds());
-			pstmt.setString(4, trimString(d.getEventQuestion(), 32)); 	// no more than 32 characters.
-			pstmt.setDate(5, d.getDateCreated());
-			pstmt.setBoolean(6, d.getIsOpen());								// no more than 4 characters (OPEN or CLOSE)
-			pstmt.setString(7, d.getModerator());
+			pstmt.setInt(2, numChoices);
+			pstmt.setInt(3, numRounds);
+			pstmt.setString(4, trimString(eventQuestion, 32)); 	// no more than 32 characters.
+			pstmt.setDate(5, dateCreated);
+			pstmt.setBoolean(6, isOpen);								// no more than 4 characters (OPEN or CLOSE)
+			pstmt.setString(7,moderator);
 
 			// Execute the SQL statement and update database accordingly.
 			pstmt.executeUpdate();
@@ -367,6 +368,28 @@ public class Manager {
 		}
 		return true;
 	}
+	
+	public static boolean insertEdge(String id, int leftChoice, int rightChoice, int height){
+		try {
+			PreparedStatement pstmt = Manager.getConnection().prepareStatement(
+					"INSERT into edges(id, leftChoice, rightChoice, height) VALUES(?,?,?,?);");
+			pstmt.setString(1, id);
+			pstmt.setInt(2, leftChoice);
+			pstmt.setInt(3, rightChoice);
+			pstmt.setInt(4, height);
+			
+			pstmt.executeUpdate();
+			
+			int numInserted = pstmt.getUpdateCount();
+			if (numInserted == 0) {
+				throw new IllegalArgumentException("Unable to insert edge "
+						+ id + "... this is all Wesley's fault!");
+			}
+		} catch (SQLException e) {
+			throw new IllegalArgumentException(e.getMessage(), e);
+		}
+		return true;
+	}
 
 	/**
 	
@@ -394,11 +417,7 @@ public class Manager {
 		} catch (SQLException e) {
 			throw new IllegalArgumentException(e.getMessage(), e);
 		}
-		deleteUsers(meetingID);
-		deleteChoices(meetingID);
-		deleteEdges(meetingID);
-
-		return true;
+		return deleteUsers(meetingID) && deleteChoices(meetingID) && deleteEdges(meetingID);
 	}
 	
 	public static boolean deleteUsers(String meetingID) {
