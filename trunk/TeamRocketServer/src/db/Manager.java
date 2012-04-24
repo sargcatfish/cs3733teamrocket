@@ -14,6 +14,8 @@ import java.sql.Date;
 
 import model.DLChoice;
 import model.DLEvent;
+import model.Edge;
+import model.User;
 
 public class Manager {
 	/**
@@ -150,13 +152,14 @@ public class Manager {
 			PreparedStatement pstmt = Manager
 					.getConnection()
 					.prepareStatement(
-							"INSERT into dlevents(id, numChoices, numRounds, eventQuestion, dateCreated, isOpen) VALUES(?,?,?,?,?,?);");
+							"INSERT into dlevents(id, numChoices, numRounds, eventQuestion, dateCreated, isOpen, moderator) VALUES(?,?,?,?,?,?,?);");
 			pstmt.setString(1, id);
 			pstmt.setInt(2, d.getNumChoices());
 			pstmt.setInt(3, d.getNumRounds());
 			pstmt.setString(4, trimString(d.getEventQuestion(), 32)); 	// no more than 32 characters.
 			pstmt.setDate(5, d.getDateCreated());
-			pstmt.setInt(6, d.getIsOpen());								// no more than 4 characters (OPEN or CLOSE)
+			pstmt.setBoolean(6, d.getIsOpen());								// no more than 4 characters (OPEN or CLOSE)
+			pstmt.setString(7, d.getModerator());
 
 			// Execute the SQL statement and update database accordingly.
 			pstmt.executeUpdate();
@@ -247,7 +250,7 @@ public class Manager {
 			PreparedStatement pstmt = Manager
 					.getConnection()
 					.prepareStatement(
-							"SELECT id, numChoices, numRounds, eventQuestion, dateCreated, isOpen FROM DLEvents WHERE id = ?;");
+							"SELECT id, numChoices, numRounds, eventQuestion, dateCreated, isOpen, moderator FROM DLEvents WHERE id = ?;");
 			pstmt.setString(1, id);
 
 			// Execute the SQL statement and store result into the ResultSet
@@ -264,57 +267,78 @@ public class Manager {
 			String eventQuestion = result.getString("eventQuestion");
 			Date dateCreated = result.getDate("dateCreated");
 			boolean isOpen = result.getBoolean("isOpen");
+			String moderator = result.getString("moderator");
 
 			// construct meeting and return it
-			DLEvent d = new DLEvent(id, String name, String question, int numChoices, int numRounds));
+			DLEvent d = new DLEvent(id, moderator, eventQuestion, numChoices,
+					numRounds);
+			d.setDateCreated(dateCreated);
+			d.setIsOpen(isOpen);
 
-			// TODO: Get all availability information and participants and all
-			// that...
-
-			// For each participant in this meeting....
-			// check that participant not already in meeting with different
-			// pasword.
-			PreparedStatement qstmt = Manager.getConnection().prepareStatement(
-					"SELECT user,password FROM participants WHERE id = ?;");
-			qstmt.setString(1, id);
+			pstmt = Manager
+					.getConnection()
+					.prepareStatement(
+							"SELECT id, name, password, isModerator, userIndex FROM users WHERE id = ?;");
+			pstmt.setString(1, id);
 
 			// Execute the SQL statement and store result into the ResultSet
-			ResultSet qresult = qstmt.executeQuery();
+			ResultSet userResult = pstmt.executeQuery();
 
-			// If there is a participant
-			while (qresult.next()) {
-				// check the password.
-				String existingUser = qresult.getString("user");
-				String existingPassword = qresult.getString("password");
+			// no meeting? Return null
+			while (userResult.next()) {
 
-				// it will be ok that "" is returned for null passwords.
-				m.signIn(existingUser, existingPassword);
+				// pull out the values from the DATABASE
+				String name = userResult.getString("name");
+				String password = userResult.getString("password");
+				boolean isModerator = userResult.getBoolean("isModerator");
+				int userIndex = userResult.getInt("userIndex");
+
+				User u = new User(name, password, isModerator, userIndex);
+				d.addUser(u);
 			}
 
-			for (Iterator<String> it = m.getParticipantIDs(); it.hasNext();) {
-				String user = it.next();
-				// check that participant not already in meeting with different
-				// pasword.
-				PreparedStatement rstmt = Manager
-						.getConnection()
-						.prepareStatement(
-								"SELECT col,row FROM availability WHERE id = ? and user = ?;");
-				rstmt.setString(1, id);
-				rstmt.setString(2, user);
+			pstmt = Manager
+					.getConnection()
+					.prepareStatement(
+							"SELECT id, choiceIndex, choiceName FROM choices WHERE id = ?;");
+			pstmt.setString(1, id);
 
-				// Execute the SQL statement and store result into the ResultSet
-				ResultSet rresult = rstmt.executeQuery();
+			// Execute the SQL statement and store result into the ResultSet
+			ResultSet choiceResult = pstmt.executeQuery();
 
-				// If there is an available slot, act on it
-				while (rresult.next()) {
-					// check the password.
-					int col = rresult.getInt("col");
-					int row = rresult.getInt("row");
-					m.select(user, col, row);
-				}
+			// no meeting? Return null
+			while (choiceResult.next()) {
+
+				int choiceIndex = choiceResult.getInt("choiceIndex");
+				String choiceName = choiceResult.getString("choiceName");
+				// pull out the values from the DATABASE
+
+				DLChoice c = new DLChoice(choiceIndex, choiceName);
+				d.addDLChoice(c);
 			}
 
-			return m;
+			pstmt = Manager
+					.getConnection()
+					.prepareStatement(
+							"SELECT id, leftChoice, rightChoice, height FROM edges WHERE id = ?;");
+			pstmt.setString(1, id);
+
+			// Execute the SQL statement and store result into the ResultSet
+			ResultSet edgeResult = pstmt.executeQuery();
+
+			// no meeting? Return null
+			while (edgeResult.next()) {
+
+				int leftChoice = edgeResult.getInt("leftChoice");
+				int rightChoice = edgeResult.getInt("rightChoice");
+				int height = edgeResult.getInt("height");
+				// pull out the values from the DATABASE
+
+				Edge e = new Edge(leftChoice, rightChoice, height);
+				d.addEdge(e);
+			}
+			return d;
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
