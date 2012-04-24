@@ -153,7 +153,7 @@ public class Manager {
 			PreparedStatement pstmt = Manager
 					.getConnection()
 					.prepareStatement(
-							"INSERT into dlevents(id, numChoices, numRounds, eventQuestion, dateCreated, isOpen, moderator) VALUES(?,?,?,?,?,?,?);");
+							"INSERT into DLEvents(id, numChoices, numRounds, eventQuestion, dateCreated, isOpen, moderator) VALUES(?,?,?,?,?,?,?);");
 			pstmt.setString(1, id);
 			pstmt.setInt(2, numChoices);
 			pstmt.setInt(3, numRounds);
