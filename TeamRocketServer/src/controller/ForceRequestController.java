@@ -1,11 +1,11 @@
-package teamRocket.controller;
+package controller;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import xml.Message;
 
-public class forceRequestController {
+public class ForceRequestController {
 	
 	public Message process(Message request) {
 	int result ;
