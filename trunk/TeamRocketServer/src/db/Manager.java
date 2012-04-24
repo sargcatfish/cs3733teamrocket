@@ -89,6 +89,10 @@ public class Manager {
 		}
 	}
 
+	/**
+	 * Connects to DATABASE
+	 * @return true if connection is established; false otherwise.
+	 */
 	public static boolean connect() {
 		// already connected.
 		if (con != null) {
@@ -140,7 +144,7 @@ public class Manager {
 	}
 
 	/** Insert DLEvent into database. */
-	public static boolean insertEvent(String id, DLEvent d) {
+	public static boolean insertDLEvent(String id, DLEvent d) {
 		try {
 			PreparedStatement pstmt = Manager
 					.getConnection()
@@ -397,17 +401,80 @@ public class Manager {
 	}
 
 	/**
-	 * Remove meeting from the database.
+	 * Remove event from the database along with any corresponding users, choices, and edges.
 	 * 
-	 * TODO: Make sure you also eliminate from participants and availability
+	 * TODO: Not sure this is the best way to delete users, choices, and edges.
 	 * 
-	 * @param meetingID
-	 * @return
+	 * @param eventID
+	 * @return true if the deletions were successful; false otherwise
 	 */
 	public static boolean deleteMeeting(String meetingID) {
 		try {
 			PreparedStatement pstmt = Manager.getConnection().prepareStatement(
-					"DELETE from meetings WHERE id = ?;");
+					"DELETE from dlevents WHERE id = ?;");
+			pstmt.setString(1, meetingID);
+
+			// Execute the SQL statement and update database accordingly.
+			pstmt.executeUpdate();
+
+			int numDeleted = pstmt.getUpdateCount();
+			if (numDeleted == 0) {
+				return false;
+			}
+		} catch (SQLException e) {
+			throw new IllegalArgumentException(e.getMessage(), e);
+		}
+		deleteUsers(meetingID);
+		deleteChoices(meetingID);
+		deleteEdges(meetingID);
+
+		return true;
+	}
+	
+	public static boolean deleteUsers(String meetingID) {
+		try {
+			PreparedStatement pstmt = Manager.getConnection().prepareStatement(
+					"DELETE from users WHERE id = ?;");
+			pstmt.setString(1, meetingID);
+
+			// Execute the SQL statement and update database accordingly.
+			pstmt.executeUpdate();
+
+			int numDeleted = pstmt.getUpdateCount();
+			if (numDeleted == 0) {
+				return false;
+			}
+		} catch (SQLException e) {
+			throw new IllegalArgumentException(e.getMessage(), e);
+		}
+
+		return true;
+	}
+	
+	public static boolean deleteChoices(String meetingID) {
+		try {
+			PreparedStatement pstmt = Manager.getConnection().prepareStatement(
+					"DELETE from choices WHERE id = ?;");
+			pstmt.setString(1, meetingID);
+
+			// Execute the SQL statement and update database accordingly.
+			pstmt.executeUpdate();
+
+			int numDeleted = pstmt.getUpdateCount();
+			if (numDeleted == 0) {
+				return false;
+			}
+		} catch (SQLException e) {
+			throw new IllegalArgumentException(e.getMessage(), e);
+		}
+
+		return true;
+	}
+	
+	public static boolean deleteEdges(String meetingID) {
+		try {
+			PreparedStatement pstmt = Manager.getConnection().prepareStatement(
+					"DELETE from edges WHERE id = ?;");
 			pstmt.setString(1, meetingID);
 
 			// Execute the SQL statement and update database accordingly.
@@ -431,32 +498,6 @@ public class Manager {
 		}
 
 		return s.substring(0, len);
-	}
-
-	/*DONT DELETE!!!!*/
-	/**This function attempts to add the DLEvent info into the data base.
-	 * 
-	 * @param name
-	 * @param question
-	 * @param numChoices
-	 * @param numRounds
-	 * @return true if succeed;
-	 */
-	public static boolean insertDLEvent(String name, String question,
-			int numChoices, int numRounds) {
-		try{//TODO Add stuff to database
-			
-			
-			return true;
-			if(){ 
-				throw new IllegalArgumentException("Unable to create a new event");
-			}
-		} catch(SQLException e){
-			//TODO make to do stuff
-			throw new IllegalArgumentException (e.getMessage(), e);
-		}
-
-		return false;
 	}
 
 }
