@@ -197,7 +197,7 @@ public class Manager {
 			PreparedStatement pstmt = Manager
 					.getConnection()
 					.prepareStatement(
-							"SELECT password FROM users WHERE id = ? and user=?;");
+							"SELECT password FROM users WHERE id = ? and name=?;");
 			pstmt.setString(1, eventID);
 			pstmt.setString(2, user);
 
@@ -219,7 +219,7 @@ public class Manager {
 			pstmt = Manager
 					.getConnection()
 					.prepareStatement(
-							"INSERT into users(id,user,password,isModerator, userIndex) VALUES(?,?,?,?,?);");
+							"INSERT into users(id,name,password,isModerator, userIndex) VALUES(?,?,?,?,?);");
 			pstmt.setString(1, eventID);
 			pstmt.setString(2, user);
 			pstmt.setString(3, password);
