@@ -352,7 +352,7 @@ public class Manager {
 		return null;
 	}
 	/**Change the completion status of the event with given id*/
-	//TODO make sure this works Greg/Nick?
+	//TODO Don't think this is right will look into it later-Nick
 	public static boolean setCompletion(String id) {
 
 		PreparedStatement pstmt;
