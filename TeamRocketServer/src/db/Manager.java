@@ -253,7 +253,8 @@ public class Manager {
 			PreparedStatement pstmt = Manager
 					.getConnection()
 					.prepareStatement(
-							"SELECT id, numChoices, numRounds, eventQuestion, dateCreated, isOpen, moderator FROM DLEvents WHERE id = ?;");
+							"SELECT id, numChoices, numRounds, eventQuestion, dateCreated, isOpen," +
+							"acceptingUsers,  moderator, isComplete FROM DLEvents WHERE id = ?;");
 			pstmt.setString(1, id);
 
 			// Execute the SQL statement and store result into the ResultSet
