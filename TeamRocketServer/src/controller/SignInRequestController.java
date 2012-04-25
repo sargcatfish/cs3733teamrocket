@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import model.DLEvent;
+import model.TeamRocketServerModel;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -46,7 +47,7 @@ public class SignInRequestController {
 		}
 		
 		// get event object -- have user sign in!
-		DLEvent m = ServerModel.getInstance().getDLEvent (eventID);
+		DLEvent m = Manager.retrieveEvent(eventID);
 		/**if (!m.signIn(user, password)) {
 			// TODO: User might have wrong credentials!
 			System.err.println ("Can't sign in #1");
