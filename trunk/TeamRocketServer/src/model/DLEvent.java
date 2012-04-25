@@ -174,6 +174,16 @@ public class DLEvent {
 		return this.userList.size()+1; 
 		
 	}
+	/**
+	 * added by rhollinger
+	 * set the event so it is no longer accepting users
+	 */
+	public void notAcceptingUsers(){
+		this.acceptingUsers = false;
+	}
+	public boolean isAccepting(){
+		return this.acceptingUsers;
+	}
 
 
 }
