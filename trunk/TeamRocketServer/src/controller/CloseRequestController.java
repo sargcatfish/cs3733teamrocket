@@ -1,5 +1,7 @@
 package controller;
 
+import server.ClientState;
+import xml.Message;
 import db.Manager;
 import model.DLEvent;
 import model.TeamRocketServerModel;
@@ -11,7 +13,7 @@ import model.TeamRocketServerModel;
  *
  */
 public class CloseRequestController {
-	public CloseEventContoller(ClientState st) {
+	public void CloseRequestContoller(ClientState st) {
 		// TODO Auto-generated constructor stub
 	}
 
