@@ -31,7 +31,7 @@ public class Manager {
 	private static final String USER = "meowth";
 	private static final String PASSWORD = "xuguHN";
 	private static final String DATABASE = "teamrocket";
-	
+
 	// as long as you're using mysql, leave this alone.
 	private static final String DATABASE_TYPE = "mysql";
 
@@ -354,6 +354,41 @@ public class Manager {
 		// some problem...
 		return null;
 	}
+
+	/**
+	 * Retrieve meeting from database for given event type, returning null if invalid
+	 * 
+	 * 
+	 *  TODO: Fix this!
+	 */
+	public static ResultSet retrieveEvent(boolean type) {
+		try {
+			PreparedStatement pstmt = Manager
+					.getConnection()
+					.prepareStatement(
+							"SELECT id, numChoices, numRounds, eventQuestion, dateCreated, isOpen," +
+							"acceptingUsers,  moderator, isComplete FROM DLEvents WHERE isOpen = ?;");
+			pstmt.setBoolean(1, type);
+
+			// Execute the SQL statement and store result into the ResultSet
+			ResultSet result = pstmt.executeQuery();
+
+			// no meeting? Return null
+			if (!result.next()) {
+				return null;
+			}
+			else {
+				return result;
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
+
+
 	/**Change the completion status of the event with given id*/
 	// This now works
 	public static boolean setCompletion(String id) {
