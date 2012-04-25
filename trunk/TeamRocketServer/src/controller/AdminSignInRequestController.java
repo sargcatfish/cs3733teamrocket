@@ -1,14 +1,14 @@
-package teamRocket.controller;
+package controller;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.UUID;
+
+import model.Admin;
+import model.TeamRocketServerModel;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import server.ClientState;
-import server.Server;
 import xml.Message;
 
 public class AdminSignInRequestController {
@@ -30,23 +30,22 @@ public class AdminSignInRequestController {
 		
 		String adminKey = UUID.randomUUID().toString();
 		adminKey = adminKey.substring(0, 13);
+		String xmlString = "";
 		
 		// get meeting object -- have user sign in!
-		a = ServerModel.getInstance().getAdmin() ;
+		Admin a = TeamRocketServerModel.getInstance().getAdmin() ;
 		
-		if (a == null){
-			System.err.println("User name doesn't match") ;
-		}
 		
 		if (!a.signIn(admin, pword)) {
 			System.err.println ("Can't sign in");
-			adminKey = "INVALID" ;
+			xmlString =  Message.responseHeader(request.id(), "Invalid credential"); //valid xml??
 		}
 		// client should recognize this!
-		else //:: TODO update data base with new admin key!
-			;
-		
-		String xmlString =  Message.responseHeader(request.id()) + "<adminResponse key =" + adminKey + "</adminResponse></response>" ;
+		else {//:: TODO update data base with new admin key!
+			a.setKey(adminKey);
+			xmlString =  Message.responseHeader(request.id()) + "<adminResponse key =" + adminKey + "</adminResponse></response>" ;
+		}
+				
 		
 		Message response = new Message(xmlString);	
 		

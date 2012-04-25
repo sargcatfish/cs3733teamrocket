@@ -8,14 +8,15 @@ import java.sql.Date;
  * */
 public class DLEvent {
 
-	String id;
-	String moderatorName; //The string "name" was send in the xml assuming it's the moderator name?
-	String eventQuestion;
-	Date dateCreated;
-	boolean isOpen;		//True for open event
-	int numChoices;
-	int numRounds;
-	int numEdges;
+	private String id;
+	private String moderatorName; //The string "name" was send in the xml assuming it's the moderator name?
+	private String eventQuestion;
+	private Date dateCreated;
+	private boolean isOpen;		//True for open event
+	private int numChoices;
+	private int numRounds;
+	private int numEdges;
+	private boolean isComplete;
 
 	ArrayList<User> userList = new ArrayList<User>();
 	ArrayList<Edge> edgeList = new ArrayList<Edge>();
@@ -36,6 +37,7 @@ public class DLEvent {
 		this.eventQuestion = question;
 		this.numChoices = numChoices;
 		this.numRounds = numRounds;
+		this.isComplete = false;
 	}
 
 	//Getters
@@ -81,6 +83,10 @@ public class DLEvent {
 	
 	public String getModerator(){
 		return moderatorName;
+	}
+	
+	public boolean getComplete(){
+		return this.isComplete;
 	}
 
 	//Setters
@@ -132,6 +138,11 @@ public class DLEvent {
 			choiceList = new ArrayList<DLChoice>();
 		}
 		choiceList.add(choice);
+	}
+	
+	public boolean setComplete(){
+		this.isComplete = true;
+		return true;
 	}
 
 
