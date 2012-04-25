@@ -92,7 +92,7 @@ public class DLEvent {
 	}
 
 	//Setters
-
+/**
 	public String setID(String id){
 		return this.id = id;
 	}
@@ -100,7 +100,7 @@ public class DLEvent {
 	public String setEventQuestion(String ques){
 		return eventQuestion = ques;
 	}
-
+*/
 	public Date setDateCreated(Date date){
 		return dateCreated = date;
 	}
@@ -108,7 +108,7 @@ public class DLEvent {
 	public boolean setIsOpen(boolean isOpen){
 		return this.isOpen = isOpen;
 	}
-
+/**
 	public int setNumChoices(int numChoice){
 		return numChoices = numChoice;
 	}
@@ -116,7 +116,7 @@ public class DLEvent {
 	public int setNumRounds(int numRound){
 		return numRounds = numRound;
 	}
-
+*/
 	public int setNumEdges(int numEdge){
 		return numEdges = numEdge;
 	}
