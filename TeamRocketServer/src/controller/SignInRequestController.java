@@ -47,13 +47,15 @@ public class SignInRequestController {
 		
 		// get event object -- have user sign in!
 		DLEvent m = ServerModel.getInstance().getDLEvent (eventID);
-		if (!m.signIn(user, password)) {
+		/**if (!m.signIn(user, password)) {
 			// TODO: User might have wrong credentials!
 			System.err.println ("Can't sign in #1");
 			
-		}
+		}**/
+		//TODO: need to figure out position
+		int position = 1;
 		
-		if (!Manager.signin(eventID, user, password, false, )) {
+		if (!Manager.signin(eventID, user, password, false, position)) {
 			// TODO: What if can't sign in
 			System.err.println ("Can't sign in #2");
 		}
@@ -72,9 +74,6 @@ public class SignInRequestController {
 		}
 		
 		// TODO: Error Checking! May have typed in invalid meeting id
-		
-		//TODO: Actuatlly find the position number
-		int position = 1;
 		
 		String xmlString =  Message.responseHeader(request.id()) + "<signInResponse id='" + eventID + "' " + 
 		    "id = '" + eventID + "' " + 
