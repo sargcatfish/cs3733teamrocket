@@ -166,10 +166,8 @@ public class Manager {
 			pstmt.setBoolean(7,acceptingUsers);
 			pstmt.setString(8,moderator);
 			pstmt.setBoolean(9, false);							
-
 			// Execute the SQL statement and update database accordingly.
 			pstmt.executeUpdate();
-
 			int numInserted = pstmt.getUpdateCount();
 			if (numInserted == 0) {
 				throw new IllegalArgumentException("Unable to insert event "
