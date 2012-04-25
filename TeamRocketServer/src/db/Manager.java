@@ -31,7 +31,7 @@ public class Manager {
 	private static final String USER = "meowth";
 	private static final String PASSWORD = "xuguHN";
 	private static final String DATABASE = "teamrocket";
-
+	
 	// as long as you're using mysql, leave this alone.
 	private static final String DATABASE_TYPE = "mysql";
 
@@ -39,7 +39,6 @@ public class Manager {
 
 	/** The SQL connection to the database */
 	static Connection con;
-
 	/**
 	 * Gets a connection to for the manager and makes a good effort to make sure
 	 * it is open

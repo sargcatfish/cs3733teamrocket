@@ -95,7 +95,7 @@ public class SignInRequestController {
 			Message response = new Message(xmlString);
 			
 			// Must be sure to send refreshResponse to everyone else.
-			xmlString = Message.responseHeader(request.id()) + "<refreshResponse id='" + meetingID + "' " +
+			xmlString = Message.responseHeader(request.id()) + "<refreshResponse id='" + eventID + "' " +
 				"user = '" + user + "'/></response>";
 			Message broadcast = new Message (xmlString);
 			
@@ -125,7 +125,7 @@ public class SignInRequestController {
 			Message response = new Message(xmlString);
 
 			// Must be sure to send refreshResponse to everyone else.
-			xmlString = Message.responseHeader(request.id()) + "<refreshResponse id='" + meetingID + "' " +
+			xmlString = Message.responseHeader(request.id()) + "<refreshResponse id='" + eventID + "' " +
 					"user = '" + user + "'/></response>";
 			Message broadcast = new Message (xmlString);
 
