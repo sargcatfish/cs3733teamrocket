@@ -57,7 +57,7 @@ public class CreateRequestController {
 					}
 		//add the event to the database
 				Manager.insertDLEvent(id, Integer.getInteger(numChoices), Integer.getInteger(numRounds), 
-						eventQuestion, dateCreated, isOpen, moderator);
+						eventQuestion, dateCreated, isOpen,true, moderator);
 		//get choice names		
 		for (int i = 0; i < Integer.getInteger(numChoices); i++){
 			//add choices in
