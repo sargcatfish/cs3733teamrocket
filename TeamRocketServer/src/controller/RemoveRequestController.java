@@ -1,5 +1,7 @@
 package teamRocket.controller;
 
+import model.TeamRocketServerModel;
+
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -28,7 +30,7 @@ public class RemoveRequestController {
 		String id = null;
 		if (iNode != null) {
 			id = iNode.getNodeValue();
-			result = ServerModel.destroyEvent(id) ;
+			result = TeamRocketServerModel.destroyEvent(id) ;
 			String xmlString =  Message.responseHeader(request.id()) + "<removeResponse numberAffected='" + result + "' " + "</removeResponse></response>";
 			response = new Message(xmlString);
 		}
@@ -37,7 +39,7 @@ public class RemoveRequestController {
 			String daysOld = adminAtts.getNamedItem("daysOld").getNodeValue();
 			// :: TODO remove all these events!
 				// destroyEvent returns an int!
-			result = ServerModel.destroyEvent(completed, daysOld) ;
+			result = TeamRocketServerModel.destroyEvent(completed, daysOld) ;
 			String xmlString =  Message.responseHeader(request.id()) + "<removeResponse numberAffected='" + result + "' " + "</removeResponse></response>";
 			response = new Message(xmlString);
 		}

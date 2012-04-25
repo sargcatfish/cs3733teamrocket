@@ -122,16 +122,16 @@ public class Manager {
 		/* TODO: For some reason this does not like the config file so i changed it to use the constants and it now works */
 		// Define URL for database server
 		// NOTE: must fill in DATABASE NAME
-//		String url = "jdbc:" + DATABASE_TYPE + "://"
-//				+ dbConfig.getProperty(SERVER) + "/"
-//				+ dbConfig.getProperty(DATABASE);
+		//		String url = "jdbc:" + DATABASE_TYPE + "://"
+		//				+ dbConfig.getProperty(SERVER) + "/"
+		//				+ dbConfig.getProperty(DATABASE);
 
 		String url = "jdbc:" + DATABASE_TYPE + "://" + SERVER +"/" + DATABASE;
 		try {
 			// Get a connection to the database for a
 			// user with the given user name and password.
-		//	con = DriverManager.getConnection(url, dbConfig.getProperty(USER),
-		//			dbConfig.getProperty(PASSWORD));
+			//	con = DriverManager.getConnection(url, dbConfig.getProperty(USER),
+			//			dbConfig.getProperty(PASSWORD));
 			con = DriverManager.getConnection(url, USER, PASSWORD);
 			return true;
 		} catch (Exception e) {
@@ -150,13 +150,13 @@ public class Manager {
 
 	/** Insert DLEvent into database. */
 	public static boolean insertDLEvent(String id, int numChoices, int numRounds, String eventQuestion, 
-							Date dateCreated, boolean isOpen, String moderator) {
+			Date dateCreated, boolean isOpen, String moderator) {
 		try {
 			/* TODO: Some error about date truncation occurs!" */
 			PreparedStatement pstmt = Manager
 					.getConnection()
 					.prepareStatement(
-							"INSERT into DLEvents(id, numChoices, numRounds, eventQuestion, dateCreated, isOpen, moderator) VALUES(?,?,?,?,?,?,?);");
+							"INSERT into DLEvents(id, numChoices, numRounds, eventQuestion, dateCreated, isOpen, moderator, isComplete) VALUES(?,?,?,?,?,?,?,?);");
 			pstmt.setString(1, id);
 			pstmt.setInt(2, numChoices);
 			pstmt.setInt(3, numRounds);
@@ -164,6 +164,7 @@ public class Manager {
 			pstmt.setDate(5, dateCreated);
 			pstmt.setBoolean(6, isOpen);								// no more than 4 characters (OPEN or CLOSE)
 			pstmt.setString(7,moderator);
+			pstmt.setBoolean(8, false);							//TODO add this field to Database
 
 			// Execute the SQL statement and update database accordingly.
 			pstmt.executeUpdate();
@@ -225,7 +226,7 @@ public class Manager {
 			pstmt.setString(3, password);
 			pstmt.setBoolean(4, isModerator);
 			pstmt.setInt(5, userIndex);
-			
+
 
 			// Execute the SQL statement and update database accordingly.
 			pstmt.executeUpdate();
@@ -350,7 +351,24 @@ public class Manager {
 		// some problem...
 		return null;
 	}
-	
+	/**Change the completion status of the event with given id*/
+	//TODO make sure this works Greg/Nick?
+	public static boolean setCompletion(String id) {
+
+		PreparedStatement pstmt;
+		try {
+			pstmt = Manager
+					.getConnection()
+					.prepareStatement(
+							"UPDATE DLEvents SET isComplete = true WHERE DLEvent.id = " + id + ";");
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	}
+
 	public static boolean insertChoice(String id, int choiceIndex, String choiceName){
 		try {
 			PreparedStatement pstmt = Manager.getConnection().prepareStatement(
@@ -358,9 +376,9 @@ public class Manager {
 			pstmt.setString(1, id);
 			pstmt.setInt(2, choiceIndex);
 			pstmt.setString(3, choiceName);
-			
+
 			pstmt.executeUpdate();
-			
+
 			int numInserted = pstmt.getUpdateCount();
 			if (numInserted == 0) {
 				throw new IllegalArgumentException("Unable to insert choice "
@@ -371,7 +389,7 @@ public class Manager {
 		}
 		return true;
 	}
-	
+
 	public static boolean insertEdge(String id, int leftChoice, int rightChoice, int height){
 		try {
 			PreparedStatement pstmt = Manager.getConnection().prepareStatement(
@@ -380,9 +398,9 @@ public class Manager {
 			pstmt.setInt(2, leftChoice);
 			pstmt.setInt(3, rightChoice);
 			pstmt.setInt(4, height);
-			
+
 			pstmt.executeUpdate();
-			
+
 			int numInserted = pstmt.getUpdateCount();
 			if (numInserted == 0) {
 				throw new IllegalArgumentException("Unable to insert edge "
@@ -395,7 +413,7 @@ public class Manager {
 	}
 
 	/**
-	
+
 	/**
 	 * Remove event from the database along with any corresponding users, choices, and edges.
 	 * 
@@ -422,7 +440,7 @@ public class Manager {
 		}
 		return deleteUsers(meetingID) && deleteChoices(meetingID) && deleteEdges(meetingID);
 	}
-	
+
 	public static boolean deleteUsers(String meetingID) {
 		try {
 			PreparedStatement pstmt = Manager.getConnection().prepareStatement(
@@ -442,7 +460,7 @@ public class Manager {
 
 		return true;
 	}
-	
+
 	public static boolean deleteChoices(String meetingID) {
 		try {
 			PreparedStatement pstmt = Manager.getConnection().prepareStatement(
@@ -462,7 +480,7 @@ public class Manager {
 
 		return true;
 	}
-	
+
 	public static boolean deleteEdges(String meetingID) {
 		try {
 			PreparedStatement pstmt = Manager.getConnection().prepareStatement(

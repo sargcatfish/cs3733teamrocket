@@ -17,6 +17,7 @@ CREATE TABLE DLEvents (
   dateCreated DATE NOT NULL default '1900-01-01',
   isOpen BOOLEAN NOT NULL,
   moderator varchar(32) NOT NULL,
+  isComplete BOOLEAN NOT NULL,
     
   PRIMARY KEY  (id)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1
