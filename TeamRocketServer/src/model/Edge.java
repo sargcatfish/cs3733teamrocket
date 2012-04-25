@@ -11,5 +11,17 @@ public class Edge {
 		this.height = height;
 	}
 
+	public int getLeftChoice(){
+		return leftChoice;
+	}
+	
+	public int getRightChoice(){
+		return rightChoice;
+	}
+	
+	public int getHeight(){
+		return height;
+	}
+	
 
 }

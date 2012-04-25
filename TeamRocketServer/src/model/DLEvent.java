@@ -184,6 +184,17 @@ public class DLEvent {
 	public boolean isAccepting(){
 		return this.acceptingUsers;
 	}
+	/* These here are only for test cases 
+	 * added by: nbosowski				
+	 */
+	public void setAcceptingUsers(boolean b){
+		this.acceptingUsers = b;
+	}
+	
+
+	public void setIsComplete(boolean b){
+		isComplete = b;
+	}
 
 
 }
