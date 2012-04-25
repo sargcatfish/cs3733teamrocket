@@ -1,4 +1,4 @@
-package teamRocket.controller;
+package controller;
 
 import java.util.UUID;
 
@@ -49,7 +49,7 @@ public class ReportRequestController {
 			if (eventType.equals("open")){
 				//:: TODO generate report of all open events
 				DLEvent m;
-				m = TeamRocketServerModel.getInstance().getEvent("open") ;
+				m = TeamRocketServerModel.getInstance().retriveEvent("open") ;
 
 				String xmlString =  Message.responseHeader(request.id()) + "<reportResponse id='" + m.meetingID + "' " + 
 					    "type = 'open' " + 
