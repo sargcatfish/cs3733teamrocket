@@ -49,58 +49,98 @@ public class SignInRequestController {
 		// get event object -- have user sign in!
 		DLEvent m = Manager.retrieveEvent(eventID);
 		int position = m.getNextPosition(user);
-		//try to sign in as already existant user
+		//try to sign in as already existent user
+		boolean Accepted = true;
+		String failedReason = null;
 		if (!m.signIn(user, password)) {
-			// TODO: User might have wrong credentials!
 			System.err.println ("Can't sign in #1");
 			//add as a new user
-			if (!Manager.signin(eventID, user, password, false, position)) {
+			if(!m.isAccepting()){
+				//TODO: REJECT USER THEY CANNOT JOIN
+				failedReason = "No longer accpting users";
+				Accepted = false;
+			}
+			else if (!Manager.signin(eventID, user, password, false, position)) {
 				// TODO: What if can't sign in
 				System.err.println ("Can't sign in #2");
+				failedReason = "Invalid Password";
+				Accepted = false;
 			}
 		}
-		
-		StringBuffer choices = new StringBuffer();
-		
-		for (int i=1; i<m.getNumChoices(); i++ ) {
-			String choice = m.getDLChoice().get(i-1).getName();
-			// append into entry section
-			choices.append("<choice value='" + choice + "' index='" + i + "'/>");
-		}
-		
-		String type = new String("open");
-		if (!m.getIsOpen()) {
-			type = "closed";
-		}
-		
-		// TODO: Error Checking! May have typed in invalid meeting id
-		
-		String xmlString =  Message.responseHeader(request.id()) + "<signInResponse id='" + eventID + "' " + 
-		    "id = '" + eventID + "' " + 
-			"type = '" + type + "' " +
-			"question = '" + m.getEventQuestion() + "' " +
-			"numChoices = '" + m.getNumChoices() + "' " + 
-			"numRows = '" + m.getNumRounds() + "' " +
-			"position = '" + position + "'>" + choices.toString() + "</signInResponse></response>";
-		
-		Message response = new Message(xmlString);
-		
-		// Must be sure to send refreshResponse to everyone else.
-		xmlString = Message.responseHeader(request.id()) + "<refreshResponse id='" + meetingID + "' " +
-			"user = '" + user + "'/></response>";
-		Message broadcast = new Message (xmlString);
-		
-		// send to all clients for this same meeting.
-		// Now send response to all connected clients associated with same meeting ID.
-		for (String threadID : Server.ids()) {
-			ClientState cs = Server.getState(threadID);
-			if (eventID.equals(cs.getData())) {
-				// make sure not to send to requesting client TWICE
-				if (!cs.id().equals(state.id())) {
-					cs.sendMessage(broadcast);
+		if (Accepted) {
+			StringBuffer choices = new StringBuffer();
+			
+			for (int i=1; i<m.getNumChoices(); i++ ) {
+				String choice = m.getDLChoice().get(i-1).getName();
+				// append into entry section
+				choices.append("<choice value='" + choice + "' index='" + i + "'/>");
+			}
+			
+			String type = new String("open");
+			if (!m.getIsOpen()) {
+				type = "closed";
+			}
+			
+			
+			// TODO: Error Checking! May have typed in invalid meeting id
+			
+			String xmlString =  Message.responseHeader(request.id()) + "<signInResponse id='" + eventID + "' " + 
+			    "id = '" + eventID + "' " + 
+				"type = '" + type + "' " +
+				"question = '" + m.getEventQuestion() + "' " +
+				"numChoices = '" + m.getNumChoices() + "' " + 
+				"numRows = '" + m.getNumRounds() + "' " +
+				"position = '" + position + "'>" + choices.toString() + "</signInResponse></response>";
+			
+			Message response = new Message(xmlString);
+			
+			// Must be sure to send refreshResponse to everyone else.
+			xmlString = Message.responseHeader(request.id()) + "<refreshResponse id='" + meetingID + "' " +
+				"user = '" + user + "'/></response>";
+			Message broadcast = new Message (xmlString);
+			
+			// send to all clients for this same meeting.
+			// Now send response to all connected clients associated with same meeting ID.
+			for (String threadID : Server.ids()) {
+				ClientState cs = Server.getState(threadID);
+				if (eventID.equals(cs.getData())) {
+					// make sure not to send to requesting client TWICE
+					if (!cs.id().equals(state.id())) {
+						cs.sendMessage(broadcast);
+					}
 				}
 			}
-		}		
+		}
+		
+		else{
+			String xmlString = Message.responseHeader(request.id(), failedReason);
+			xmlString +=  "<signInResponse id='" + eventID + "' " + 
+					"id = '" + eventID + "' " + 
+					"type = '" + type + "' " +
+					"question = '" + m.getEventQuestion() + "' " +
+					"numChoices = '" + m.getNumChoices() + "' " + 
+					"numRows = '" + m.getNumRounds() + "' " +
+					"position = '" + position + "'>" + choices.toString() + "</signInResponse></response>";
+
+			Message response = new Message(xmlString);
+
+			// Must be sure to send refreshResponse to everyone else.
+			xmlString = Message.responseHeader(request.id()) + "<refreshResponse id='" + meetingID + "' " +
+					"user = '" + user + "'/></response>";
+			Message broadcast = new Message (xmlString);
+
+			// send to all clients for this same meeting.
+			// Now send response to all connected clients associated with same meeting ID.
+			for (String threadID : Server.ids()) {
+				ClientState cs = Server.getState(threadID);
+				if (eventID.equals(cs.getData())) {
+					// make sure not to send to requesting client TWICE
+					if (!cs.id().equals(state.id())) {
+						cs.sendMessage(broadcast);
+					}
+				}
+			}
+		}
 		
 		// make sure to send back to originating client the signInResponse
 		return response;
