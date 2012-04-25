@@ -1,5 +1,7 @@
 package controller;
 
+import db.Manager;
+import model.DLEvent;
 import model.TeamRocketServerModel;
 
 /**
@@ -14,15 +16,12 @@ public class CloseRequestController {
 	}
 
 	public Message process(Message request) {
-		String EventID = request.contents.getFirstChild().getAttributes().getNamedItem("id").getNodeValue();
+		String eventID = request.contents.getFirstChild().getAttributes().getNamedItem("id").getNodeValue();
 
 		//TODO close Event
-		/**not sure if this is the right way to do this...
-		 * TeamRocketServerModel.destroyEvent(EventID);
-		 *
-		*/
-		
-		
+		//not sure if this is the right way to do this...
+		DLEvent m = Manager.retrieveEvent(eventID); 
+		Manager.setCompletion(eventID);
 		
 		String xmlString = Message.responseHeader(request.id()) + "<closeResponse/></response>";
 		Message response = new Message(xmlString);
