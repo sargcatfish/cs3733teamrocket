@@ -551,5 +551,32 @@ public class Manager {
 
 		return s.substring(0, len);
 	}
+	
+	// Manager Class
+	/***
+	 * change completion of events > inputted days old
+	 * @author Ian Lukens and Wesley Nitinthorn
+	 * @param daysOld
+	 * @return number changed
+	 */
+	public static int setCompletion(int daysOld) {
+
+		int result = 0 ;
+		PreparedStatement pstmt;
+		try {
+			pstmt = Manager
+					.getConnection()
+					.prepareStatement(
+							"UPDATE DLEvents SET isComplete = true WHERE TO_DAYS(?) - TO_DAYS(dateCreated) > ?;");
+			long time = System.currentTimeMillis() ;
+			Date date = new Date(time) ;
+			pstmt.setDate(1, date);
+			pstmt.setInt(2, daysOld) ;
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 }

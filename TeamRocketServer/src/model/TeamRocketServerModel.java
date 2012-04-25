@@ -31,7 +31,7 @@ public class TeamRocketServerModel {
 		String id = Manager.generateEventID(); //generate ID for the event
 		table.put(id, d);	// add DLEvent to table
 		if (!Manager.insertDLEvent(d.getID(), d.getNumChoices(), d.getNumEdges(), d.getEventQuestion(),
-				d.getDateCreated(), d.getIsOpen(), d.getModerator())) {
+				d.getDateCreated(), d.getIsOpen(), d.isAccepting(), d.getModerator())) {
 			System.err.println("FAIL TO INSERT IN DB");
 			return "";
 		}
@@ -70,6 +70,13 @@ public class TeamRocketServerModel {
 			return 1;
 		}
 		else return 0;
+	}
+	
+	// Server Model class
+	public static int forceCompleteEvent(int daysOld){
+		
+		getInstance().getTable() ; // make it iterate w/ > daysOld -> setComplete() ;
+		return Manager.setCompletion(daysOld) ;
 	}
 
 }
