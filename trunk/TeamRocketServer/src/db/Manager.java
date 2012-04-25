@@ -352,7 +352,7 @@ public class Manager {
 		return null;
 	}
 	/**Change the completion status of the event with given id*/
-	//TODO Don't think this is right will look into it later-Nick
+	// This now works
 	public static boolean setCompletion(String id) {
 
 		PreparedStatement pstmt;
@@ -360,7 +360,8 @@ public class Manager {
 			pstmt = Manager
 					.getConnection()
 					.prepareStatement(
-							"UPDATE DLEvents SET isComplete = true WHERE DLEvent.id = " + id + ";");
+							"UPDATE DLEvents SET isComplete = true WHERE id = ?;");
+			pstmt.setString(1, id);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
