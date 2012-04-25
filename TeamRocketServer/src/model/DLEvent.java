@@ -157,8 +157,18 @@ public class DLEvent {
 		}
 		return false;
 	}
-	//added by rhollinger
-	public int getPosition(){
+	/**added by rhollinger
+	 * 
+	 * @param name the user's name
+	 * @return either that users index (if they exist) or the next index location
+	 */
+	public int getNextPosition(String name){
+		for (int i = 0; i < userList.size(); i++){
+			User check = userList.get(i);
+			if(check.name.equals(name)){
+				return check.userIndex;
+			}
+		}
 		return this.userList.size(); 
 		
 	}
