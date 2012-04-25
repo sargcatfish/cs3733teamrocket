@@ -43,29 +43,28 @@ public class CreateRequestController {
 		if (eventType.equals(new String("open"))) {
 			isOpen = true;
 		}
+		int numItems = next.getLength();
+		//get moderator names
+				String moderator;
+				String pswd;
+				if (numItems - Integer.getInteger(numChoices) > 1){
+					moderator = next.item(numItems-2).getNodeValue();
+					pswd = next.item(numItems-1).getNodeValue();
+				}
+				else{
+					moderator = next.item(numItems-1).getNodeValue();
+					pswd = new String("");
+					}
 		//add the event to the database
 				Manager.insertDLEvent(id, Integer.getInteger(numChoices), Integer.getInteger(numRounds), 
 						eventQuestion, dateCreated, isOpen, moderator);
 		//get choice names		
-		int numItems = next.getLength();
 		for (int i = 0; i < Integer.getInteger(numChoices); i++){
 			//add choices in
 			Manager.insertChoice(id, i+1, next.item(i).getNodeValue());
 			System.out.println(next.item(i).getNodeValue());
 		}
-		//get moderator names
-		String moderator;
-		String pswd;
-		if (numItems - Integer.getInteger(numChoices) > 1){
-			moderator = next.item(numItems-2).getNodeValue();
-			pswd = next.item(numItems-1).getNodeValue();
-		}
-		else{
-			moderator = next.item(numItems-1).getNodeValue();
-			pswd = new String("");
-			}
-	
-		//Sign in the manager
+		//Sign in the moderator
 		Manager.signin(id, moderator, pswd, true, 1);
 		
 		
