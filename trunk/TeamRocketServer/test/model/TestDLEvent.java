@@ -33,7 +33,10 @@ public class TestDLEvent extends TestCase {
 		m.addUser(u);
 		assertEquals(m.getUserList(), 1);
 		assertEquals(m.getDLChoice(), 1);
-	
+		m.setIsOpen(true);
+		assertTrue(m.getIsOpen());
+		m.setIsOpen(false);
+		assertFalse(m.getIsOpen());
 		
 	}
 
