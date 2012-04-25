@@ -2,6 +2,10 @@ package teamRocket.controller;
 
 import java.util.UUID;
 
+import model.DLEvent;
+import model.TeamRocketServerModel;
+import model.Admin;
+
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -25,7 +29,8 @@ public class ReportRequestController {
 		String eventType = adminAtts.getNamedItem("type").getNodeValue() ;
 				
 		// get meeting object -- have user sign in!
-		a = ServerModel.getInstance().getAdmin() ;
+		Admin a;
+		a = TeamRocketServerModel.getInstance().getAdmin() ;
 		
 		if (!a.verify(key)){
 			String xmlString = Message.responseHeader(request.id(), "Invalid key") ;
@@ -43,7 +48,8 @@ public class ReportRequestController {
 		else {
 			if (eventType.equals("open")){
 				//:: TODO generate report of all open events
-				m = ServerModel.getInstance().getEvent("open") ;
+				DLEvent m;
+				m = TeamRocketServerModel.getInstance().getEvent("open") ;
 
 				String xmlString =  Message.responseHeader(request.id()) + "<reportResponse id='" + m.meetingID + "' " + 
 					    "type = 'open' " + 
