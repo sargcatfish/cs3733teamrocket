@@ -45,7 +45,9 @@ public class CreateRequestController {
 		
 		Manager.insertDLEvent(id, Integer.getInteger(numChoices), Integer.getInteger(numRounds), 
 				eventQuestion, dateCreated, isOpen, moderator);
-	    	
+	    //TODO: parse out choice names and make them into DLChoice objects (in database)
+		
+		
 		String xmlString = Message.responseHeader(request.id()) + "<createResponse id='" + id + "'/></response>";
 		Message resp = new Message(xmlString);
 		
