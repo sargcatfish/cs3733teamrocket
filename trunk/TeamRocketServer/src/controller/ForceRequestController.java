@@ -28,6 +28,7 @@ public class ForceRequestController {
 			response = new Message(xmlString);
 		}
 		else{
+			// ForceRequesetController
 			//Force completion
 			Node iNode = adminAtts.getNamedItem("id");
 			String id = null;
@@ -39,9 +40,8 @@ public class ForceRequestController {
 			}
 			else {
 				String daysOld = adminAtts.getNamedItem("daysOld").getNodeValue();
-				// :: TODO remove all these events!
-				// destroyEvent returns an int!
-				result = TeamRocketServerModel.forceCompleteEvent(daysOld) ; // THIS DOESN'T WORK
+				int i = Integer.parseInt(daysOld) ;
+				result = TeamRocketServerModel.forceCompleteEvent(i) ;
 				xmlString =  Message.responseHeader(request.id()) + "<forceResponse numberAffected='" + result + "' " + "</forceResponse></response>";
 				response = new Message(xmlString);
 			}
