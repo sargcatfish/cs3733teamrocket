@@ -17,6 +17,7 @@ public class DLEvent {
 	private int numRounds;
 	private int numEdges;
 	private boolean isComplete;
+	private boolean acceptingUsers;
 
 	ArrayList<User> userList = new ArrayList<User>();
 	ArrayList<Edge> edgeList = new ArrayList<Edge>();
@@ -24,7 +25,7 @@ public class DLEvent {
 
 	/** The setters should be doing the work of initializing the attr 
 	 * @param numRounds 
-	 * @param numChoices 
+	 * @param numChoices
 	 * @param question 
 	 * @param name 
 	 * @param id 
@@ -38,6 +39,7 @@ public class DLEvent {
 		this.numChoices = numChoices;
 		this.numRounds = numRounds;
 		this.isComplete = false;
+		this.acceptingUsers = true;
 	}
 
 	//Getters
