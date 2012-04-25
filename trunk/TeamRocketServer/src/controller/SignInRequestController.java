@@ -67,23 +67,23 @@ public class SignInRequestController {
 				Accepted = false;
 			}
 		}
-		if (Accepted) {
-			StringBuffer choices = new StringBuffer();
-			
-			for (int i=1; i<m.getNumChoices(); i++ ) {
-				String choice = m.getDLChoice().get(i-1).getName();
-				// append into entry section
-				choices.append("<choice value='" + choice + "' index='" + i + "'/>");
-			}
-			
-			String type = new String("open");
-			if (!m.getIsOpen()) {
-				type = "closed";
-			}
+		
+		StringBuffer choices = new StringBuffer();
+		
+		for (int i=1; i<m.getNumChoices(); i++ ) {
+			String choice = m.getDLChoice().get(i-1).getName();
+			// append into entry section
+			choices.append("<choice value='" + choice + "' index='" + i + "'/>");
+		}
+		
+		String type = new String("open");
+		if (!m.getIsOpen()) {
+			type = "closed";
+		}
 			
 			
 			// TODO: Error Checking! May have typed in invalid meeting id
-			
+		if (Accepted) {
 			String xmlString =  Message.responseHeader(request.id()) + "<signInResponse id='" + eventID + "' " + 
 			    "id = '" + eventID + "' " + 
 				"type = '" + type + "' " +
