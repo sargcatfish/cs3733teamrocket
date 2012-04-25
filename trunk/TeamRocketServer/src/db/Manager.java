@@ -271,13 +271,17 @@ public class Manager {
 			String eventQuestion = result.getString("eventQuestion");
 			Date dateCreated = result.getDate("dateCreated");
 			boolean isOpen = result.getBoolean("isOpen");
+			boolean acceptingUsers = result.getBoolean("acceptingUsers");
 			String moderator = result.getString("moderator");
+			boolean isComplete = result.getBoolean("isComplete");
 
 			// construct meeting and return it
 			DLEvent d = new DLEvent(id, moderator, eventQuestion, numChoices,
 					numRounds);
 			d.setDateCreated(dateCreated);
 			d.setIsOpen(isOpen);
+			d.setAcceptingUsers(acceptingUsers);
+			d.setIsComplete(isComplete);
 
 			pstmt = Manager
 					.getConnection()
@@ -438,7 +442,10 @@ public class Manager {
 		} catch (SQLException e) {
 			throw new IllegalArgumentException(e.getMessage(), e);
 		}
-		return deleteUsers(meetingID) && deleteChoices(meetingID) && deleteEdges(meetingID);
+		boolean a = deleteUsers(meetingID);
+		boolean b = deleteChoices(meetingID);
+		boolean c = deleteEdges(meetingID);
+		return  a && b && c;
 	}
 
 	public static boolean deleteUsers(String meetingID) {
