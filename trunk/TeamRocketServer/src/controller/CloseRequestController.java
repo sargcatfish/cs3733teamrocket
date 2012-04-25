@@ -1,4 +1,7 @@
 package controller;
+
+import model.TeamRocketServerModel;
+
 /**
  * Gets the closeRequest, ensures that it is from a moderator, processes it, and sends back the response.
  * 
@@ -14,6 +17,12 @@ public class CloseRequestController {
 		String EventID = request.contents.getFirstChild().getAttributes().getNamedItem("id").getNodeValue();
 
 		//TODO close Event
+		/**not sure if this is the right way to do this...
+		 * TeamRocketServerModel.destroyEvent(EventID);
+		 *
+		*/
+		
+		
 		
 		String xmlString = Message.responseHeader(request.id()) + "<closeResponse/></response>";
 		Message response = new Message(xmlString);
