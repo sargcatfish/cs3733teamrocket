@@ -150,21 +150,22 @@ public class Manager {
 
 	/** Insert DLEvent into database. */
 	public static boolean insertDLEvent(String id, int numChoices, int numRounds, String eventQuestion, 
-			Date dateCreated, boolean isOpen, String moderator) {
+			Date dateCreated, boolean isOpen, boolean acceptingUsers, String moderator) {
 		try {
-			/* TODO: Some error about date truncation occurs!" */
 			PreparedStatement pstmt = Manager
 					.getConnection()
 					.prepareStatement(
-							"INSERT into DLEvents(id, numChoices, numRounds, eventQuestion, dateCreated, isOpen, moderator, isComplete) VALUES(?,?,?,?,?,?,?,?);");
+							"INSERT into DLEvents(id, numChoices, numRounds, eventQuestion, dateCreated, isOpen, " +
+							"acceptingUsers, moderator, isComplete) VALUES(?,?,?,?,?,?,?,?,?);");
 			pstmt.setString(1, id);
 			pstmt.setInt(2, numChoices);
 			pstmt.setInt(3, numRounds);
 			pstmt.setString(4, trimString(eventQuestion, 32)); 	// no more than 32 characters.
 			pstmt.setDate(5, dateCreated);
 			pstmt.setBoolean(6, isOpen);								// no more than 4 characters (OPEN or CLOSE)
-			pstmt.setString(7,moderator);
-			pstmt.setBoolean(8, false);							//TODO add this field to Database
+			pstmt.setBoolean(7,acceptingUsers);
+			pstmt.setString(8,moderator);
+			pstmt.setBoolean(9, false);							
 
 			// Execute the SQL statement and update database accordingly.
 			pstmt.executeUpdate();
