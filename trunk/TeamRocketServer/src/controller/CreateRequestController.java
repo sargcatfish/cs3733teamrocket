@@ -9,6 +9,8 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.sun.servicetag.SystemEnvironment;
+
 import db.Manager;
 
 import server.ClientState;
@@ -37,7 +39,8 @@ public class CreateRequestController {
 		String numRounds = map.getNamedItem("numRounds").getNodeValue();
 		String eventQuestion = map.getNamedItem("question").getNodeValue();
 		String eventType = map.getNamedItem("type").getNodeValue();
-		Date dateCreated = request.getSentDate();
+		Date dateCreated = new Date(System.currentTimeMillis());
+		
 		String id = Manager.generateEventID();
 		boolean isOpen = false;
 		if (eventType.equals(new String("open"))) {
