@@ -169,7 +169,7 @@ public class DLEvent {
 				return check.userIndex;
 			}
 		}
-		return this.userList.size(); 
+		return this.userList.size()+1; 
 		
 	}
 
