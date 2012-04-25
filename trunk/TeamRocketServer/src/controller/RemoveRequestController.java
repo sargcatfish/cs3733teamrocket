@@ -1,5 +1,6 @@
-package teamRocket.controller;
+package controller;
 
+import model.Admin;
 import model.TeamRocketServerModel;
 
 import org.w3c.dom.NamedNodeMap;
@@ -17,12 +18,13 @@ public class RemoveRequestController {
 	// retrieve ID		
 	NamedNodeMap adminAtts = signInR.getFirstChild().getAttributes();
 	String key = adminAtts.getNamedItem("key").getNodeValue();
+	String xmlString;
 	
 	// get meeting object -- have user sign in!
-	a = ServerModel.getInstance().getAdmin() ;
+	Admin a = TeamRocketServerModel.getInstance().getAdmin() ;
 	
 	if (!a.verify(key)){
-		String xmlString = Message.responseHeader(request.id(), "Invalid key") ;
+		xmlString = Message.responseHeader(request.id(), "Invalid key") ;
 		response = new Message(xmlString);
 	}
 	else{
@@ -31,7 +33,7 @@ public class RemoveRequestController {
 		if (iNode != null) {
 			id = iNode.getNodeValue();
 			result = TeamRocketServerModel.destroyEvent(id) ;
-			String xmlString =  Message.responseHeader(request.id()) + "<removeResponse numberAffected='" + result + "' " + "</removeResponse></response>";
+			xmlString =  Message.responseHeader(request.id()) + "<removeResponse numberAffected='" + result + "' " + "</removeResponse></response>";
 			response = new Message(xmlString);
 		}
 		else {
@@ -40,7 +42,7 @@ public class RemoveRequestController {
 			// :: TODO remove all these events!
 				// destroyEvent returns an int!
 			result = TeamRocketServerModel.destroyEvent(completed, daysOld) ;
-			String xmlString =  Message.responseHeader(request.id()) + "<removeResponse numberAffected='" + result + "' " + "</removeResponse></response>";
+			xmlString =  Message.responseHeader(request.id()) + "<removeResponse numberAffected='" + result + "' " + "</removeResponse></response>";
 			response = new Message(xmlString);
 		}
 	}
