@@ -144,6 +144,24 @@ public class DLEvent {
 		this.isComplete = true;
 		return true;
 	}
+	//added by rhollinger
+	public boolean signIn(String name, String pswd){
+		if (pswd == null){
+			pswd = new String("");
+		}
+		for (int i = 0; i < userList.size(); i++){
+			User check = userList.get(i);
+			if(check.name.equals(name) && check.password.equals(pswd)){
+				return true;
+			}
+		}
+		return false;
+	}
+	//added by rhollinger
+	public int getPosition(){
+		return this.userList.size(); 
+		
+	}
 
 
 }
