@@ -110,37 +110,38 @@ public class SignInRequestController {
 					}
 				}
 			}
+			return response;
 		}
 		
-		else{
-			String xmlString = Message.responseHeader(request.id(), failedReason);
-			xmlString +=  "<signInResponse id='" + eventID + "' " + 
-					"id = '" + eventID + "' " + 
-					"type = '" + type + "' " +
-					"question = '" + m.getEventQuestion() + "' " +
-					"numChoices = '" + m.getNumChoices() + "' " + 
-					"numRows = '" + m.getNumRounds() + "' " +
-					"position = '" + position + "'>" + choices.toString() + "</signInResponse></response>";
 
-			Message response = new Message(xmlString);
+		String xmlString = Message.responseHeader(request.id(), failedReason);
+		xmlString +=  "<signInResponse id='" + eventID + "' " + 
+				"id = '" + eventID + "' " + 
+				"type = '" + type + "' " +
+				"question = '" + m.getEventQuestion() + "' " +
+				"numChoices = '" + m.getNumChoices() + "' " + 
+				"numRows = '" + m.getNumRounds() + "' " +
+				"position = '" + position + "'>" + choices.toString() + "</signInResponse></response>";
 
-			// Must be sure to send refreshResponse to everyone else.
-			xmlString = Message.responseHeader(request.id()) + "<refreshResponse id='" + eventID + "' " +
-					"user = '" + user + "'/></response>";
-			Message broadcast = new Message (xmlString);
+		Message response = new Message(xmlString);
 
-			// send to all clients for this same meeting.
-			// Now send response to all connected clients associated with same meeting ID.
-			for (String threadID : Server.ids()) {
-				ClientState cs = Server.getState(threadID);
-				if (eventID.equals(cs.getData())) {
-					// make sure not to send to requesting client TWICE
-					if (!cs.id().equals(state.id())) {
-						cs.sendMessage(broadcast);
-					}
+		// Must be sure to send refreshResponse to everyone else.
+		xmlString = Message.responseHeader(request.id()) + "<refreshResponse id='" + eventID + "' " +
+				"user = '" + user + "'/></response>";
+		Message broadcast = new Message (xmlString);
+
+		// send to all clients for this same meeting.
+		// Now send response to all connected clients associated with same meeting ID.
+		for (String threadID : Server.ids()) {
+			ClientState cs = Server.getState(threadID);
+			if (eventID.equals(cs.getData())) {
+				// make sure not to send to requesting client TWICE
+				if (!cs.id().equals(state.id())) {
+					cs.sendMessage(broadcast);
 				}
 			}
 		}
+	
 		
 		// make sure to send back to originating client the signInResponse
 		return response;
