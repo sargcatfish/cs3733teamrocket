@@ -15,4 +15,8 @@ public	DLChoice(int cIndex, String cName){
 		choiceName = cName;
 	}
 
+public String getName() {
+	return this.choiceName;
+}
+
 }
