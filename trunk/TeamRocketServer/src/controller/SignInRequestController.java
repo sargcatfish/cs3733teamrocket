@@ -49,17 +49,16 @@ public class SignInRequestController {
 		// get event object -- have user sign in!
 		DLEvent m = Manager.retrieveEvent(eventID);
 		int position = m.getNextPosition(user);
+		//try to sign in as already existant user
 		if (!m.signIn(user, password)) {
 			// TODO: User might have wrong credentials!
 			System.err.println ("Can't sign in #1");
-			
+			//add as a new user
+			if (!Manager.signin(eventID, user, password, false, position)) {
+				// TODO: What if can't sign in
+				System.err.println ("Can't sign in #2");
+			}
 		}
-		
-		if (!Manager.signin(eventID, user, password, false, position)) {
-			// TODO: What if can't sign in
-			System.err.println ("Can't sign in #2");
-		}
-		
 		
 		StringBuffer choices = new StringBuffer();
 		
