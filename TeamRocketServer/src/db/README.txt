@@ -16,6 +16,7 @@ CREATE TABLE DLEvents (
   eventQuestion varchar(32) NOT NULL default 'My Question',
   dateCreated DATE NOT NULL default '1900-01-01',
   isOpen BOOLEAN NOT NULL,
+  acceptingUsers BOOLEAN NOT NULL, 
   moderator varchar(32) NOT NULL,
   isComplete BOOLEAN NOT NULL,
     
