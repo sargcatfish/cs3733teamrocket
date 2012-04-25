@@ -1,6 +1,14 @@
 package controller;
 
+import server.ClientState;
 import xml.Message;
+
+import model.Edge;
+
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+
+import db.Manager;
 
 /**
  * 
@@ -9,5 +17,34 @@ import xml.Message;
  */
 
 public class AddEdgeController {
+	ClientState state;
+	
+	public AddEdgeController(ClientState cs){
+		this.state = cs;
+	}
+	
+	public Message process(Message request){
+		
+		Node first = request.contents.getFirstChild();
+		NamedNodeMap map = first.getAttributes();
+		String id = map.getNamedItem("id").getNodeValue();
+		String left = map.getNamedItem("left").getNodeValue();
+		String right = map.getNamedItem("right").getNodeValue();
+		String height = map.getNamedItem("height").getNodeValue();
+		
+		int leftNum = Integer.getInteger(left);
+		int rightNum = Integer.getInteger(right);
+		int heightNum = Integer.getInteger(height);
+		
+		Manager.insertEdge(id, leftNum, rightNum, heightNum);
+		
+		//add edge to local
+		Edge edge = new Edge(leftNum, rightNum, heightNum);
+		
+		String xml = Message.responseHeader(request.id()) + "<addEdgeResponse id='" + id + "' left='" + left + "' right='" + right+ "' height='" + height + "'/></response>";
+		Message response = new Message(xml);
+		
+		return response;
+	}
 
 }
