@@ -30,7 +30,7 @@ public class CreateRequestController {
 		Node first = request.contents.getFirstChild();
 		NamedNodeMap map = first.getAttributes();
 		
-		
+		//parse out all the event information
 		String numChoices = map.getNamedItem("numChoices").getNodeValue();
 		String numRounds = map.getNamedItem("numRounds").getNodeValue();
 		String eventQuestion = map.getNamedItem("question").getNodeValue();
@@ -42,9 +42,14 @@ public class CreateRequestController {
 			isOpen = true;
 		}
 		String moderator = map.getNamedItem("name").getNodeValue();
-		
+		String pswd = map.getNamedItem("password").getNodeValue();
+	
+		//add the event to the database
 		Manager.insertDLEvent(id, Integer.getInteger(numChoices), Integer.getInteger(numRounds), 
 				eventQuestion, dateCreated, isOpen, moderator);
+		//Sign in the manager
+		Manager.signin(id, moderator, pswd, true, 1);
+		
 	    //TODO: parse out choice names and make them into DLChoice objects (in database)
 		
 		
