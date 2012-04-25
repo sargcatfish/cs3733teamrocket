@@ -2,9 +2,9 @@ package controller;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.UUID;
 
-import model.DLEvent;
+
+
 import model.TeamRocketServerModel;
 import model.Admin;
 
@@ -45,8 +45,33 @@ public class ReportRequestController {
 		}
 		else {
 			if (eventType.equals("open")){
-				//:: TODO generate report of all open events
 				m = Manager.retrieveEvent(true) ;
+				try {
+					//The meaning of id???
+					xmlString =  Message.responseHeader(request.id()) + "<reportResponse>";
+					while(m.next()){
+						xmlString = xmlString +
+								"<entry>"+
+								"id='" + m.getString("id") + "' " +
+								"type = 'open' " + 
+								"question = '" + m.getString("eventQuestion") + "' " +
+								"numChoices = '" + m.getInt("numChoices") + "' " +
+								"numRounds = '" + m.getInt("numRounds") + "' " + 
+								"created = '" + m.getDate("dateCreated") + "'" +
+								"completed = '" + m.getBoolean("isComplete") + "'" + //  + "</reportRequestResponse></response>";
+								"</entry>";
+
+					}
+				}catch (SQLException e) {
+					e.printStackTrace();
+				}
+
+				xmlString = xmlString + "</reportRequestResponse></response>";
+				response = new Message(xmlString);
+			}
+			
+			else {
+				m = Manager.retrieveEvent(false) ;
 				try {
 					//The meaning of id???
 					xmlString =  Message.responseHeader(request.id()) + "<reportResponse>";
@@ -68,7 +93,6 @@ public class ReportRequestController {
 					e.printStackTrace();
 				}
 
-				//:: TODO generate report of all closed events
 				xmlString = xmlString + "</reportRequestResponse></response>";
 				response = new Message(xmlString);
 			}
