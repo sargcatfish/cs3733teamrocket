@@ -25,7 +25,7 @@ public class TestDLEvent extends TestCase {
 		m.notAcceptingUsers();
 		assertFalse(m.isAccepting());
 		assertEquals(m.getNextPosition("rob"), 0);
-		assertFalse(m.signIn("rob", "pswd"));
+		assertFalse(m.signIn("rob", null));
 		DLChoice choice1 = new DLChoice(1, "cookies");
 		m.addDLChoice(choice1);
 		Edge e = new Edge(1, 1, 1);
@@ -35,8 +35,10 @@ public class TestDLEvent extends TestCase {
 		int pos = m.getNextPosition("rob");
 		User u = new User("rob", "pswd", false, pos);
 		m.addUser(u);
+		assertEquals(m.getNextPosition("rob"), 0);
 		assertEquals(m.getUserList().size(), 1);
 		assertEquals(m.getDLChoice().size(), 1);
+		assertTrue(m.signIn("rob", "pswd"));
 		m.setIsOpen(true);
 		assertTrue(m.getIsOpen());
 		m.setIsOpen(false);
