@@ -1,5 +1,7 @@
 package model;
 
+import java.sql.Date;
+
 import junit.framework.TestCase;
 /**
  * 
@@ -46,6 +48,10 @@ public class TestDLEvent extends TestCase {
 		assertTrue(m.isAccepting());
 		m.setIsComplete(false);
 		assertFalse(m.getComplete());
+		Date dateCreated = new Date(System.currentTimeMillis());
+		m.setDateCreated(dateCreated);
+		assertEquals(m.getDateCreated(), dateCreated);
+		
 		
 	}
 
