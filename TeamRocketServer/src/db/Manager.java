@@ -149,22 +149,21 @@ public class Manager {
 
 	/** Insert DLEvent into database. */
 	public static boolean insertDLEvent(String id, int numChoices, int numRounds, String eventQuestion, 
-			Date dateCreated, boolean isOpen, boolean acceptingUsers, String moderator) {
+			boolean isOpen, boolean acceptingUsers, String moderator) {
 		try {
 			PreparedStatement pstmt = Manager
 					.getConnection()
 					.prepareStatement(
-							"INSERT into DLEvents(id, numChoices, numRounds, eventQuestion, dateCreated, isOpen, " +
-							"acceptingUsers, moderator, isComplete) VALUES(?,?,?,?,?,?,?,?,?);");
+							"INSERT into DLEvents(id, numChoices, numRounds, eventQuestion, NOW(), isOpen, " +
+							"acceptingUsers, moderator, isComplete) VALUES(?,?,?,?,?,?,?,?);"); // Used NOW() function for date
 			pstmt.setString(1, id);
 			pstmt.setInt(2, numChoices);
 			pstmt.setInt(3, numRounds);
 			pstmt.setString(4, trimString(eventQuestion, 32)); 	// no more than 32 characters.
-			pstmt.setDate(5, dateCreated);
-			pstmt.setBoolean(6, isOpen);								// no more than 4 characters (OPEN or CLOSE)
-			pstmt.setBoolean(7,acceptingUsers);
-			pstmt.setString(8,moderator);
-			pstmt.setBoolean(9, false);							
+			pstmt.setBoolean(5, isOpen);								// no more than 4 characters (OPEN or CLOSE)
+			pstmt.setBoolean(6,acceptingUsers);
+			pstmt.setString(7,moderator);
+			pstmt.setBoolean(8, false);							
 			// Execute the SQL statement and update database accordingly.
 			pstmt.executeUpdate();
 			int numInserted = pstmt.getUpdateCount();
@@ -451,7 +450,40 @@ public class Manager {
 		return true;
 	}
 
-	/**
+/**
+ * Remove event greater than inputted days old from the database along with any corresponding users, choices, and edges.
+ * @param daysOld
+ * @return number of affected events
+ * @throws SQLException 
+ */
+	public static int deleteEvents(boolean isComplete, int daysOld) throws SQLException {
+		
+		ResultSet result ;
+		int returnVal = 0 ;
+		try {
+			PreparedStatement pstmt = Manager
+					.getConnection()
+					.prepareStatement(
+							"SELECT id FROM DLEvents WHERE isComplete = ? && TO_DAYS(NOW()) - TO_DAYS(dateCreated) > ?;");
+			pstmt.setBoolean(1, isComplete) ;
+			pstmt.setInt(2, daysOld);
+
+			// Execute the SQL statement and store result into the ResultSet
+			result = pstmt.executeQuery();
+			
+		} catch (SQLException e) {
+			throw new IllegalArgumentException(e.getMessage(), e);
+		}
+		try {
+			while(result.next()){
+				deleteEvent(result.getString("id")) ;
+				returnVal++ ;
+			}
+		} catch (SQLException e) {
+				throw new IllegalArgumentException(e.getMessage(), e) ;
+			}
+		return returnVal ;
+	}
 
 	/**
 	 * Remove event from the database along with any corresponding users, choices, and edges.
@@ -567,11 +599,8 @@ public class Manager {
 			pstmt = Manager
 					.getConnection()
 					.prepareStatement(
-							"UPDATE DLEvents SET isComplete = true WHERE TO_DAYS(?) - TO_DAYS(dateCreated) > ?;");
-			long time = System.currentTimeMillis() ;
-			Date date = new Date(time) ;
-			pstmt.setDate(1, date);
-			pstmt.setInt(2, daysOld) ;
+							"UPDATE DLEvents SET isComplete = true WHERE TO_DAYS(NOW()) - TO_DAYS(dateCreated) > ?;");
+			pstmt.setInt(1, daysOld) ;
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

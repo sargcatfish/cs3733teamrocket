@@ -1,6 +1,7 @@
 package model;
 
 
+import java.sql.SQLException;
 import java.util.Hashtable;
 
 import db.Manager;
@@ -31,7 +32,7 @@ public class TeamRocketServerModel {
 		String id = Manager.generateEventID(); //generate ID for the event
 		table.put(id, d);	// add DLEvent to table
 		if (!Manager.insertDLEvent(d.getID(), d.getNumChoices(), d.getNumEdges(), d.getEventQuestion(),
-				d.getDateCreated(), d.getIsOpen(), d.isAccepting(), d.getModerator())) {
+				d.getIsOpen(), d.isAccepting(), d.getModerator())) {
 			System.err.println("FAIL TO INSERT IN DB");
 			return "";
 		}
@@ -47,13 +48,29 @@ public class TeamRocketServerModel {
 	public Hashtable<String, DLEvent> getTable(){
 		return this.table;
 	}
-	//TODO make it iterate through database and remove the one with the given year
+	
+	/***
+	 * changes completion status of event with given id
+	 * @param id
+	 * @return int, the number of affected events
+	 */
 	public static int forceCompleteEvent(String id){
 		
-		if (getInstance().getTable().get(id).setComplete() && Manager.setCompletion(id)){
+		getInstance().getTable().get(id).setComplete() ;
+		if (Manager.setCompletion(id)){
 			return 1;
 		}
 		else return 0;
+	}
+	
+	/**
+	 * changes completion status of events older than given days
+	 * @param daysOld
+	 * @return int, number of affected events
+	 */
+	public static int forceCompleteEvent(int daysOld){
+		
+		return Manager.setCompletion(daysOld) ;
 	}
 	
 	public static int destroyEvent(String id){
@@ -64,12 +81,15 @@ public class TeamRocketServerModel {
 		else return 0;
 	}
 	//TODO make it work
-	public static int destroyEvent(String isComplete, String daysOld){
+	public static int destroyEvent(String isComplete, int daysOld) throws SQLException{
+		boolean a ;
 		//getInstance().getTable().remove(id);
-		if (Manager.deleteEvent("")){
-			return 1;
+		if (isComplete.equals(true)){
+			a = true ;
 		}
-		else return 0;
+		else a = false ;
+		
+		return Manager.deleteEvents(a, daysOld) ;
 	}
 
 }
