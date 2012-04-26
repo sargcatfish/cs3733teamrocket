@@ -28,14 +28,19 @@ public class DecisionLineProtocolHandler implements IProtocolHandler {
 	public void setServer (Server s) {
 		this.server = s;
 	}
-
+	/*
+	 * TODO:
+	 * to send to just one thing you do st.sendMessage of the return
+	 * to send to multiple need to figure out how to determine which ids are part of the 
+	 * event and those that arent, but you can get an iterator of the ids to retrieve each individual client
+	 * state
+	 */
 	public synchronized Message process (ClientState st, Message request) {
 		Node child = request.contents.getFirstChild();
 		String localName = child.getLocalName();
 		
 		if (localName.equals ("connectRequest")) {
 			System.out.println("Connected");
-			
 		} else if(localName.equals("addChoiceRequest")){
 			// More message handling
 			choiceController = new AddChoiceController(st);

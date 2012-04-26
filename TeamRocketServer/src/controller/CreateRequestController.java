@@ -75,7 +75,6 @@ public class CreateRequestController {
 		
 		String xmlString = Message.responseHeader(request.id()) + "<createResponse id='" + id + "'/></response>";
 		Message resp = new Message(xmlString);
-		
 		return resp;
 	}
 }
