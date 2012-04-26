@@ -41,9 +41,6 @@ public class TestDLEvent extends TestCase {
 		assertTrue(m.getIsOpen());
 		m.setIsOpen(false);
 		assertFalse(m.getIsOpen());
-		assertFalse(m.getComplete());
-		m.setComplete();
-		assertTrue(m.getComplete());
 		m.setAcceptingUsers(true);
 		assertTrue(m.isAccepting());
 		m.setIsComplete(false);
