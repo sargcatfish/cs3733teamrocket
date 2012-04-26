@@ -22,7 +22,7 @@ public class TestDLEvent extends TestCase {
 		assertTrue(m.getComplete());
 		m.notAcceptingUsers();
 		assertFalse(m.isAccepting());
-		assertEquals(m.getNextPosition("rob"), 1);
+		assertEquals(m.getNextPosition("rob"), 0);
 		assertFalse(m.signIn("rob", "pswd"));
 		DLChoice choice1 = new DLChoice(1, "cookies");
 		m.addDLChoice(choice1);
@@ -42,6 +42,10 @@ public class TestDLEvent extends TestCase {
 		assertFalse(m.getComplete());
 		m.setComplete();
 		assertTrue(m.getComplete());
+		m.setAcceptingUsers(true);
+		assertTrue(m.isAccepting());
+		m.setIsComplete(false);
+		assertFalse(m.getComplete());
 		
 	}
 
