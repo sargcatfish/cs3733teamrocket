@@ -77,15 +77,15 @@ public class ReportRequestController {
 					xmlString =  Message.responseHeader(request.id()) + "<reportResponse>";
 					while(m.next()){
 						xmlString = xmlString +
-								"<entry>"+
+								"<entry "+
 								"id='" + m.getString("id") + "' " +
 								"type = 'open' " + 
 								"question = '" + m.getString("eventQuestion") + "' " +
 								"numChoices = '" + m.getInt("numChoices") + "' " +
 								"numRounds = '" + m.getInt("numRounds") + "' " + 
-								"created = '" + m.getDate("dateCreated") + "'" +
-								"completed = '" + m.getBoolean("isComplete") + "'" + //  + "</reportRequestResponse></response>";
-								"</entry>";
+								"created = '" + m.getDate("dateCreated") + "' " +
+								"completed = '" + m.getBoolean("isComplete") + "' " + //  + "</reportRequestResponse></response>";
+								"/>";
 						//Message response = new Message(xmlString);
 
 					}
