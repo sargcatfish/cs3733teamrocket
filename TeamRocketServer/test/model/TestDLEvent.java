@@ -15,6 +15,7 @@ public class TestDLEvent extends TestCase {
 		assertEquals(m.getModerator(), "moderator");
 		assertEquals(m.getNumChoices(), 5);
 		assertEquals(m.getNumRounds(), 3);
+		assertEquals(m.getNumEdges(), 0);
 		assertFalse(m.getComplete());
 		assertTrue(m.isAccepting());
 		m.setComplete();
@@ -28,15 +29,19 @@ public class TestDLEvent extends TestCase {
 		Edge e = new Edge(1, 1, 1);
 		m.addEdge(e);
 		m.setNumEdges(m.getEdgeList().size());
+		assertEquals(m.getNumEdges(), 1);
 		int pos = m.getNextPosition("rob");
 		User u = new User("rob", "pswd", false, pos);
 		m.addUser(u);
-		assertEquals(m.getUserList(), 1);
-		assertEquals(m.getDLChoice(), 1);
+		assertEquals(m.getUserList().size(), 1);
+		assertEquals(m.getDLChoice().size(), 1);
 		m.setIsOpen(true);
 		assertTrue(m.getIsOpen());
 		m.setIsOpen(false);
 		assertFalse(m.getIsOpen());
+		assertFalse(m.getComplete());
+		m.setComplete();
+		assertTrue(m.getComplete());
 		
 	}
 
