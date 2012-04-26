@@ -7,7 +7,7 @@ import java.sql.Date;
 import model.*;
 /**
  * 
- * @author Timothy Kolek
+ * @author Nick Bosowski
  *
  */
 

@@ -6,10 +6,16 @@ import model.TeamRocketServerModel;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import server.ClientState;
+
 import xml.Message;
 
 public class ForceRequestController {
-
+	ClientState state;
+	
+	public ForceRequestController(ClientState st){
+		state = st;
+	}
 	public Message process(Message request) {
 		int result ;
 		Message response ;
