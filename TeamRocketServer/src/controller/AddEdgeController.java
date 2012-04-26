@@ -32,9 +32,9 @@ public class AddEdgeController {
 		String right = map.getNamedItem("right").getNodeValue();
 		String height = map.getNamedItem("height").getNodeValue();
 		
-		int leftNum = Integer.getInteger(left);
-		int rightNum = Integer.getInteger(right);
-		int heightNum = Integer.getInteger(height);
+		int leftNum = Integer.parseInt(left);
+		int rightNum = Integer.parseInt(right);
+		int heightNum = Integer.parseInt(height);
 		
 		Manager.insertEdge(id, leftNum, rightNum, heightNum);
 		

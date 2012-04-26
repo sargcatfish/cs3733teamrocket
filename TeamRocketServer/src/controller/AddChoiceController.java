@@ -31,14 +31,15 @@ public class AddChoiceController {
 		String choice = map.getNamedItem("choice").getNodeValue();
 		
 		
-		int choiceNum = Integer.getInteger(number);
+		
+		int choiceNum = Integer.parseInt(number);
 		
 		Manager.insertChoice(id, choiceNum, choice);
 		
 		//add choice to local
 		DLChoice dlc = new DLChoice(choiceNum, choice); 
-		
-		String xml = Message.responseHeader(request.id()) + "<addEdgeResponse id='" + id + "' number='" + number + "' choice='" + choice + "'/></response>";
+
+		String xml = Message.responseHeader(request.id()) + "<addChoiceResponse id='" + id + "' number='" + number + "' choice='" + choice + "'/></response>";
 		Message response = new Message(xml);
 		
 		return response;
