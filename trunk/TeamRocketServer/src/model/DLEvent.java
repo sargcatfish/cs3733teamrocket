@@ -23,7 +23,7 @@ public class DLEvent {
 	ArrayList<Edge> edgeList = new ArrayList<Edge>();
 	ArrayList<DLChoice> choiceList = new ArrayList<DLChoice>();
 
-	/** The setters should be doing the work of initializing the attr 
+	/** The setters should be doing the work of initializing the attributes 
 	 * @param numRounds 
 	 * @param numChoices
 	 * @param question 
