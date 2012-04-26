@@ -40,13 +40,15 @@ public class DLEvent {
 		this.numRounds = numRounds;
 		this.isComplete = false;
 		this.acceptingUsers = true;
+		this.numEdges = 0;
 	}
 
 	//Getters
+	//tested
 	public String getID(){
 		return id;
 	}
-
+	//tested
 	public String getEventQuestion(){
 		return eventQuestion;
 	}
@@ -54,39 +56,39 @@ public class DLEvent {
 	public Date getDateCreated(){
 		return dateCreated;
 	}
-
+	//tested
 	public boolean getIsOpen(){
 		return isOpen;
 	}
-
+	//tested
 	public int getNumChoices(){
 		return numChoices;
 	}
-
+	//tested
 	public int getNumRounds(){
 		return numRounds;
 	}
-
+	//tested
 	public int getNumEdges(){
 		return numEdges;
 	}
-
+	//tested
 	public ArrayList<User> getUserList(){
 		return userList;
 	}
-
+	//tested
 	public ArrayList<Edge> getEdgeList(){
 		return edgeList;
 	}
-
+	//tested
 	public ArrayList<DLChoice> getDLChoice(){
 		return choiceList;
 	}
-	
+	//tested
 	public String getModerator(){
 		return moderatorName;
 	}
-	
+	//tested
 	public boolean getComplete(){
 		return this.isComplete;
 	}
@@ -104,7 +106,7 @@ public class DLEvent {
 	public Date setDateCreated(Date date){
 		return dateCreated = date;
 	}
-
+	//tested
 	public boolean setIsOpen(boolean isOpen){
 		return this.isOpen = isOpen;
 	}
@@ -117,36 +119,37 @@ public class DLEvent {
 		return numRounds = numRound;
 	}
 */
+	//tested
 	public int setNumEdges(int numEdge){
 		return numEdges = numEdge;
 	}
-
+	//tested
 	public void addUser(User user){
 		if (userList == null){
 			userList = new ArrayList<User>();			
 		}
 		userList.add(user);
 	}
-
+	//tested
 	public void addEdge(Edge edge){
 		if (edgeList == null){
 			edgeList = new ArrayList<Edge>();
 		}
 		edgeList.add(edge);
 	}
-
+	//tested
 	public void addDLChoice(DLChoice choice){
 		if (choiceList == null){
 			choiceList = new ArrayList<DLChoice>();
 		}
 		choiceList.add(choice);
 	}
-	
-	public boolean setComplete(){
+	//tested
+	public void setComplete(){
 		this.isComplete = true;
-		return true;
 	}
 	//added by rhollinger
+	//tested
 	public boolean signIn(String name, String pswd){
 		if (pswd == null){
 			pswd = new String("");
@@ -164,6 +167,7 @@ public class DLEvent {
 	 * @param name the user's name
 	 * @return either that users index (if they exist) or the next index location
 	 */
+	//tested
 	public int getNextPosition(String name){
 		for (int i = 0; i < userList.size(); i++){
 			User check = userList.get(i);
@@ -171,27 +175,29 @@ public class DLEvent {
 				return check.userIndex;
 			}
 		}
-		return this.userList.size()+1; 
+		return this.userList.size(); 
 		
 	}
 	/**
 	 * added by rhollinger
 	 * set the event so it is no longer accepting users
 	 */
+	//tested
 	public void notAcceptingUsers(){
 		this.acceptingUsers = false;
 	}
+	//tested
 	public boolean isAccepting(){
 		return this.acceptingUsers;
 	}
 	/* These here are only for test cases 
 	 * added by: nbosowski				
 	 */
+	//tested
 	public void setAcceptingUsers(boolean b){
 		this.acceptingUsers = b;
 	}
-	
-
+	//tested
 	public void setIsComplete(boolean b){
 		isComplete = b;
 	}
