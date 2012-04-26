@@ -1,5 +1,7 @@
 package controller;
 
+import java.sql.SQLException;
+
 import model.Admin;
 import model.TeamRocketServerModel;
 
@@ -16,7 +18,7 @@ public class RemoveRequestController {
 	public RemoveRequestController(ClientState st){
 		state = st;
 	}
-	public Message process(Message request) {
+	public Message process(Message request) throws SQLException {
 	int result ;
 	Message response ;
 	Node signInR = request.contents.getFirstChild();
@@ -45,9 +47,8 @@ public class RemoveRequestController {
 		else {
 			String completed = adminAtts.getNamedItem("completed").getNodeValue();
 			String daysOld = adminAtts.getNamedItem("daysOld").getNodeValue();
-			// :: TODO remove all these events!
-				// destroyEvent returns an int!
-			result = TeamRocketServerModel.destroyEvent(completed, daysOld) ;
+			int i = Integer.parseInt(daysOld) ;
+			result = TeamRocketServerModel.destroyEvent(completed, i) ;
 			xmlString =  Message.responseHeader(request.id()) + "<removeResponse numberAffected='" + result + "' " + "></removeResponse></response>";
 			response = new Message(xmlString);
 		}

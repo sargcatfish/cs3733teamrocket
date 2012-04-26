@@ -39,7 +39,6 @@ public class CreateRequestController {
 		String numRounds = map.getNamedItem("numRounds").getNodeValue();
 		String eventQuestion = map.getNamedItem("question").getNodeValue();
 		String eventType = map.getNamedItem("type").getNodeValue();
-		Date dateCreated = new Date(System.currentTimeMillis());
 		
 		String id = Manager.generateEventID();
 		boolean isOpen = false;
@@ -60,7 +59,7 @@ public class CreateRequestController {
 			}
 		//add the event to the database
 		Manager.insertDLEvent(id, Integer.getInteger(numChoices), Integer.getInteger(numRounds), 
-					eventQuestion, dateCreated, isOpen,true, moderator);
+				eventQuestion, isOpen, true, moderator);
 		//get choice names		
 		for (int i = 0; i < Integer.getInteger(numChoices); i++){
 			//add choices in
