@@ -8,7 +8,6 @@ import org.w3c.dom.Node;
 import db.Manager;
 import server.ClientState;
 import xml.Message;
-
 /**
  * 
  * @author Timothy Kolek

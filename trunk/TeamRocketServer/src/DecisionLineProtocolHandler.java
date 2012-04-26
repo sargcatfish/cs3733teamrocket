@@ -43,57 +43,66 @@ public class DecisionLineProtocolHandler implements IProtocolHandler {
 			System.out.println("Connected");
 		} else if(localName.equals("addChoiceRequest")){
 			// More message handling
-			choiceController = new AddChoiceController(st);
-			choiceController.process(request);
 			System.out.println("Trying to add Choice.\n");
+			choiceController = new AddChoiceController(st);
+			return choiceController.process(request);
+			
 			
 		} else if(localName.equals("addEdgeRequest")){
 			// More message handling
-			edgeController = new AddEdgeController(st);
-			edgeController.process(request);
 			System.out.println("Trying to add Edge.\n");
+			edgeController = new AddEdgeController(st);
+			return edgeController.process(request);
+			
 			
 		} else if(localName.equals("adminRequest")){
 			// More message handling
-			adminController = new AdminSignInRequestController(st);
-			adminController.process(request);
 			System.out.println("Trying to process adminRequest.\n");
+			adminController = new AdminSignInRequestController(st);
+			return adminController.process(request);
+			
 			
 		} else if(localName.equals("closeRequest")){
 			// More message handling
-			closeController = new CloseRequestController(st);
-			closeController.process(request);
 			System.out.println("Trying to process closeRequest.\n");
+			closeController = new CloseRequestController(st);
+			return closeController.process(request);
+			
 			
 		} else if(localName.equals("createRequest")){
 			// More message handling
-			createController = new CreateRequestController(st);
-			createController.process(request);
 			System.out.println("Trying to process createRequest.\n");
+			createController = new CreateRequestController(st);
+			return createController.process(request);
+			
 			
 		} else if(localName.equals("forceRequest")){
 			// More message handling
-			forceController = new ForceRequestController(st);
-			forceController.process(request);
 			System.out.println("Trying process forceRequest.\n");
+			forceController = new ForceRequestController(st);
+			return forceController.process(request);
+			
 			
 		} else if(localName.equals("removeRequest")){
 			// More message handling
-			removeController = new RemoveRequestController(st);
-			removeController.process(request);
 			System.out.println("Trying to remove.\n");
+			removeController = new RemoveRequestController(st);
+			return removeController.process(request);
+			
 			
 		} else if(localName.equals("reportRequest")){
 			// More message handling
-			reportController = new ReportRequestController(st);
-			reportController.process(request);
 			System.out.println("Trying to make report.\n");
+			reportController = new ReportRequestController(st);
+			return	reportController.process(request);
+			
 			
 		} else if(localName.equals("signInRequest")){
 			// More message handling
-			signInController = new SignInRequestController(st);
-			signInController.process(request);
 			System.out.println("Trying to sign in.\n");
+			signInController = new SignInRequestController(st);
+			return signInController.process(request);
+			
 		}
 
 		// unknown? no idea what to do

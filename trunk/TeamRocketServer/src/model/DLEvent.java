@@ -16,6 +16,7 @@ public class DLEvent {
 	private int numChoices;
 	private int numRounds;
 	private int numEdges;
+	private int currentMaster; // whose turn is it to add the edge?
 	private boolean isComplete;
 	private boolean acceptingUsers;
 
@@ -41,6 +42,7 @@ public class DLEvent {
 		this.isComplete = false;
 		this.acceptingUsers = true;
 		this.numEdges = 0;
+		this.currentMaster = 0;
 	}
 
 	//Getters
@@ -201,6 +203,18 @@ public class DLEvent {
 	//tested
 	public void setIsComplete(boolean b){
 		isComplete = b;
+	}
+
+	public int getCurrentMaster() {
+		return currentMaster;
+	}
+
+	public void incrementCurrentMaster() {
+		if(currentMaster < numChoices -1){
+			currentMaster++;
+		}
+		else
+			currentMaster = 0;
 	}
 
 
