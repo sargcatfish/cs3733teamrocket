@@ -33,7 +33,7 @@ public class RemoveRequestController {
 		if (iNode != null) {
 			id = iNode.getNodeValue();
 			result = TeamRocketServerModel.destroyEvent(id) ;
-			xmlString =  Message.responseHeader(request.id()) + "<removeResponse numberAffected='" + result + "' " + "</removeResponse></response>";
+			xmlString =  Message.responseHeader(request.id()) + "<removeResponse numberAffected='" + result + "' " + "></removeResponse></response>";
 			response = new Message(xmlString);
 		}
 		else {
@@ -42,7 +42,7 @@ public class RemoveRequestController {
 			// :: TODO remove all these events!
 				// destroyEvent returns an int!
 			result = TeamRocketServerModel.destroyEvent(completed, daysOld) ;
-			xmlString =  Message.responseHeader(request.id()) + "<removeResponse numberAffected='" + result + "' " + "</removeResponse></response>";
+			xmlString =  Message.responseHeader(request.id()) + "<removeResponse numberAffected='" + result + "' " + "></removeResponse></response>";
 			response = new Message(xmlString);
 		}
 	}

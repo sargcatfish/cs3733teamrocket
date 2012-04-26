@@ -35,14 +35,14 @@ public class ForceRequestController {
 			if (iNode != null) {
 				id = iNode.getNodeValue();
 				result = TeamRocketServerModel.forceCompleteEvent(id) ;
-				xmlString =  Message.responseHeader(request.id()) + "<forceResponse numberAffected='" + result + "' " + "</forceResponse></response>";
+				xmlString =  Message.responseHeader(request.id()) + "<forceResponse numberAffected='" + result + "' " + "></forceResponse></response>";
 				response = new Message(xmlString);
 			}
 			else {
 				String daysOld = adminAtts.getNamedItem("daysOld").getNodeValue();
 				int i = Integer.parseInt(daysOld) ;
 				result = TeamRocketServerModel.forceCompleteEvent(i) ;
-				xmlString =  Message.responseHeader(request.id()) + "<forceResponse numberAffected='" + result + "' " + "</forceResponse></response>";
+				xmlString =  Message.responseHeader(request.id()) + "<forceResponse numberAffected='" + result + "' " + "></forceResponse></response>";
 				response = new Message(xmlString);
 			}
 		}
