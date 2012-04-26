@@ -38,6 +38,7 @@ public class TestAddEdgeController extends TestCase {
 		assertEquals("1", left);
 		assertEquals("2", right);
 		assertEquals("397", height);
+		
 		Manager.deleteEdges("newEdge");
 	}
 

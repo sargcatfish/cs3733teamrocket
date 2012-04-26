@@ -9,5 +9,7 @@ import junit.framework.TestCase;
  */
 
 public class TestCreateRequestController extends TestCase {
-
+	public void testTemp(){
+		
+	}
 }

@@ -23,7 +23,6 @@ public class TestAddChoiceController extends TestCase {
 	}
 	
 	public void testAddChoiceProcess(){
-		Manager.deleteChoices("newChoice");
 		Message.configure("decisionlines.xsd");
 		String xmlSource = "<request version='1.0' id='123'><addChoiceRequest id='newChoice' number='5' choice='Orange'/></request>";
 		Message request = new Message(xmlSource);
