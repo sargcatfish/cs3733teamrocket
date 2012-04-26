@@ -12,9 +12,9 @@ import db.Manager;
  */
 public class TeamRocketServerModel {
 	
-	static TeamRocketServerModel instance;
+	static TeamRocketServerModel instance = null;
 	
-	Hashtable<String, DLEvent> table = new Hashtable<String, DLEvent>();
+	private Hashtable<String, DLEvent> table = new Hashtable<String, DLEvent>();
 	Admin admin = new Admin();
 	
 	public TeamRocketServerModel(){}
@@ -39,6 +39,14 @@ public class TeamRocketServerModel {
 		else{
 			return id;
 		}
+	}
+	
+	/**
+	 * Function for testing purposes
+	 * @param d DLEvent to add only to the internal HashTable
+	 */
+	public void addTestDLEvent(DLEvent d){
+		table.put(d.getID(), d);	// add DLEvent to table
 	}
 	
 	public Admin getAdmin(){

@@ -10,7 +10,7 @@ import server.ClientState;
 import xml.Message;
 import model.TeamRocketServerModel;
 
-public class turnResponseController {
+public class TurnResponseController {
 	int nextPosition;
 	TeamRocketServerModel model = TeamRocketServerModel.getInstance(); // retrieve the singleton
 
@@ -25,9 +25,22 @@ public class turnResponseController {
 		 * just for the next person. But we will probably also have to check in the protocol handler to send 
 		 * it to the right people. Because the completion is sent to everyone right?
 		 */
+		
+		if (model.getTable().get(id) == null){
+			System.out.println("Im a stupid cuntbag!!!");
+		}
 		String xml;
-		if (model.getTable().get(id).getEdgeList().size() == model.getTable().get(id).getNumEdges())
+		int size;
+		if (model.getTable().get(id).getEdgeList() == null){
+			size = 0;
+		}
+		else{
+			size = model.getTable().get(id).getEdgeList().size();
+		}
+		int numEdges = model.getTable().get(id).getNumChoices() * model.getTable().get(id).getNumRounds();
+		if (size == numEdges){
 			xml = Message.responseHeader(id) + "<turnResponse completed='true' /></response>";
+		}
 		else{
 			xml = Message.responseHeader(id) + "<turnResponse/></response>";
 		}
