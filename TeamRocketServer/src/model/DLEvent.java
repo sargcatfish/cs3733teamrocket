@@ -52,7 +52,7 @@ public class DLEvent {
 	public String getEventQuestion(){
 		return eventQuestion;
 	}
-
+	//tested
 	public Date getDateCreated(){
 		return dateCreated;
 	}
@@ -103,6 +103,7 @@ public class DLEvent {
 		return eventQuestion = ques;
 	}
 */
+	//tested
 	public Date setDateCreated(Date date){
 		return dateCreated = date;
 	}
