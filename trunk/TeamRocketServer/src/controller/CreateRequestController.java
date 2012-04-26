@@ -48,19 +48,19 @@ public class CreateRequestController {
 		}
 		int numItems = next.getLength();
 		//get moderator names
-				String moderator;
-				String pswd;
-				if (numItems - Integer.getInteger(numChoices) > 1){
-					moderator = next.item(numItems-2).getNodeValue();
-					pswd = next.item(numItems-1).getNodeValue();
-				}
-				else{
-					moderator = next.item(numItems-1).getNodeValue();
-					pswd = new String("");
-					}
+		String moderator;
+		String pswd;
+		if (numItems - Integer.getInteger(numChoices) > 1){
+			moderator = next.item(numItems-2).getNodeValue();
+			pswd = next.item(numItems-1).getNodeValue();
+		}
+		else{
+			moderator = next.item(numItems-1).getNodeValue();
+			pswd = new String("");
+			}
 		//add the event to the database
-				Manager.insertDLEvent(id, Integer.getInteger(numChoices), Integer.getInteger(numRounds), 
-						eventQuestion, dateCreated, isOpen,true, moderator);
+		Manager.insertDLEvent(id, Integer.getInteger(numChoices), Integer.getInteger(numRounds), 
+					eventQuestion, dateCreated, isOpen,true, moderator);
 		//get choice names		
 		for (int i = 0; i < Integer.getInteger(numChoices); i++){
 			//add choices in
@@ -68,10 +68,8 @@ public class CreateRequestController {
 			System.out.println(next.item(i).getNodeValue());
 		}
 		//Sign in the moderator
-		Manager.signin(id, moderator, pswd, true, 1);
-		
-		
-		
+		Manager.signin(id, moderator, pswd, true, 0);
+	
 		
 		String xmlString = Message.responseHeader(request.id()) + "<createResponse id='" + id + "'/></response>";
 		Message resp = new Message(xmlString);
