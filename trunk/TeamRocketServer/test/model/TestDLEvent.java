@@ -27,7 +27,6 @@ public class TestDLEvent extends TestCase {
 		assertEquals(m.getNextPosition("rob"), 0);
 		assertFalse(m.signIn("rob", null));
 		DLChoice choice1 = new DLChoice(1, "cookies");
-		assertEquals(choice1.getName(), "cookies");
 		m.addDLChoice(choice1);
 		Edge e = new Edge(1, 1, 1);
 		m.addEdge(e);
