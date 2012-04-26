@@ -7,5 +7,7 @@ import junit.framework.TestCase;
  *
  */
 public class TestAdminSignInRequestController extends TestCase {
-
+	public void testTemp(){
+		
+	}
 }

@@ -9,5 +9,8 @@ import junit.framework.TestCase;
  */
 
 public class TestCloseRequestController extends TestCase {
+	public void testTemp(){
+		
+	}
 
 }

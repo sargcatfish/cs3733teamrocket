@@ -7,5 +7,7 @@ import junit.framework.TestCase;
  *
  */
 public class TestReportRequestController extends TestCase {
-
+	public void testTemp(){
+		
+	}
 }

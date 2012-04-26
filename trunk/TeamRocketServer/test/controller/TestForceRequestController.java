@@ -8,4 +8,7 @@ import junit.framework.TestCase;
  */
 public class TestForceRequestController extends TestCase {
 
+	public void testTemp(){
+		
+	}
 }
