@@ -71,12 +71,5 @@ public class TeamRocketServerModel {
 		}
 		else return 0;
 	}
-	
-	// Server Model class
-	public static int forceCompleteEvent(int daysOld){
-		
-		getInstance().getTable() ; // make it iterate w/ > daysOld -> setComplete() ;
-		return Manager.setCompletion(daysOld) ;
-	}
 
 }
