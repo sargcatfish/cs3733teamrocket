@@ -1,5 +1,5 @@
 package db;
-
+import xml.Message;
 public class db_testing {
 
 	/**

@@ -13,8 +13,11 @@ import model.TeamRocketServerModel;
  *
  */
 public class CloseRequestController {
-	public void CloseRequestContoller(ClientState st) {
-		// TODO Auto-generated constructor stub
+	
+	ClientState state;
+	
+	public  CloseRequestController(ClientState st) {
+		state = st;
 	}
 
 	public Message process(Message request) {
