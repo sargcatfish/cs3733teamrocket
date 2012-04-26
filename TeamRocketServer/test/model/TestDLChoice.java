@@ -7,5 +7,10 @@ import junit.framework.TestCase;
  *
  */
 public class TestDLChoice extends TestCase {
+	
+	public void testChoice() {
+		DLChoice choice = new DLChoice(1, "rob");
+		assertEquals(choice.getName(), "rob");
+	}
 
 }
