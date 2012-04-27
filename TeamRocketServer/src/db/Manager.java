@@ -154,8 +154,8 @@ public class Manager {
 			PreparedStatement pstmt = Manager
 					.getConnection()
 					.prepareStatement(
-							"INSERT into DLEvents(id, numChoices, numRounds, eventQuestion, NOW(), isOpen, " +
-							"acceptingUsers, moderator, isComplete) VALUES(?,?,?,?,?,?,?,?);"); // Used NOW() function for date
+							"INSERT into DLEvents(id, numChoices, numRounds, eventQuestion, dateCreated, isOpen, " +
+							"acceptingUsers, moderator, isComplete) VALUES(?,?,?,?,NOW(),?,?,?,?);"); // Used NOW() function for date
 			pstmt.setString(1, id);
 			pstmt.setInt(2, numChoices);
 			pstmt.setInt(3, numRounds);
