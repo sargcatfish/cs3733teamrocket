@@ -19,4 +19,7 @@ public String getName() {
 	return this.choiceName;
 }
 
+public int getIndex(){
+	return this.choiceIndex;
+}
 }
