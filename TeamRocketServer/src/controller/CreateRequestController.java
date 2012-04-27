@@ -62,6 +62,9 @@ public class CreateRequestController {
 			}
 		
 		}
+		if(moderator == null){
+			throw new IllegalArgumentException("No moderator was found");
+		}
 //		if (numItems - Integer.getInteger(numChoices) > 1){
 //			moderator = next.item(numItems-2).getNodeValue();
 //			pswd = next.item(numItems-1).getNodeValue();
