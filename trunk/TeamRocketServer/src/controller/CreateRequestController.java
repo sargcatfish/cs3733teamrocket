@@ -24,6 +24,7 @@ import xml.Message;
  */
 public class CreateRequestController {
 	ClientState state;
+	public String testId;
 	
 	public CreateRequestController(ClientState st) {
 		state = st;
@@ -41,6 +42,7 @@ public class CreateRequestController {
 		String eventType = map.getNamedItem("type").getNodeValue();
 		
 		String id = Manager.generateEventID();
+		testId = id;
 		boolean isOpen = false;
 		if (eventType.equals(new String("open"))) {
 			isOpen = true;
@@ -78,11 +80,14 @@ public class CreateRequestController {
 
 		Manager.insertDLEvent(id, Integer.parseInt(numChoices), Integer.parseInt(numRounds), 
 				eventQuestion, isOpen, true, moderator);
-		//get choice names		
-		for (int i = 0; i < Integer.parseInt(numChoices); i++){
-			//add choices in
-			Manager.insertChoice(id, i+1, next.item(i).getNodeValue());
-			System.out.println(next.item(i).getNodeValue());
+		//get choice names	
+		if(!isOpen){
+			for (int i = 0; i < Integer.parseInt(numChoices); i++){
+			NamedNodeMap child = next.item(i).getAttributes();
+			int index = Integer.parseInt(child.getNamedItem("index").getNodeValue());
+			String value = child.getNamedItem("value").getNodeValue();
+				Manager.insertChoice(id, index, value);
+			}
 		}
 		//Sign in the moderator
 		Manager.signin(id, moderator, pswd, true, 0);
