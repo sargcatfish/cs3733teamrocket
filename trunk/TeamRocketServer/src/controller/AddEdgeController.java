@@ -4,6 +4,7 @@ import server.ClientState;
 import xml.Message;
 
 import model.Edge;
+import model.TeamRocketServerModel;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -18,9 +19,11 @@ import db.Manager;
 
 public class AddEdgeController {
 	ClientState state;
+	TeamRocketServerModel model;
 	
 	public AddEdgeController(ClientState cs){
 		this.state = cs;
+		this.model = TeamRocketServerModel.getInstance();
 	}
 	
 	public Message process(Message request){
@@ -40,6 +43,7 @@ public class AddEdgeController {
 		
 		//add edge to local
 		Edge edge = new Edge(leftNum, rightNum, heightNum);
+		model.getTable().get(request.id()).addEdge(edge);
 		
 		String xml = Message.responseHeader(request.id()) + "<addEdgeResponse id='" + id + "' left='" + left + "' right='" + right+ "' height='" + height + "'/></response>";
 		Message response = new Message(xml);
