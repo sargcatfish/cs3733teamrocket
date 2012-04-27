@@ -21,7 +21,7 @@ import xml.Message;
 /**
  * Gets the signInRequest, processes it, and sends back the response.
  * 
- * @author rhollinger
+ * @author rhollinger, Nick Bosowski
  *
  */
 public class SignInRequestController {
@@ -52,14 +52,14 @@ public class SignInRequestController {
 		//Added by Wesley trying to handle the event doesn't exist
 		if (m == null){
 			
-			String xmlString = Message.responseHeader(request.id(), "The event doesn't exist");
-			xmlString +=  "<signInResponse id='" + eventID + "' " + 
-					"id = 'STUB' " + 
-					"type = 'STUB' " +
-					"question = 'STUB' " +
-					"numChoices = 'STUB' " + 
-					"numRounds = 'STUB' " +
-					"position = 'STUB'>" + "</signInResponse></response>";
+			String xmlString = Message.responseHeader(request.id(), "The event doesnt exist") +
+					"<signInResponse id='" + eventID + "' " + 
+					"type = 'open' " +
+					"question = '1' " +
+					"numChoices = '1' " + 
+					"numRounds = '1' " +
+					"position = '1'/></response>";
+//			System.out.print(xmlString);
 			Message response = new Message(xmlString);
 			return response;
 		}
@@ -132,7 +132,6 @@ public class SignInRequestController {
 
 		String xmlString = Message.responseHeader(request.id(), failedReason);
 		xmlString +=  "<signInResponse id='" + eventID + "' " + 
-				"id = '" + eventID + "' " + 
 				"type = '" + type + "' " +
 				"question = '" + m.getEventQuestion() + "' " +
 				"numChoices = '" + m.getNumChoices() + "' " + 
