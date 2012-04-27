@@ -37,6 +37,7 @@ public class SignInRequestController {
 		
 		// retrieve ID
 		String eventID = signInR.getAttributes().getNamedItem("id").getNodeValue();
+		TeamRocketServerModel.getInstance().getTable().get(eventID).addClientState(state); // add the client state to the local list
 		
 		NamedNodeMap userAtts = signInR.getFirstChild().getAttributes();
 		String user = userAtts.getNamedItem("name").getNodeValue();

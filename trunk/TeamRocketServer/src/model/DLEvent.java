@@ -3,6 +3,8 @@ package model;
 import java.util.ArrayList;
 import java.sql.Date;
 
+import server.ClientState;
+
 /** Class that stores references to information for a decisionLine event
  * @author Wesley, gdmcconnell, nbosowski
  * */
@@ -23,6 +25,7 @@ public class DLEvent {
 	ArrayList<User> userList = new ArrayList<User>();
 	ArrayList<Edge> edgeList = new ArrayList<Edge>();
 	ArrayList<DLChoice> choiceList = new ArrayList<DLChoice>();
+	ArrayList<ClientState> stateList = new ArrayList<ClientState>();
 
 	/** The setters should be doing the work of initializing the attributes 
 	 * @param numRounds 
@@ -216,6 +219,13 @@ public class DLEvent {
 		else
 			currentMaster = 0;
 	}
-
+	
+	public void addClientState(ClientState st){
+		stateList.add(st);
+	}
+	
+	public ClientState getClientState(){
+		return stateList.get(currentMaster);
+	}
 
 }

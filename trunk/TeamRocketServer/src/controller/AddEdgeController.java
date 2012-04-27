@@ -44,6 +44,7 @@ public class AddEdgeController {
 		String xml = Message.responseHeader(request.id()) + "<addEdgeResponse id='" + id + "' left='" + left + "' right='" + right+ "' height='" + height + "'/></response>";
 		Message response = new Message(xml);
 		
+		new TurnResponseController().process(id);
 		return response;
 	}
 
