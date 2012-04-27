@@ -95,7 +95,6 @@ public class TeamRocketServerModel {
 		boolean a ;
 		ResultSet result1;
 		ResultSet result2;
-		//getInstance().getTable().remove(id);
 		if (isComplete.equals(true)){
 			a = true ;
 		}
