@@ -104,7 +104,9 @@ public class TeamRocketServerModel {
 		result2 = Manager.getEventsDays(a, daysOld);
 		
 		while(result1.next()){
+			if(getInstance().getTable().containsKey(result1.getString("id"))){
 			getInstance().getTable().remove(result1.getString("id"));
+			}
 		}
 		
 		return Manager.deleteEvent(result2);
