@@ -10,8 +10,7 @@ import xml.*;
 import controller.*;
 
 /**
- * Sample implementation of a protocol handler to respond to messages received from clients.
- * You should follow this template when designing YOUR protocol handler.
+ * @author Nick Bosowski
  */
 public class DecisionLineProtocolHandler implements IProtocolHandler {
 
@@ -74,7 +73,7 @@ public class DecisionLineProtocolHandler implements IProtocolHandler {
 			return closeController.process(request);
 			
 			
-		} else if(localName.equals("createClosedRequest") || localName.equals("createOpenRequest")){
+		} else if(localName.equals("createRequest")){
 			// More message handling
 			System.out.println("Trying to process createRequest.\n");
 			createController = new CreateRequestController(st);
