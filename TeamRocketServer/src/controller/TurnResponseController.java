@@ -48,8 +48,9 @@ public class TurnResponseController {
 		
 		
 		Message response = new Message(xml);
-		event.getClientState().sendMessage(response);
 		event.incrementCurrentMaster();
+		event.getClientState().sendMessage(response);
+
 		return response;
 	}
 }
