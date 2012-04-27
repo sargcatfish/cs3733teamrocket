@@ -49,6 +49,20 @@ public class SignInRequestController {
 		
 		// get event object -- have user sign in!
 		DLEvent m = Manager.retrieveEvent(eventID);
+		//Added by Wesley trying to handle the event doesn't exist
+		if (m == null){
+			
+			String xmlString = Message.responseHeader(request.id(), "The event doesn't exist");
+			xmlString +=  "<signInResponse id='" + eventID + "' " + 
+					"id = 'STUB' " + 
+					"type = 'STUB' " +
+					"question = 'STUB' " +
+					"numChoices = 'STUB' " + 
+					"numRows = 'STUB' " +
+					"position = 'STUB'>" + "</signInResponse></response>";
+			Message response = new Message(xmlString);
+			return response;
+		}
 		int position = m.getNextPosition(user);
 		//try to sign in as already existent user
 		boolean Accepted = true;
