@@ -28,7 +28,7 @@ public class TurnResponseController {
 		 */
 		DLEvent event = model.getTable().get(id);
 		if (event == null){
-			System.out.println("Im a stupid cuntbag!!!");
+			System.out.println("Event does not exist");
 		}
 		String xml;
 		int size;

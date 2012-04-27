@@ -31,7 +31,7 @@ public class TestAddChoiceController extends TestCase {
 		cont.model.addTestDLEvent(temp);
 		
 		Message.configure("decisionlines.xsd");
-		String xmlSource = "<request version='1.0' id='test'><addChoiceRequest id='newChoice' number='5' choice='Orange'/></request>";
+		String xmlSource = "<request version='1.0' id='test'><addChoiceRequest id='test' number='5' choice='Orange'/></request>";
 		Message request = new Message(xmlSource);
 		
 		Message response = cont.process(request);
@@ -42,13 +42,13 @@ public class TestAddChoiceController extends TestCase {
 		String number = map.getNamedItem("number").getNodeValue();
 		String choice = map.getNamedItem("choice").getNodeValue();
 		
-		assertEquals("newChoice", id);
+		assertEquals("test", id);
 		assertEquals("5", number);
 		assertEquals("Orange", choice);
 		
 //		DLEvent test = Manager.retrieveEvent("123");
 //		assertEquals("Orange", test.getDLChoice().get(0).getName());
-		Manager.deleteChoices("newChoice");
+		Manager.deleteChoices("test");
 		Manager.deleteEvent("test");
 		
 	}
