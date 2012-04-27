@@ -52,7 +52,8 @@ public class CreateRequestController {
 		for(int i = 0; i < next.getLength();i++){
 			if(next.item(i).getLocalName().equals("user")){
 			//	NodeList children = next.item(i).getChildNodes();
-				NamedNodeMap child = next.item(i).getFirstChild().getAttributes();
+				NamedNodeMap child = next.item(i).getAttributes();
+
 				moderator = child.getNamedItem("name").getNodeValue();
 				if(child.getLength() > 1)
 					pswd = child.getNamedItem("password").getNodeValue();
@@ -74,10 +75,11 @@ public class CreateRequestController {
 //			pswd = new String("");
 //			}
 		//add the event to the database
-		Manager.insertDLEvent(id, Integer.getInteger(numChoices), Integer.getInteger(numRounds), 
+
+		Manager.insertDLEvent(id, Integer.parseInt(numChoices), Integer.parseInt(numRounds), 
 				eventQuestion, isOpen, true, moderator);
 		//get choice names		
-		for (int i = 0; i < Integer.getInteger(numChoices); i++){
+		for (int i = 0; i < Integer.parseInt(numChoices); i++){
 			//add choices in
 			Manager.insertChoice(id, i+1, next.item(i).getNodeValue());
 			System.out.println(next.item(i).getNodeValue());
