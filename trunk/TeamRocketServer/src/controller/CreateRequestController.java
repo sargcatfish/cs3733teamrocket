@@ -19,7 +19,7 @@ import xml.Message;
 /**
  * Gets the createRequest, processes it, and sends back the response.
  * 
- * @author rhollinger
+ * @author rhollinger, Nick Bosowski
  *
  */
 public class CreateRequestController {
