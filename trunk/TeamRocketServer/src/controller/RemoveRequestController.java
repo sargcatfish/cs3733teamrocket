@@ -1,8 +1,10 @@
 package controller;
 
 import java.sql.SQLException;
+import java.util.Hashtable;
 
 import model.Admin;
+import model.DLEvent;
 import model.TeamRocketServerModel;
 
 import org.w3c.dom.NamedNodeMap;
@@ -31,6 +33,7 @@ public class RemoveRequestController {
 	// get meeting object -- have user sign in!
 	Admin a = TeamRocketServerModel.getInstance().getAdmin() ;
 	
+	
 	if (!a.verify(key)){
 		xmlString = Message.responseHeader(request.id(), "Invalid key") ;
 		response = new Message(xmlString);
@@ -41,6 +44,7 @@ public class RemoveRequestController {
 		if (iNode != null) {
 			id = iNode.getNodeValue();
 			result = TeamRocketServerModel.destroyEvent(id) ;
+			
 			xmlString =  Message.responseHeader(request.id()) + "<removeResponse numberAffected='" + result + "' " + " /></response>";
 			response = new Message(xmlString);
 		}

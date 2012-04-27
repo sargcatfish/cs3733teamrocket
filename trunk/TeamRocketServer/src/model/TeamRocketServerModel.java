@@ -1,8 +1,10 @@
 package model;
 
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Hashtable;
+
 
 import db.Manager;
 /** Singleton model with a table of the locally stored event
@@ -91,13 +93,21 @@ public class TeamRocketServerModel {
 	//TODO make it work
 	public static int destroyEvent(String isComplete, int daysOld) throws SQLException{
 		boolean a ;
+		ResultSet result1;
+		ResultSet result2;
 		//getInstance().getTable().remove(id);
 		if (isComplete.equals(true)){
 			a = true ;
 		}
 		else a = false ;
+		result1 = Manager.getEventsDays(a, daysOld) ;
+		result2 = Manager.getEventsDays(a, daysOld);
 		
-		return Manager.deleteEvents(a, daysOld) ;
+		while(result1.next()){
+			getInstance().getTable().remove(result1.getString("id"));
+		}
+		
+		return Manager.deleteEvent(result2);
 	}
 
 }
