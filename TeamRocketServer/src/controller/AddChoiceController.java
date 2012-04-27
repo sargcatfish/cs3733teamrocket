@@ -8,10 +8,11 @@ import org.w3c.dom.Node;
 
 import db.Manager;
 import server.ClientState;
+import server.Server;
 import xml.Message;
 /**
  * 
- * @author Timothy Kolek
+ * @author Timothy Kolek, Nick Bosowski
  *
  */
 
@@ -43,6 +44,17 @@ public class AddChoiceController {
 
 		String xml = Message.responseHeader(request.id()) + "<addChoiceResponse id='" + id + "' number='" + number + "' choice='" + choice + "'/></response>";
 		Message response = new Message(xml);
+		
+		/* This supposedly sends to all the clients */
+		for (String threadID : Server.ids()) {
+			ClientState cs = Server.getState(threadID);
+			if (id.equals(cs.getData())) {
+				// make sure not to send to requesting client TWICE
+				if (!cs.id().equals(state.id())) {
+					cs.sendMessage(response);
+				}
+			}
+		}	
 		
 		return response;
 	}
