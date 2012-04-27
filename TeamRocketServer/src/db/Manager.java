@@ -450,14 +450,15 @@ public class Manager {
 		return true;
 	}
 
-/**
- * Remove event greater than inputted days old from the database along with any corresponding users, choices, and edges.
- * @param daysOld
- * @return number of affected events
- * @throws SQLException 
- */
+	/**
+	 * Remove event greater than inputted days old from the database along with any corresponding users, choices, and edges.
+	 * @param daysOld
+	 * @return number of affected events
+	 * @throws SQLException 
+	 */
+	/*
 	public static int deleteEvents(boolean isComplete, int daysOld) throws SQLException {
-		
+
 		ResultSet result ;
 		int returnVal = 0 ;
 		try {
@@ -470,7 +471,7 @@ public class Manager {
 
 			// Execute the SQL statement and store result into the ResultSet
 			result = pstmt.executeQuery();
-			
+
 		} catch (SQLException e) {
 			throw new IllegalArgumentException(e.getMessage(), e);
 		}
@@ -483,7 +484,42 @@ public class Manager {
 				throw new IllegalArgumentException(e.getMessage(), e) ;
 			}
 		return returnVal ;
+	}*/
+
+	public static ResultSet getEventsDays(boolean isComplete, int daysOld) throws SQLException {	
+		ResultSet result ;
+
+		try {
+			PreparedStatement pstmt = Manager
+					.getConnection()
+					.prepareStatement(
+							"SELECT id FROM DLEvents WHERE isComplete = ? && TO_DAYS(NOW()) - TO_DAYS(dateCreated) > ?;");
+			pstmt.setBoolean(1, isComplete) ;
+			pstmt.setInt(2, daysOld);
+
+			// Execute the SQL statement and store result into the ResultSet
+			result = pstmt.executeQuery();
+			return result;
+		} catch (SQLException e) {
+			throw new IllegalArgumentException(e.getMessage(), e);
+		}
+
 	}
+
+	public static int deleteEvent(ResultSet result){
+		int returnVal = 0 ;
+		try {
+			while(result.next()){
+				deleteEvent(result.getString("id")) ;
+				returnVal++ ;
+			}
+		} catch (SQLException e) {
+			throw new IllegalArgumentException(e.getMessage(), e) ;
+		}
+		return returnVal ;
+	}
+
+
 
 	/**
 	 * Remove event from the database along with any corresponding users, choices, and edges.
@@ -583,7 +619,7 @@ public class Manager {
 
 		return s.substring(0, len);
 	}
-	
+
 	// Manager Class
 	/***
 	 * change completion of events > inputted days old
