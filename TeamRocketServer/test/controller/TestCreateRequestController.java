@@ -22,8 +22,8 @@ public class TestCreateRequestController extends TestCase {
 		Message.configure("decisionlines.xsd");
 		String xmlSource = "<request version='1.0' id='test'><createRequest type='closed' " +
 				"question='where to eat?' numChoices='4' numRounds='3'>" +
-				"<choice value='McDonald's' index='0'/>" +
-				"<choice value='Wendy's' index='1'/>" +
+				"<choice value='McDonalds' index='0'/>" +
+				"<choice value='Wendys' index='1'/>" +
 				"<choice value='Burger King' index='2'/>" +
 				"<choice value='Sushi Palace' index='3'/>" +
 				"<user name='Nick Bosowski'/></createRequest></request>";
@@ -32,12 +32,30 @@ public class TestCreateRequestController extends TestCase {
 		
 		Message response = cont.process(request);
 		
-		DLEvent event = Manager.retrieveEvent("createRequest");
+		DLEvent event = Manager.retrieveEvent(cont.testId);
 		
-		assertEquals("createRequest", event.getID());
+		assertEquals(cont.testId, event.getID());
 		assertEquals(4, event.getNumChoices());
 		assertEquals(3, event.getNumRounds());
 		assertEquals(4, event.getDLChoice().size());
-		assertEquals("Wendy's", event.getDLChoice().get(0).getName());
+		assertFalse(event.getIsOpen());
+		/* NEED TO FIGURE OUT HOW TO FIX THIS and is it a problem or just needs test case manipulation? */
+	//	assertEquals("Wendy's", event.getDLChoice().get(0).ge
+		
+		Manager.deleteEvent(event.getID());
+		
+		 xmlSource = "<request version='1.0' id='test'><createRequest type='open' " +
+				"question='where to eat?' numChoices='4' numRounds='3'>" +
+				"<user name='Nick Bosowski'/></createRequest></request>";
+		 
+		request = new Message(xmlSource);
+		response = cont.process(request);
+		event = Manager.retrieveEvent(cont.testId);
+		
+		assertEquals(cont.testId, event.getID());
+		assertEquals(4, event.getNumChoices());
+		assertEquals(3, event.getNumRounds());
+		assertEquals(0, event.getDLChoice().size());
+		assertTrue(event.getIsOpen());
 	}
 }

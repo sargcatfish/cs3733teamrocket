@@ -30,7 +30,7 @@ CREATE TABLE users (
   isModerator BOOLEAN NOT NULL,
   userIndex INTEGER NOT NULL,
   
-  PRIMARY KEY  (id)
+  PRIMARY KEY  (id, name)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1
 
 CREATE TABLE choices (
@@ -38,7 +38,7 @@ CREATE TABLE choices (
   choiceIndex INTEGER NOT NULL,
   choiceName varchar(32) NOT NULL default '',
   
-  PRIMARY KEY  (id)
+  PRIMARY KEY  (id, choiceName)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1
 
 CREATE TABLE edges (
@@ -47,5 +47,5 @@ CREATE TABLE edges (
   rightChoice INTEGER NOT NULL,
   height INTEGER NOT NULL,
   
-  PRIMARY KEY  (id)
+  PRIMARY KEY  (id, height)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1
