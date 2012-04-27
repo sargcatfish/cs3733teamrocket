@@ -1,6 +1,7 @@
 package controller;
 
 import model.DLChoice;
+import model.DLEvent;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -25,19 +26,19 @@ public class TurnResponseController {
 		 * just for the next person. But we will probably also have to check in the protocol handler to send 
 		 * it to the right people. Because the completion is sent to everyone right?
 		 */
-		
-		if (model.getTable().get(id) == null){
+		DLEvent event = model.getTable().get(id);
+		if (event == null){
 			System.out.println("Im a stupid cuntbag!!!");
 		}
 		String xml;
 		int size;
-		if (model.getTable().get(id).getEdgeList() == null){
+		if (event.getEdgeList() == null){
 			size = 0;
 		}
 		else{
-			size = model.getTable().get(id).getEdgeList().size();
+			size = event.getEdgeList().size();
 		}
-		int numEdges = model.getTable().get(id).getNumChoices() * model.getTable().get(id).getNumRounds();
+		int numEdges = event.getNumChoices() * event.getNumRounds();
 		if (size == numEdges){
 			xml = Message.responseHeader(id) + "<turnResponse completed='true' /></response>";
 		}
@@ -45,8 +46,10 @@ public class TurnResponseController {
 			xml = Message.responseHeader(id) + "<turnResponse/></response>";
 		}
 		
-		Message response = new Message(xml);
 		
+		Message response = new Message(xml);
+		event.getClientState().sendMessage(response);
+		event.incrementCurrentMaster();
 		return response;
 	}
 }
