@@ -1,5 +1,9 @@
 package controller;
 
+import java.sql.Date;
+
+import model.DLEvent;
+
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -20,9 +24,13 @@ public class TestAddEdgeController extends TestCase {
 	}
 	
 	public void testAddEdgeProcess(){
-		Manager.deleteEdges("newEdge");
+		DLEvent temp = new DLEvent("test", "tester", "Hello?", 1, 1);
+		Date tempDate = new Date(0);
+		temp.setDateCreated(tempDate);
+		cont.model.addTestDLEvent(temp);
+		
 		Message.configure("decisionlines.xsd");
-		String xmlSource = "<request version='1.0' id='123'><addEdgeRequest id='newEdge' left='1' right='2' height='397'/></request>";
+		String xmlSource = "<request version='1.0' id='test'><addEdgeRequest id='newEdge' left='1' right='2' height='397'/></request>";
 		Message request = new Message(xmlSource);
 		
 		Message response = cont.process(request);
@@ -40,6 +48,7 @@ public class TestAddEdgeController extends TestCase {
 		assertEquals("397", height);
 		
 		Manager.deleteEdges("newEdge");
+		Manager.deleteEvent("test");
 	}
 
 }

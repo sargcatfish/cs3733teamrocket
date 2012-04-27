@@ -1,5 +1,7 @@
 package controller;
 
+import java.sql.Date;
+
 import model.DLEvent;
 
 import org.w3c.dom.NamedNodeMap;
@@ -23,8 +25,13 @@ public class TestAddChoiceController extends TestCase {
 	}
 	
 	public void testAddChoiceProcess(){
+		DLEvent temp = new DLEvent("test", "tester", "Hello?", 1, 1);
+		Date tempDate = new Date(0);
+		temp.setDateCreated(tempDate);
+		cont.model.addTestDLEvent(temp);
+		
 		Message.configure("decisionlines.xsd");
-		String xmlSource = "<request version='1.0' id='123'><addChoiceRequest id='newChoice' number='5' choice='Orange'/></request>";
+		String xmlSource = "<request version='1.0' id='test'><addChoiceRequest id='newChoice' number='5' choice='Orange'/></request>";
 		Message request = new Message(xmlSource);
 		
 		Message response = cont.process(request);
@@ -39,9 +46,11 @@ public class TestAddChoiceController extends TestCase {
 		assertEquals("5", number);
 		assertEquals("Orange", choice);
 		
-		//DLEvent test = Manager.retrieveEvent("123");
-		//assertEquals("Orange", test.getDLChoice().get(0).getName());
+//		DLEvent test = Manager.retrieveEvent("123");
+//		assertEquals("Orange", test.getDLChoice().get(0).getName());
 		Manager.deleteChoices("newChoice");
+		Manager.deleteEvent("test");
+		
 	}
 
 }
