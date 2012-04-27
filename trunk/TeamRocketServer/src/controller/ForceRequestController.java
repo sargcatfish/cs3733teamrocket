@@ -48,7 +48,7 @@ public class ForceRequestController {
 				String daysOld = adminAtts.getNamedItem("daysOld").getNodeValue();
 				int i = Integer.parseInt(daysOld) ;
 				result = TeamRocketServerModel.forceCompleteEvent(i) ;
-				xmlString =  Message.responseHeader(request.id()) + "<forceResponse numberAffected='" + result + "' " + "></forceResponse></response>";
+				xmlString =  Message.responseHeader(request.id()) + "<forceResponse numberAffected='" + result + "' " + " /></response>";
 				response = new Message(xmlString);
 			}
 		}

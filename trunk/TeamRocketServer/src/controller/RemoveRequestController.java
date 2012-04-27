@@ -41,7 +41,7 @@ public class RemoveRequestController {
 		if (iNode != null) {
 			id = iNode.getNodeValue();
 			result = TeamRocketServerModel.destroyEvent(id) ;
-			xmlString =  Message.responseHeader(request.id()) + "<removeResponse numberAffected='" + result + "' " + "></removeResponse></response>";
+			xmlString =  Message.responseHeader(request.id()) + "<removeResponse numberAffected='" + result + "' " + " /></response>";
 			response = new Message(xmlString);
 		}
 		else {
@@ -49,7 +49,7 @@ public class RemoveRequestController {
 			String daysOld = adminAtts.getNamedItem("daysOld").getNodeValue();
 			int i = Integer.parseInt(daysOld) ;
 			result = TeamRocketServerModel.destroyEvent(completed, i) ;
-			xmlString =  Message.responseHeader(request.id()) + "<removeResponse numberAffected='" + result + "' " + "></removeResponse></response>";
+			xmlString =  Message.responseHeader(request.id()) + "<removeResponse numberAffected='" + result + "' " + " /></response>";
 			response = new Message(xmlString);
 		}
 	}
