@@ -29,7 +29,7 @@ public class TestManager extends TestCase {
 //		Manager.deleteUsers(id);
 //		Manager.deleteEdges(id);
 		
-		Manager.insertDLEvent(id, numChoices, numRounds, eventQuestion, dateCreated, isOpen, acceptingUsers, moderator);
+		Manager.insertDLEvent(id, numChoices, numRounds, eventQuestion, isOpen, acceptingUsers, moderator);
 		DLEvent d = Manager.retrieveEvent(id);
 		
 		assertEquals(id,d.getID());

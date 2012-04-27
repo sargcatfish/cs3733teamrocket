@@ -10,8 +10,8 @@ public class db_testing {
 		//String id = Manager.generateEventID();
 			String id = "aaaaaaaaaaaaa";
 	/* INSERT THE RANDOM TEST GARBAGE! */
-			
-		Manager.insertDLEvent(id, 4, 6, "Does Wesley have AIDS?", java.sql.Date.valueOf("2012-4-24"), false,true, "Nick");
+//			
+		Manager.insertDLEvent(id, 4, 6, "Does Wesley have AIDS?", false,true, "Nick");
 		Manager.insertEdge(id, 20, 25, 16);
 		Manager.insertChoice(id, 2, "Yes, Wesley has AIDS!");
 		Manager.signin(id, "Nick", "Chicken is delicious", true, 1);

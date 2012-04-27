@@ -1,3 +1,5 @@
+import java.sql.SQLException;
+
 import org.w3c.dom.Node;
 
 import server.*;
@@ -69,7 +71,7 @@ public class DecisionLineProtocolHandler implements IProtocolHandler {
 			return closeController.process(request);
 			
 			
-		} else if(localName.equals("createRequest")){
+		} else if(localName.equals("createClosedRequest") || localName.equals("createOpenRequest")){
 			// More message handling
 			System.out.println("Trying to process createRequest.\n");
 			createController = new CreateRequestController(st);
@@ -87,7 +89,12 @@ public class DecisionLineProtocolHandler implements IProtocolHandler {
 			// More message handling
 			System.out.println("Trying to remove.\n");
 			removeController = new RemoveRequestController(st);
-			return removeController.process(request);
+			try {
+				return removeController.process(request);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			
 		} else if(localName.equals("reportRequest")){
