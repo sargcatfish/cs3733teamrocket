@@ -2,7 +2,10 @@ import java.sql.SQLException;
 
 import org.w3c.dom.Node;
 
-import server.*;
+import server.ClientState;
+import server.IProtocolHandler;
+import server.Server;
+
 import xml.*;
 import controller.*;
 
@@ -110,7 +113,7 @@ public class DecisionLineProtocolHandler implements IProtocolHandler {
 			signInController = new SignInRequestController(st);
 			return signInController.process(request);
 			
-		}
+		} 
 
 		// unknown? no idea what to do
 		System.err.println("Unable to handle message:" + request);

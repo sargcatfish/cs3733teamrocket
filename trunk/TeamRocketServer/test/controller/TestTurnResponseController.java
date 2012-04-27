@@ -9,6 +9,7 @@ import java.sql.Date;
 
 import model.DLEvent;
 import model.Edge;
+import model.MockClient;
 import xml.Message;
 import junit.framework.TestCase;
 
@@ -29,7 +30,10 @@ public class TestTurnResponseController extends TestCase {
 		DLEvent temp = new DLEvent("test", "tester", "Hello?", 1, 1);
 		Date tempDate = new Date(0);
 		temp.setDateCreated(tempDate);
+		temp.addClientState(new MockClient());
 		cont.model.addTestDLEvent(temp);
+		
+		
 		
 		Message response = cont.process("test");
 		
