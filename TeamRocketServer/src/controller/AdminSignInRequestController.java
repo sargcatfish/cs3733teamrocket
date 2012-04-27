@@ -43,7 +43,7 @@ public class AdminSignInRequestController {
 		// client should recognize this!
 		else {//:: TODO update data base with new admin key!
 			a.setKey(adminKey);
-			xmlString =  Message.responseHeader(request.id()) + "<adminResponse key =" + adminKey + "></adminResponse></response>" ;
+			xmlString =  Message.responseHeader(request.id()) + "<adminResponse key =" + adminKey + " /></response>" ;
 		}
 				
 		
