@@ -45,18 +45,31 @@ public class CreateRequestController {
 		if (eventType.equals(new String("open"))) {
 			isOpen = true;
 		}
-		int numItems = next.getLength();
+		//int numItems = next.getLength();
 		//get moderator names
-		String moderator;
-		String pswd;
-		if (numItems - Integer.getInteger(numChoices) > 1){
-			moderator = next.item(numItems-2).getNodeValue();
-			pswd = next.item(numItems-1).getNodeValue();
-		}
-		else{
-			moderator = next.item(numItems-1).getNodeValue();
-			pswd = new String("");
+		String moderator = null;
+		String pswd = "";
+		for(int i = 0; i < next.getLength();i++){
+			if(next.item(i).getLocalName().equals("user")){
+			//	NodeList children = next.item(i).getChildNodes();
+				NamedNodeMap child = next.item(i).getFirstChild().getAttributes();
+				moderator = child.getNamedItem("name").getNodeValue();
+				if(child.getLength() > 1)
+					pswd = child.getNamedItem("password").getNodeValue();
+				else
+					pswd = "";
+				
 			}
+		
+		}
+//		if (numItems - Integer.getInteger(numChoices) > 1){
+//			moderator = next.item(numItems-2).getNodeValue();
+//			pswd = next.item(numItems-1).getNodeValue();
+//		}
+//		else{
+//			moderator = next.item(numItems-1).getNodeValue();
+//			pswd = new String("");
+//			}
 		//add the event to the database
 		Manager.insertDLEvent(id, Integer.getInteger(numChoices), Integer.getInteger(numRounds), 
 				eventQuestion, isOpen, true, moderator);
