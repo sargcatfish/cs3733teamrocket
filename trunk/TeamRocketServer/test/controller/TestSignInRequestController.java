@@ -18,6 +18,7 @@ import junit.framework.TestCase;
  */
 public class TestSignInRequestController extends TestCase {
 	SignInRequestController cont;
+	CreateRequestController create;
 	String id = "Apples123";
 	int numChoices = 4;
 	int numRounds = 3;
@@ -31,8 +32,10 @@ public class TestSignInRequestController extends TestCase {
 	
 	public void setUp(){
 		cont = new SignInRequestController(null);
-		TeamRocketServerModel.getInstance().getTable().put(id, event);
+		create = new CreateRequestController(null);
+		String id = "Apples123";
 		Message.configure("decisionlines.xsd");
+	//	TeamRocketServerModel.getInstance().getTable().put(id, event);
 	}
 	
 	public void tearDown(){
@@ -44,16 +47,28 @@ public class TestSignInRequestController extends TestCase {
 				
 		String name = "Batman";
 
-		Manager.insertDLEvent(id, numChoices, numRounds, eventQuestion, isOpen, acceptingUsers, moderator);
-		Manager.signin(id, moderator, "", true, 0);
-		for(int i = 0; i < numChoices; i++){
-			Manager.insertChoice(id, i, choiceName[i]);
-		}
-		String xmlSource = "<request version='1.0' id='test'>" +
+//		Manager.insertDLEvent(id, numChoices, numRounds, eventQuestion, isOpen, acceptingUsers, moderator);
+//		Manager.signin(id, moderator, "", true, 0);
+//		for(int i = 0; i < numChoices; i++){
+//			Manager.insertChoice(id, i, choiceName[i]);
+//		}
+//		Message.configure("decisionlines.xsd");
+		String xmlSource = "<request version='1.0' id='test'><createRequest type='closed' " +
+				"question='" + eventQuestion + "' numChoices='" + numChoices + "' numRounds='" + numRounds + "'>" +
+				"<choice value='" + choiceName[0] + "' index='0'/>" +
+				"<choice value='" + choiceName[1] + "' index='1'/>" +
+				"<choice value='" + choiceName[2] + "' index='2'/>" +
+				"<choice value='" + choiceName[3] + "' index='3'/>" +
+				"<user name='Nick Bosowski'/></createRequest></request>";
+		
+		Message request = new Message(xmlSource);
+		create.process(request);
+		id = create.testId;
+		 xmlSource = "<request version='1.0' id='test'>" +
 				"<signInRequest id='" + id + "'>" +
 				"<user name='" + name +"'/>" + "</signInRequest></request>";
 		
-		Message request = new Message(xmlSource);
+		request = new Message(xmlSource);
 		Message response = cont.process(request);
 		//System.out.print(response.toString());
 		Node first = response.contents.getFirstChild(); // this should be the signInResponse
@@ -77,20 +92,32 @@ public class TestSignInRequestController extends TestCase {
 	}
 	
 	public void testOpenController(){
-		isOpen = true;
+//		isOpen = true;
 		
 		String name = "Batman";
 		
-		Manager.insertDLEvent(id, numChoices, numRounds, eventQuestion, isOpen, acceptingUsers, moderator);
-		for(int i = 0; i < 2; i++){
-			Manager.insertChoice(id, i, choiceName[i]);
-		}
+//		Manager.insertDLEvent(id, numChoices, numRounds, eventQuestion, isOpen, acceptingUsers, moderator);
+//		for(int i = 0; i < 2; i++){
+//			Manager.insertChoice(id, i, choiceName[i]);
+//		}
 		
-		String xmlSource = "<request version='1.0' id='test'>" +
+//		Message.configure("decisionlines.xsd");
+		String xmlSource = "<request version='1.0' id='test'><createRequest type='open' " +
+				"question='" + eventQuestion + "' numChoices='" + numChoices + "' numRounds='" + numRounds + "'>" +
+				"<choice value='" + choiceName[0] + "' index='0'/>" +
+				"<choice value='" + choiceName[1] + "' index='1'/>" +
+//				"<choice value='" + choiceName[2] + "' index='2'/>" +
+//				"<choice value='" + choiceName[3] + "' index='3'/>" +
+				"<user name='Nick Bosowski'/></createRequest></request>";
+		
+		Message request = new Message(xmlSource);
+		create.process(request);
+		id = create.testId;
+		xmlSource = "<request version='1.0' id='test'>" +
 				"<signInRequest id='" + id + "'>" +
 				"<user name='" + name +"'/>" + "</signInRequest></request>";
 		
-		Message request = new Message(xmlSource);
+		request = new Message(xmlSource);
 		Message response = cont.process(request);
 		//System.out.print(response.toString());
 		Node first = response.contents.getFirstChild(); // this should be the signInResponse
@@ -115,6 +142,7 @@ public class TestSignInRequestController extends TestCase {
 	}
 	
 	public void testBadID(){
+		
 		String xmlSource = "<request version='1.0' id='test'>" +
 				"<signInRequest id='" + "ianlukens123" + "'>" +
 				"<user name='" + "ted" +"'/>" + "</signInRequest></request>";
@@ -136,5 +164,50 @@ public class TestSignInRequestController extends TestCase {
 		Message request = new Message(xmlSource);
 		Message response = cont.process(request);
 		assertFalse(Boolean.parseBoolean(response.contents.getAttributes().getNamedItem("success").getNodeValue()));
+	}
+	
+	public void testTooManyUsers(){
+		
+		String xmlSource = "<request version='1.0' id='test'><createRequest type='open' " +
+				"question='" + eventQuestion + "' numChoices='" + numChoices + "' numRounds='" + numRounds + "'>" +
+				"<choice value='" + choiceName[0] + "' index='0'/>" +
+				"<choice value='" + choiceName[1] + "' index='1'/>" +
+//				"<choice value='" + choiceName[2] + "' index='2'/>" +
+//				"<choice value='" + choiceName[3] + "' index='3'/>" +
+				"<user name='Nick Bosowski'/></createRequest></request>";
+		
+		Message request = new Message(xmlSource);
+		create.process(request);
+		id = create.testId;
+		
+		xmlSource = "<request version='1.0' id='test'>" +
+				"<signInRequest id='" + id + "'>" +
+				"<user name='" + "bill" +"'/>" + "</signInRequest></request>";
+		request = new Message(xmlSource);
+		cont.process(request);
+		
+		xmlSource = "<request version='1.0' id='test'>" +
+				"<signInRequest id='" + id + "'>" +
+				"<user name='" + "ted" +"'/>" + "</signInRequest></request>";
+		request = new Message(xmlSource);
+		cont.process(request);
+		
+		xmlSource = "<request version='1.0' id='test'>" +
+				"<signInRequest id='" + id + "'>" +
+				"<user name='" + "frank" +"'/>" + "</signInRequest></request>";
+		request = new Message(xmlSource);
+		cont.process(request);
+		
+		xmlSource = "<request version='1.0' id='test'>" +
+				"<signInRequest id='" + id + "'>" +
+				"<user name='" + "sam" +"'/>" + "</signInRequest></request>";
+		request = new Message(xmlSource);
+		Message response = cont.process(request);
+//		System.out.print(response);
+		
+		NamedNodeMap map = response.contents.getAttributes();
+		boolean success = Boolean.parseBoolean(map.getNamedItem("success").getNodeValue());
+		assertFalse(success);
+		
 	}
 }

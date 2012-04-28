@@ -15,6 +15,7 @@ import java.sql.Date;
 import model.DLChoice;
 import model.DLEvent;
 import model.Edge;
+import model.TeamRocketServerModel;
 import model.User;
 
 //I do not think all of these try catches are needed. We should look at this a little bit to determine if thats is true.
@@ -178,7 +179,7 @@ public class Manager {
 		} catch (SQLException e) {
 			throw new IllegalArgumentException(e.getMessage(), e);
 		}
-
+	TeamRocketServerModel.getInstance().getTable().put(id,	Manager.retrieveEvent(id));
 		return true;
 	}
 
@@ -409,6 +410,25 @@ public class Manager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return result ;
+	}
+	
+	public static int setacceptingUsers(String id){
+int result = 0 ;
+		
+		PreparedStatement pstmt;
+		try {
+			pstmt = Manager
+					.getConnection()
+					.prepareStatement(
+							"UPDATE DLEvents SET acceptingUsers = false WHERE id = ?;");
+			pstmt.setString(1, id);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		TeamRocketServerModel.getInstance().getTable().get(id).setAcceptingUsers(false);
 		return result ;
 	}
 
