@@ -34,5 +34,9 @@ public class Admin {
 			return false;
 		}
 	}
+	
+	public String getKey(){
+		return this.key;
+	}
 
 }
