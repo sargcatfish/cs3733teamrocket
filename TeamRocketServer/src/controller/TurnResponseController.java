@@ -31,13 +31,13 @@ public class TurnResponseController {
 			System.out.println("Event does not exist");
 		}
 		String xml;
-		int size;
-		if (event.getEdgeList() == null){
-			size = 0;
-		}
-		else{
-			size = event.getEdgeList().size();
-		}
+		int size = event.getNumEdges();
+//		if (event.getEdgeList() == null){
+//			size = 0;
+//		}
+//		else{
+//			size = event.getEdgeList().size();
+//		}
 		int numEdges = event.getNumChoices() * event.getNumRounds();
 		if (size == numEdges){
 			xml = Message.responseHeader(id) + "<turnResponse completed='true' /></response>";
@@ -49,6 +49,7 @@ public class TurnResponseController {
 		
 		Message response = new Message(xml);
 		event.incrementCurrentMaster();
+		if(event.getClientState()!= null)
 		event.getClientState().sendMessage(response);
 
 		return response;

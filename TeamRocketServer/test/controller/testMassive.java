@@ -15,6 +15,7 @@ public class testMassive extends TestCase {
 	AddChoiceController addChoice = new AddChoiceController(null);
 	CreateRequestController createRequest = new CreateRequestController(null);
 	SignInRequestController signIn = new SignInRequestController(null);
+	AddEdgeController addEdge = new AddEdgeController(null);
 	String question = "How about a pineapple kid?";
 	int numChoices = 3;
 	int numRounds = 4;
@@ -159,7 +160,47 @@ public class testMassive extends TestCase {
 		 
 		assertEquals(3,dbEvent.getDLChoice().size());
 		assertEquals(3,localEvent.getDLChoice().size());
+		
+		first = response.contents.getFirstChild();
+		map = first.getAttributes();
 		 
+		assertEquals(position-1, Integer.parseInt(map.getNamedItem("number").getNodeValue()));
+		assertEquals(id, map.getNamedItem("id").getNodeValue());
+		assertEquals(choices[position-1], map.getNamedItem("choice").getNodeValue());
+		
+		
+		assertEquals(0,dbEvent.getCurrentMaster());
+		assertEquals(0,localEvent.getCurrentMaster());
+		
+		xmlSource = "<request version='1.0' id='test'><addEdgeRequest id='"+ id + 
+					"' left='0' right='1' height='300'/></request>";
+		
+		request = new Message(xmlSource);
+		response = addEdge.process(request);
+		
+//		dbEvent = Manager.retrieveEvent(id);
+//		localEvent = TeamRocketServerModel.getInstance().getTable().get(id);
+		
+		assertEquals(1,localEvent.getCurrentMaster());
+		
+		first = response.contents.getFirstChild();
+		map = first.getAttributes();
+		
+		assertEquals(id, map.getNamedItem("id").getNodeValue());
+		assertEquals(0, Integer.parseInt(map.getNamedItem("left").getNodeValue()));
+		assertEquals(1, Integer.parseInt(map.getNamedItem("right").getNodeValue()));
+		assertEquals(300, Integer.parseInt(map.getNamedItem("height").getNodeValue()));
+		
+		for(int i = 1; i<12;i++){
+		assertEquals((i % 3), localEvent.getCurrentMaster());	
+		xmlSource = "<request version='1.0' id='test'><addEdgeRequest id='"+ id + 
+					"' left='0' right='1' height='"+ 10+10*i + "'/></request>";
+		
+		request = new Message(xmlSource);
+		addEdge.process(request);
+		
+		}
+		assertTrue(localEvent.getComplete());
 		 Manager.deleteEvent(id);
 		 TeamRocketServerModel.destroyEvent(id);
 	}

@@ -129,6 +129,11 @@ public class DLEvent {
 	public int setNumEdges(int numEdge){
 		return numEdges = numEdge;
 	}
+	public void incrementEdges(){
+		numEdges++;
+		if(numEdges == numRounds * numChoices)
+			this.isComplete = true;
+	}
 	//tested
 	public void addUser(User user){
 		if (userList == null){
