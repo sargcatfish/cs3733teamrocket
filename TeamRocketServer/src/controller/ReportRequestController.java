@@ -29,7 +29,7 @@ public class ReportRequestController {
 		Node signInR = request.contents.getFirstChild();
 		
 		
-		NamedNodeMap adminAtts = signInR.getFirstChild().getAttributes();
+		NamedNodeMap adminAtts = signInR.getAttributes();
 		String key = adminAtts.getNamedItem("key").getNodeValue();
 		String eventType = adminAtts.getNamedItem("type").getNodeValue() ;
 
@@ -66,7 +66,7 @@ public class ReportRequestController {
 					e.printStackTrace();
 				}
 
-				xmlString = xmlString + "</reportRequestResponse></response>";
+				xmlString = xmlString + "</reportResponse></response>";
 				response = new Message(xmlString);
 			}
 			
@@ -93,7 +93,7 @@ public class ReportRequestController {
 					e.printStackTrace();
 				}
 
-				xmlString = xmlString + "</reportRequestResponse></response>";
+				xmlString = xmlString + "</reportResponse></response>";
 				response = new Message(xmlString);
 			}
 		}
