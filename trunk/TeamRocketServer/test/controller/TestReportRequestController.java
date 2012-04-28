@@ -81,11 +81,17 @@ public class TestReportRequestController extends TestCase {
 	public void testGetReport(){
 		Message.configure("decisionlines.xsd");
 		String xmlSource = "<request version='1.0' id='test'>" +
-				"<reportRequest key ='" + key + "' type = 'closed'/></request>";
+				"<reportRequest key ='" + key + "' type='closed'/></request>";
+		
+		String xmlSource2 = "<request version='1.0' id='test'>" +
+				"<reportRequest key ='" + key + "' type='open'/></request>";
 		
 		Message request = new Message(xmlSource);
 	//	System.out.println("request: " + request);
 		Message response = cont.process(request);
-	//	System.out.println("response: " + response);
+		
+		request = new Message(xmlSource2);
+		response = cont.process(request);
+	System.out.println("response: " + response);
 	}
 }
