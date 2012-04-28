@@ -25,9 +25,9 @@ public class TeamRocketServerModel {
 		if (instance == null) {
 			instance = new TeamRocketServerModel();
 		}
-		
 		return instance;
 	}
+	
 	/*adding this comment so it recommits the proper file! */
 	/*You can create an event first as try to add or you can do this messy way pick?*/
 	public String addDLEvent(DLEvent d){
