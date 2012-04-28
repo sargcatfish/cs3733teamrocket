@@ -41,7 +41,7 @@ public class RemoveRequestController {
 	else{
 		Node iNode = adminAtts.getNamedItem("id");
 		String id = null;
-		if (iNode != null) {
+		if (adminAtts.getNamedItem("daysOld") == null) {
 			id = iNode.getNodeValue();
 			System.out.print("here1\n");
 			result = TeamRocketServerModel.destroyEvent(id);
