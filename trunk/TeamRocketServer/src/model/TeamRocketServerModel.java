@@ -77,12 +77,28 @@ public class TeamRocketServerModel {
 	 * changes completion status of events older than given days
 	 * @param daysOld
 	 * @return int, number of affected events
+	 * @throws SQLException 
 	 */
-	public static int forceCompleteEvent(int daysOld){
+	public static int forceCompleteEvent(int daysOld) {
+		try{ ResultSet result = Manager.getEventsDays(daysOld) ;
 		
+		while(result.next()){
+			if(getInstance().getTable().containsKey(result.getString("id"))){
+			getInstance().getTable().get(result.getString("id")).setComplete();
+			}
+		}
+		} catch (SQLException e) {
+			throw new IllegalArgumentException(e.getMessage(), e);
+		}
 		return Manager.setCompletion(daysOld) ;
 	}
 	
+	/**
+	 * destroys single event
+	 * @author ian
+	 * @param id
+	 * @return
+	 */
 	public static int destroyEvent(String id){
 		getInstance().getTable().remove(id);
 		if (Manager.deleteEvent(id)){

@@ -1,5 +1,7 @@
 package controller;
 
+import java.sql.SQLException;
+
 import model.Admin;
 import model.TeamRocketServerModel;
 
@@ -22,7 +24,7 @@ public class ForceRequestController {
 		Node signInR = request.contents.getFirstChild();
 
 		// retrieve ID		
-		NamedNodeMap adminAtts = signInR.getFirstChild().getAttributes();
+		NamedNodeMap adminAtts = signInR.getAttributes();
 		String key = adminAtts.getNamedItem("key").getNodeValue();
 
 		// get meeting object -- have user sign in!
@@ -30,7 +32,7 @@ public class ForceRequestController {
 		String xmlString = "";
 
 		if (!a.verify(key)){
-			xmlString = Message.responseHeader(request.id(), "Invalid key") ;
+			xmlString = Message.responseHeader(request.id(), "Invalid key") + "<forceResponse numberAffected='0'/></response>";
 			response = new Message(xmlString);
 		}
 		else{

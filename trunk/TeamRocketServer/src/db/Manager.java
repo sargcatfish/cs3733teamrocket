@@ -478,6 +478,31 @@ public class Manager {
 		}
 
 	}
+	
+	/**
+	 * gets ids of events of greater than the specified days in age
+	 * @author ian lukens + wesley nitinthorn
+	 * @param daysOld
+	 * @return result set of event ids
+	 * @throws SQLException
+	 */
+	public static ResultSet getEventsDays(int daysOld) {	
+		ResultSet result ;
+
+		try {
+			PreparedStatement pstmt = Manager
+					.getConnection()
+					.prepareStatement(
+							"SELECT id FROM DLEvents WHERE TO_DAYS(NOW()) - TO_DAYS(dateCreated) > ?;");
+			pstmt.setInt(1, daysOld);
+
+			// Execute the SQL statement and store result into the ResultSet
+			result = pstmt.executeQuery();
+			return result;
+		} catch (SQLException e) {
+			throw new IllegalArgumentException(e.getMessage(), e);
+		}
+	}
 
 	/**
 	 * deletes events with the given ids from the database
@@ -599,7 +624,7 @@ public class Manager {
 		return s.substring(0, len);
 	}
 
-	// Manager Class
+	// Manager Class	
 	/***
 	 * change completion of events > inputted days old
 	 * @author Ian Lukens and Wesley Nitinthorn
