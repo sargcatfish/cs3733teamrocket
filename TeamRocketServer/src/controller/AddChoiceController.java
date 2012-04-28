@@ -43,13 +43,22 @@ public class AddChoiceController {
 		//@Wesley I dont think we add a new event to local so just doing a check here
 		//if not local then go to DB
 		DLChoice dlc = new DLChoice(choiceNum, choice); 
-		DLEvent temp = model.getTable().get(request.id());
-		if(temp == null){
-			new Manager();
-			Manager.retrieveEvent(request.id());
-			new TeamRocketServerModel().getInstance().getTable().put(request.id(), Manager.retrieveEvent(request.id()));
-			model.getTable().get(request.id()).addDLChoice(dlc);
+		
+		// Ian
+		// I made I function in the model to do this.  GetInstance already makes a model, don't know why you're making another
+		// also error handling for if it doesn't exist
+		DLEvent temp = model.getEvent(id);
+		if (temp == null){
+			String xml = Message.responseHeader(request.id(), "No event") + "<addChoiceResponse id='" + id + "' number='0' choice='0'/></response>" ;
+			Message response = new Message(xml) ;
+			return response ;
 		}
+//		if(temp == null){
+//			new Manager();
+//			Manager.retrieveEvent(request.id());
+//			new TeamRocketServerModel().getInstance().getTable().put(request.id(), Manager.retrieveEvent(request.id()));
+//			model.getTable().get(request.id()).addDLChoice(dlc);
+//		}
 		String xml = Message.responseHeader(request.id()) + "<addChoiceResponse id='" + id + "' number='" + number + "' choice='" + choice + "'/></response>";
 		Message response = new Message(xml);
 		

@@ -4,6 +4,7 @@ import server.ClientState;
 import server.Server;
 import xml.Message;
 
+import model.DLEvent;
 import model.Edge;
 import model.TeamRocketServerModel;
 
@@ -44,7 +45,16 @@ public class AddEdgeController {
 		
 		//add edge to local
 		Edge edge = new Edge(leftNum, rightNum, heightNum);
-		model.getTable().get(request.id()).addEdge(edge);
+		// ian
+		// using new function
+		// error handling if passed an invalid id
+		DLEvent temp = model.getEvent(id) ;
+		if (temp == null){
+			String xml = Message.responseHeader(request.id(), "No event") + "<addEdgeResponse id='" + id + "' left='0' right='0' height='0'/></response>" ;
+			Message response = new Message(xml) ;
+			return response ;
+		}
+		else temp.addEdge(edge);
 		
 		String xml = Message.responseHeader(request.id()) + "<addEdgeResponse id='" + id + "' left='" + left + "' right='" + right+ "' height='" + height + "'/></response>";
 		Message response = new Message(xml);

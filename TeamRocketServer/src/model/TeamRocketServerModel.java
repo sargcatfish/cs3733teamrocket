@@ -1,6 +1,7 @@
 package model;
 
 
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Hashtable;
@@ -41,6 +42,27 @@ public class TeamRocketServerModel {
 		else{
 			return d.getID();
 		}
+	}
+	
+	// ian
+	/**
+	 * Gets an event either from the database or table if present, adds to the table if not
+	 * @param id
+	 * @return the event w/ specified id
+	 */
+	public DLEvent getEvent(String id){
+		DLEvent d = table.get(id);
+		if (d != null) {
+			return d;
+		}
+		
+		d = Manager.retrieveEvent(id);
+		if (d == null) {
+			return null;
+		}
+		
+		table.put(id, d);
+		return d;
 	}
 	
 	/**
