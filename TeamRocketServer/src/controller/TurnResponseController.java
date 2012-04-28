@@ -26,7 +26,7 @@ public class TurnResponseController {
 		 * just for the next person. But we will probably also have to check in the protocol handler to send 
 		 * it to the right people. Because the completion is sent to everyone right?
 		 */
-		DLEvent event = model.getTable().get(id);
+		DLEvent event = model.getEvent(id);
 		if (event == null){
 			System.out.println("Event does not exist");
 		}

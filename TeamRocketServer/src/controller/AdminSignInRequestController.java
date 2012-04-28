@@ -24,7 +24,6 @@ public class AdminSignInRequestController {
 		Node signInR = request.contents.getFirstChild();
 		
 		// retrieve ID		
-		System.out.print(signInR);
 		NamedNodeMap adminAtts = signInR.getFirstChild().getAttributes();
 		String admin = adminAtts.getNamedItem("name").getNodeValue();
 		String pword = adminAtts.getNamedItem("password").getNodeValue();
@@ -37,7 +36,6 @@ public class AdminSignInRequestController {
 		
 		
 		if (!a.signIn(admin, pword)) {
-			System.err.println ("Can't sign in");
 			xmlString =  Message.responseHeader(request.id(), "Invalid credential")+"<adminResponse key ='bad' /></response>"; //valid xml??
 		}
 		// client should recognize this!

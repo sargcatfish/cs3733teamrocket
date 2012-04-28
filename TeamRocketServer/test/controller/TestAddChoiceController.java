@@ -53,4 +53,22 @@ public class TestAddChoiceController extends TestCase {
 		
 	}
 
+	// ian
+	public void testAddChoiceInvalid(){
+		Message.configure("decisionlines.xsd");
+		String xmlSource = "<request version='1.0' id='test'><addChoiceRequest id='shoe' number='5' choice='Orange'/></request>";
+		Message request = new Message(xmlSource);
+		
+		Message response = cont.process(request);
+		
+		Node first = response.contents.getFirstChild();
+		NamedNodeMap map = first.getAttributes();
+		String id = map.getNamedItem("id").getNodeValue();
+		String number = map.getNamedItem("number").getNodeValue();
+		String choice = map.getNamedItem("choice").getNodeValue();
+		
+		assertEquals("shoe", id);
+		assertEquals("0", number);
+		assertEquals("Orange", choice);
+	}
 }

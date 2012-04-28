@@ -9,7 +9,7 @@ import model.TeamRocketServerModel;
 /**
  * Gets the closeRequest, ensures that it is from a moderator, processes it, and sends back the response.
  * 
- * @author rhollinger
+ * @author rhollinger, iplukens
  *
  */
 public class CloseRequestController {
@@ -25,11 +25,20 @@ public class CloseRequestController {
 
 		//TODO close Event
 		//not sure if this is the right way to do this...
-		DLEvent m = Manager.retrieveEvent(eventID); 
-		Manager.setCompletion(eventID);
-		
-		String xmlString = Message.responseHeader(request.id()) + "<closeResponse/></response>";
-		Message response = new Message(xmlString);
-		return response;
+		DLEvent temp = TeamRocketServerModel.getInstance().getEvent(eventID) ;
+				if (temp != null){
+					temp.setAcceptingUsers(false) ;
+				}
+		int result = Manager.setClosed(eventID);
+		if (result == 0){
+			String xmlString = Message.responseHeader(request.id(), "No event found") + "<closeResponse/></response>" ;
+			Message response = new Message(xmlString) ;
+			return response ;
+		}
+		else { 
+			String xmlString = Message.responseHeader(request.id()) + "<closeResponse/></response>";
+			Message response = new Message(xmlString);
+			return response;
+		}
 	}
 }

@@ -55,5 +55,26 @@ public class TestAddEdgeController extends TestCase {
 		Manager.deleteEdges("test");
 		Manager.deleteEvent("test");
 	}
+	
+	// ian
+	public void testAddEdgeFail(){
+		Message.configure("decisionlines.xsd");
+		String xmlSource = "<request version='1.0' id='test'><addEdgeRequest id='eggroll' left='1' right='2' height='397'/></request>";
+		Message request = new Message(xmlSource);
+		
+		Message response = cont.process(request);
+		
+		Node first = response.contents.getFirstChild();
+		NamedNodeMap map = first.getAttributes();
+		String id = map.getNamedItem("id").getNodeValue();
+		String left = map.getNamedItem("left").getNodeValue();
+		String right = map.getNamedItem("right").getNodeValue();
+		String height = map.getNamedItem("height").getNodeValue();
+		
+		assertEquals("eggroll", id);
+		assertEquals("0", left);
+		assertEquals("0", right);
+		assertEquals("0", height);
+	}
 
 }
