@@ -3,6 +3,8 @@ package db;
 import junit.framework.TestCase;
 import db.*;
 import java.sql.Date;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import model.*;
 /**
@@ -78,5 +80,19 @@ public class TestManager extends TestCase {
 		
 		Manager.deleteEvent(id);
 		
+	}
+	
+	public void testDisconnect() throws SQLException{
+		Manager.connect();
+		Connection connect = Manager.getConnection();
+		assertTrue(Manager.isConnected());
+		assertFalse(connect == null);
+		
+		connect.close();
+		assertFalse(Manager.isConnected());
+		Manager.disconnect();
+		assertFalse(Manager.isConnected());
+		
+		assertTrue(Manager.con == null);
 	}
 }
