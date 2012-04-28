@@ -13,7 +13,7 @@ import org.w3c.dom.Node;
 import server.ClientState;
 
 import xml.Message;
-
+ 
 public class RemoveRequestController {
 	ClientState state;
 	
@@ -35,7 +35,7 @@ public class RemoveRequestController {
 	
 	
 	if (!a.verify(key)){
-		xmlString = Message.responseHeader(request.id(), "Invalid key") + "<removeResponse numberAffected='0' /></response>" ;
+		xmlString = Message.responseHeader(request.id(), "Invalid key") + "<removeResponse numberAffected=\"0\" /></response>" ;
 		response = new Message(xmlString);
 	}
 	else{
@@ -43,10 +43,9 @@ public class RemoveRequestController {
 		String id = null;
 		if (adminAtts.getNamedItem("daysOld") == null) {
 			id = iNode.getNodeValue();
-			System.out.print("here1\n");
 			result = TeamRocketServerModel.destroyEvent(id);
 			
-			xmlString =  Message.responseHeader(request.id()) + "<removeResponse numberAffected='" + result + "' " + " /></response>";
+			xmlString =  Message.responseHeader(request.id()) + "<removeResponse numberAffected=\"" + result + "\" " + " /></response>";
 			response = new Message(xmlString);
 		}
 		else {
@@ -54,7 +53,7 @@ public class RemoveRequestController {
 			String daysOld = adminAtts.getNamedItem("daysOld").getNodeValue();
 			int i = Integer.parseInt(daysOld) ;
 			result = TeamRocketServerModel.destroyEvent(completed, i) ;
-			xmlString =  Message.responseHeader(request.id()) + "<removeResponse numberAffected='" + result + "' " + " /></response>";
+			xmlString =  Message.responseHeader(request.id()) + "<removeResponse numberAffected=\"" + result + "\" " + " /></response>";
 			response = new Message(xmlString);
 		}
 	}

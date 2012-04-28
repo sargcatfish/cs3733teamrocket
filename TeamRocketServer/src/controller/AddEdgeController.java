@@ -48,7 +48,7 @@ public class AddEdgeController {
 		// error handling if passed an invalid id
 		DLEvent temp = model.getEvent(id) ;
 		if (temp == null){
-			String xml = Message.responseHeader(request.id(), "No event") + "<addEdgeResponse id='" + id + "' left='0' right='0' height='0'/></response>" ;
+			String xml = Message.responseHeader(request.id(), "No event") + "<addEdgeResponse id=\"" + id + "\" left=\"0\" right=\"0\" height=\"0\"/></response>" ;
 			Message response = new Message(xml) ;
 			return response ;
 		}
@@ -56,7 +56,7 @@ public class AddEdgeController {
 			temp.incrementEdges();
 			
 		Manager.insertEdge(id, leftNum, rightNum, heightNum);
-		String xml = Message.responseHeader(request.id()) + "<addEdgeResponse id='" + id + "' left='" + left + "' right='" + right+ "' height='" + height + "'/></response>";
+		String xml = Message.responseHeader(request.id()) + "<addEdgeResponse id=\"" + id + "\" left=\"" + left + "\" right=\"" + right+ "\" height=\"" + height + "\"/></response>";
 		Message response = new Message(xml);
 		
 		/* This supposedly sends to all the clients */

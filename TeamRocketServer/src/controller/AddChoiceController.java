@@ -47,13 +47,13 @@ public class AddChoiceController {
 		// also error handling for if it doesn't exist
 		DLEvent temp = model.getEvent(id);
 		if (temp == null){
-			String xml = Message.responseHeader(request.id(), "No event") + "<addChoiceResponse id='" + id + "' number='0' choice='" + choice + "'/></response>" ;
+			String xml = Message.responseHeader(request.id(), "No event") + "<addChoiceResponse id=\"" + id + "\" number=\"0\" choice='" + choice + "'/></response>" ;
 			Message response = new Message(xml) ;
 			return response ;
 		}
 		Manager.insertChoice(id, choiceNum, choice);
 		temp.addDLChoice(dlc);
-		String xml = Message.responseHeader(request.id()) + "<addChoiceResponse id='" + id + "' number='" + number + "' choice='" + choice + "'/></response>";
+		String xml = Message.responseHeader(request.id()) + "<addChoiceResponse id=\"" + id + "\" number=\"" + number + "\" choice=\"" + choice + "\"/></response>";
 		Message response = new Message(xml);
 		
 		/* This supposedly sends to all the clients */

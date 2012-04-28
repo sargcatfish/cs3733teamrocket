@@ -97,7 +97,7 @@ public class CreateRequestController {
 		Manager.signin(id, moderator, pswd, true, 0);
 	
 		
-		String xmlString = Message.responseHeader(request.id()) + "<createResponse id='" + id + "'/></response>";
+		String xmlString = Message.responseHeader(request.id()) + "<createResponse id=\"" + id + "\"/></response>";
 		Message resp = new Message(xmlString);
 		return resp;
 	}

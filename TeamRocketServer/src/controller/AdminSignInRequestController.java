@@ -36,12 +36,12 @@ public class AdminSignInRequestController {
 		
 		
 		if (!a.signIn(admin, pword)) {
-			xmlString =  Message.responseHeader(request.id(), "Invalid credential")+"<adminResponse key ='bad' /></response>"; //valid xml??
+			xmlString =  Message.responseHeader(request.id(), "Invalid credential")+"<adminResponse key =\"bad\" /></response>"; //valid xml??
 		}
 		// client should recognize this!
 		else {
 			a.setKey(adminKey);
-			xmlString =  Message.responseHeader(request.id()) + "<adminResponse key ='" + adminKey + "' /></response>" ;
+			xmlString =  Message.responseHeader(request.id()) + "<adminResponse key =\"" + adminKey + "\" /></response>" ;
 		}
 				
 		
