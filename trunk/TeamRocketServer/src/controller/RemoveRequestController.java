@@ -35,7 +35,7 @@ public class RemoveRequestController {
 	
 	
 	if (!a.verify(key)){
-		xmlString = Message.responseHeader(request.id(), "Invalid key") ;
+		xmlString = Message.responseHeader(request.id(), "Invalid key") + "<removeResponse numberAffected='0' /></response>" ;
 		response = new Message(xmlString);
 	}
 	else{

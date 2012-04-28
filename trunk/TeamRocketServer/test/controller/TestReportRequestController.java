@@ -12,7 +12,7 @@ import db.Manager;
 import junit.framework.TestCase;
 /**
  * 
- * @author Wesley Nitinthorn
+ * @author Wesley Nitinthorn, Ian Lukens
  *
  */
 public class TestReportRequestController extends TestCase {
@@ -46,7 +46,6 @@ public class TestReportRequestController extends TestCase {
 	public void setUp(){
 		Message.configure("decisionlines.xsd");
 		adminMsg = new Message(this.adminStr);
-//		System.out.print(adminMsg);
 		cont = new ReportRequestController(null);
 		adminSignIn = new AdminSignInRequestController(null);
 		adminSignIn.process(adminMsg);
@@ -87,11 +86,18 @@ public class TestReportRequestController extends TestCase {
 				"<reportRequest key ='" + key + "' type='open'/></request>";
 		
 		Message request = new Message(xmlSource);
-	//	System.out.println("request: " + request);
 		Message response = cont.process(request);
 		
 		request = new Message(xmlSource2);
 		response = cont.process(request);
-	System.out.println("response: " + response);
 	}
+	
+	public void testValidateFail(){
+		String xmlSource = "<request version='1.0' id='test'>" +
+				"<reportRequest key ='WRONG' type='closed'/></request>";
+		
+		Message request = new Message(xmlSource) ;
+		cont.process(request) ;
+	}
+	
 }

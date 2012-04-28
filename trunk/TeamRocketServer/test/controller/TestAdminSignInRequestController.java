@@ -22,6 +22,7 @@ public class TestAdminSignInRequestController extends TestCase {
 			Message.configure("decisionlines.xsd");
 			adminMsg = new Message(this.adminStr);
 			adminSignIn = new AdminSignInRequestController(null);
+			
 			adminSignIn.process(adminMsg);
 			Admin admin = new Admin() ;
 			assertFalse(admin.signIn("admin", "pss")) ;

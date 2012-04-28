@@ -41,7 +41,7 @@ public class ReportRequestController {
 		ResultSet m;
 
 		if (!a.verify(key)){
-			xmlString = Message.responseHeader(request.id(), "Invalid key") ;
+			xmlString = Message.responseHeader(request.id(), "Invalid key") + "<reportResponse></reportResponse></response>" ;
 			response = new Message(xmlString);
 		}
 		else {

@@ -111,4 +111,16 @@ public class TestRemoveRequestController extends TestCase {
 		assertEquals(null, Manager.retrieveEvent("3"));
 		assertEquals(null, Manager.retrieveEvent("4"));
 	}
+	
+	public void testValidateFail(){
+		String xmlSource = "<request version='1.0' id='fdsfdgfdgdfrr4'>" +
+				"<removeRequest key='WRONG' id='" + id + "'/></request>";
+		
+		Message request = new Message(xmlSource) ;
+		Message response = cont.process(request) ;
+		Node check = response.contents.getFirstChild() ;
+		NamedNodeMap checkA = check.getAttributes() ;
+		int val = Integer.parseInt(checkA.getNamedItem("numberAffected").getNodeValue()) ;
+		assertEquals(0, val) ;
+	}
 }
