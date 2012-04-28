@@ -52,6 +52,9 @@ public class TeamRocketServerModel {
 	}
 	
 	public Admin getAdmin(){
+		if (this.admin == null){
+			return admin = new Admin();
+		}
 		return this.admin;
 	}
 	
