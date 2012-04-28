@@ -96,8 +96,9 @@ public class SignInRequestController {
 		
 		for (int i=0; i<m.getDLChoice().size(); i++ ) {
 			String choice = m.getDLChoice().get(i).getName();
+			int index = m.getDLChoice().get(i).getIndex();
 			// append into entry section
-			choices.append("<choice value='" + choice + "' index='" + i + "'/>");
+			choices.append("<choice value='" + choice + "' index='" + index + "'/>");
 		}
 		
 		String type = new String("open");
