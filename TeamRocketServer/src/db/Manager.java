@@ -512,6 +512,7 @@ public class Manager {
 	 */
 	public static int deleteEvent(ResultSet result){
 		int returnVal = 0 ;
+		System.out.print("here");
 		try {
 			while(result.next()){
 				deleteEvent(result.getString("id")) ;
@@ -549,10 +550,10 @@ public class Manager {
 		} catch (SQLException e) {
 			throw new IllegalArgumentException(e.getMessage(), e);
 		}
-		boolean a = deleteUsers(meetingID);
-		boolean b = deleteChoices(meetingID);
-		boolean c = deleteEdges(meetingID);
-		return  a && b && c;
+		deleteUsers(meetingID);
+		deleteChoices(meetingID);
+		deleteEdges(meetingID);
+		return  true;
 	}
 
 	public static boolean deleteUsers(String meetingID) {

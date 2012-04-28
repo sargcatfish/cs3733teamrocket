@@ -26,7 +26,7 @@ public class RemoveRequestController {
 	Node signInR = request.contents.getFirstChild();
 	
 	// retrieve ID		
-	NamedNodeMap adminAtts = signInR.getFirstChild().getAttributes();
+	NamedNodeMap adminAtts = signInR.getAttributes();
 	String key = adminAtts.getNamedItem("key").getNodeValue();
 	String xmlString;
 	
@@ -43,7 +43,8 @@ public class RemoveRequestController {
 		String id = null;
 		if (iNode != null) {
 			id = iNode.getNodeValue();
-			result = TeamRocketServerModel.destroyEvent(id) ;
+			System.out.print("here1\n");
+			result = TeamRocketServerModel.destroyEvent(id);
 			
 			xmlString =  Message.responseHeader(request.id()) + "<removeResponse numberAffected='" + result + "' " + " /></response>";
 			response = new Message(xmlString);
