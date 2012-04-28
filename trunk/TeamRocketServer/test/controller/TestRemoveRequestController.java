@@ -14,7 +14,7 @@ import xml.Message;
 import junit.framework.TestCase;
 /**
  * 
- * @author Ian Lukens, Wesley Nitinthorn, NICK
+ * @author Ian Lukens, Wesley Nitinthorn, NICK, Timothy Kolek
  *
  */
 public class TestRemoveRequestController extends TestCase {
@@ -52,7 +52,7 @@ public class TestRemoveRequestController extends TestCase {
 		Message.configure("decisionlines.xsd");
 		adminMsg = new Message(this.adminStr);
 		adminSignIn.process(adminMsg);
-		server = new TeamRocketServerModel().getInstance();
+		server = TeamRocketServerModel.getInstance();
 		key = server.getAdmin().getKey();
 		TeamRocketServerModel.getInstance().getTable().put(id, event1);
 		TeamRocketServerModel.getInstance().getTable().put("2", event2);

@@ -13,8 +13,8 @@ public class Admin {
 	public Admin(){
 	}
 
-	public void setKey(String key){
-		this.key = key;
+	public void setKey(String k){
+		key = k;
 	}
 
 	public boolean signIn(String n, String p){
@@ -27,7 +27,7 @@ public class Admin {
 	}
 
 	public boolean verify(String k){
-		if(k.equals(this.key)){
+		if(k.equals(key)){
 			return true;
 		}
 		else{
@@ -36,7 +36,7 @@ public class Admin {
 	}
 	
 	public String getKey(){
-		return this.key;
+		return key;
 	}
 
 }
