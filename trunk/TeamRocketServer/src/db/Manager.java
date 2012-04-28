@@ -390,8 +390,9 @@ public class Manager {
 
 	/**Change the completion status of the event with given id*/
 	// This now works
-	public static boolean setCompletion(String id) {
-
+	public static int setCompletion(String id) {
+		int result = 0 ;
+		
 		PreparedStatement pstmt;
 		try {
 			pstmt = Manager
@@ -399,12 +400,12 @@ public class Manager {
 					.prepareStatement(
 							"UPDATE DLEvents SET isComplete = true WHERE id = ?;");
 			pstmt.setString(1, id);
-			pstmt.executeUpdate();
+			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return true;
+		return result ;
 	}
 
 	public static boolean insertChoice(String id, int choiceIndex, String choiceName){
