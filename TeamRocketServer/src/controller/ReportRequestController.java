@@ -27,13 +27,13 @@ public class ReportRequestController {
 
 	public Message process(Message request) {
 		Node signInR = request.contents.getFirstChild();
-
-		// retrieve ID		
+		
+		
 		NamedNodeMap adminAtts = signInR.getFirstChild().getAttributes();
 		String key = adminAtts.getNamedItem("key").getNodeValue();
 		String eventType = adminAtts.getNamedItem("type").getNodeValue() ;
 
-		// get meeting object -- have user sign in!
+		
 		Admin a = TeamRocketServerModel.getInstance().getAdmin() ;
 		String xmlString="";
 		Message response = new Message(Message.responseHeader(request.id(), "Something went horribly wrong on the server or maybe there is no open of type"));
