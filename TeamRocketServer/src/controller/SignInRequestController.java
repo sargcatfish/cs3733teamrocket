@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import model.DLEvent;
 import model.TeamRocketServerModel;
+import model.User;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -63,16 +64,16 @@ public class SignInRequestController {
 			Message response = new Message(xmlString);
 			return response;
 		}
-		if(TeamRocketServerModel.getInstance().getTable().get(eventID) == null){
-			TeamRocketServerModel.getInstance().getTable().put(eventID, m);
-		}
+//		if(TeamRocketServerModel.getInstance().getTable().get(eventID) == null){
+//			TeamRocketServerModel.getInstance().getTable().put(eventID, m);
+//		}
 		TeamRocketServerModel.getInstance().getTable().get(eventID).addClientState(state); // add the client state to the local list
 		int position = m.getNextPosition(user);
 		//try to sign in as already existent user
 		boolean Accepted = true;
 		String failedReason = null;
 		if (!m.signIn(user, password)) {
-			System.err.println ("Can't sign in #1");
+//			System.err.println ("Can't sign in #1");
 			//add as a new user
 			if(!m.isAccepting()){
 				//TODO: REJECT USER THEY CANNOT JOIN
@@ -86,7 +87,11 @@ public class SignInRequestController {
 				Accepted = false;
 			}
 		}
-		
+			
+		m.addUser(new User(user, password, false, position));
+		TeamRocketServerModel.getInstance().getTable().get(eventID).addUser(new User(user, password, false, position));
+		if(m.getUserList().size() == m.getNumChoices())
+			Manager.setacceptingUsers(m.getID());
 		StringBuffer choices = new StringBuffer();
 		
 		for (int i=0; i<m.getDLChoice().size(); i++ ) {

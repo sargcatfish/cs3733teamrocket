@@ -51,10 +51,10 @@ public class TestForceRequestController extends TestCase {
 		server = TeamRocketServerModel.getInstance();
 		key = server.getAdmin().getKey();
 		
-		TeamRocketServerModel.getInstance().getTable().put(id, event1);
-		TeamRocketServerModel.getInstance().getTable().put("2", event2);
-		TeamRocketServerModel.getInstance().getTable().put("3", event3);
-		TeamRocketServerModel.getInstance().getTable().put("4", event4);
+//		TeamRocketServerModel.getInstance().getTable().put(id, event1);
+//		TeamRocketServerModel.getInstance().getTable().put("2", event2);
+//		TeamRocketServerModel.getInstance().getTable().put("3", event3);
+//		TeamRocketServerModel.getInstance().getTable().put("4", event4);
 		Manager.insertDLEvent(id, numChoices, numRounds, eventQuestion, true, acceptingUsers, moderator);
 		Manager.insertDLEvent("2", numChoices, numRounds, eventQuestion, true, acceptingUsers, moderator);
 		Manager.insertDLEvent("3", numChoices, numRounds, eventQuestion, false, acceptingUsers, moderator);
@@ -81,8 +81,9 @@ public class TestForceRequestController extends TestCase {
 		
 		assertFalse(event1.isComplete()) ;
 		Message request = new Message(xmlSource);
-		Message response = cont.process(request);
-		assertTrue(event1.isComplete()) ;
+		cont.process(request);
+		assertTrue(TeamRocketServerModel.getInstance().getTable().get(id).isComplete());
+//		assertTrue(event1.isComplete()) ;
 		
 		String xmlSource2 = "<request version='1.0' id='test'>" +
 				"<forceRequest key ='" + key + "' id = 'shoe'/></request>";
@@ -105,7 +106,7 @@ public class TestForceRequestController extends TestCase {
 		Node check = response.contents.getFirstChild() ;
 		NamedNodeMap checkA = check.getAttributes() ;
 		int val = Integer.parseInt(checkA.getNamedItem("numberAffected").getNodeValue()) ;
-		assertTrue(event1.isComplete()) ;
+		assertTrue(TeamRocketServerModel.getInstance().getTable().get(id).isComplete());
 		assertTrue(val > 3) ;
 	}
 	

@@ -47,5 +47,5 @@ CREATE TABLE edges (
   rightChoice INTEGER NOT NULL,
   height INTEGER NOT NULL,
   
-  PRIMARY KEY  (id, height)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1
+  PRIMARY KEY  (id, height, leftChoice, rightChoice)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
