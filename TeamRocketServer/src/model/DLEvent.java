@@ -237,5 +237,9 @@ public class DLEvent {
 	public ClientState getClientState(){
 		return stateList.get(currentMaster);
 	}
+	
+	public ArrayList<ClientState> getStates(){
+		return stateList;
+	}
 
 }

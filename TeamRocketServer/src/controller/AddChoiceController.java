@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.Iterator;
+
 import model.DLChoice;
 import model.DLEvent;
 import model.TeamRocketServerModel;
@@ -57,16 +59,22 @@ public class AddChoiceController {
 		Message response = new Message(xml);
 		
 		/* This supposedly sends to all the clients */
-		for (String threadID : Server.ids()) {
-			ClientState cs = Server.getState(threadID);
-			if (id.equals(cs.getData())) {
-				// make sure not to send to requesting client TWICE
-				if (!cs.id().equals(state.id())) {
-					cs.sendMessage(response);
-				}
-			}
-		}
+//		for (String threadID : Server.ids()) {
+//			ClientState cs = Server.getState(threadID);
+//			if (id.equals(cs.getData())) {
+//				// make sure not to send to requesting client TWICE
+//				if (!cs.id().equals(state.id())) {
+//					cs.sendMessage(response);
+//				}
+//			}
+//		}	
 		
+		Iterator<ClientState> cs = TeamRocketServerModel.getInstance().getEvent(id).getStates().iterator();
+		while(cs.hasNext()){
+			ClientState next = cs.next();
+			if(!next.id().equals(state.id()))
+				next.sendMessage(response);		
+		}
 		return response;
 	}
 
