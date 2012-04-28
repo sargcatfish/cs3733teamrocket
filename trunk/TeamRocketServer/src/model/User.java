@@ -19,4 +19,7 @@ public class User {
 		userIndex = uIndex;
 	}
 
+	public int getIndex(){
+		return userIndex;
+	}
 }

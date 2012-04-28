@@ -52,6 +52,7 @@ public class TestCreateRequestController extends TestCase {
 		assertEquals(Integer.parseInt(numRounds), event.getNumRounds());
 		assertEquals(Integer.parseInt(numChoices), event.getDLChoice().size());
 		assertFalse(event.getIsOpen());
+		assertEquals(0,event.getUserList().get(0).getIndex());
 		/* NEED TO FIGURE OUT HOW TO FIX THIS and is it a problem or just needs test case manipulation? */
 		for (int i = 0; i< Integer.parseInt(numChoices);i++){
 			DLChoice d = event.getDLChoice().get(i);
@@ -59,7 +60,7 @@ public class TestCreateRequestController extends TestCase {
 			assertEquals(values[index], d.getName());
 		}
 		
-		Manager.deleteEvent(event.getID());
+//		Manager.deleteEvent(event.getID());
 		
 		 xmlSource = "<request version='1.0' id='test'><createRequest type='open' " +
 				"question='" + question + "' numChoices='" + numChoices + "' numRounds='" + numRounds + "'>" +

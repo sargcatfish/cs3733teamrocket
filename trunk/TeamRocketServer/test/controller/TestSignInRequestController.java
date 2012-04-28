@@ -45,6 +45,7 @@ public class TestSignInRequestController extends TestCase {
 		String name = "Batman";
 
 		Manager.insertDLEvent(id, numChoices, numRounds, eventQuestion, isOpen, acceptingUsers, moderator);
+		Manager.signin(id, moderator, "", true, 0);
 		for(int i = 0; i < numChoices; i++){
 			Manager.insertChoice(id, i, choiceName[i]);
 		}
@@ -62,7 +63,7 @@ public class TestSignInRequestController extends TestCase {
 		assertEquals(numRounds, Integer.parseInt(map.getNamedItem("numRounds").getNodeValue()));
 		assertEquals(eventQuestion, map.getNamedItem("question").getNodeValue());
 		assertEquals(id, map.getNamedItem("id").getNodeValue());
-//		assertEquals(1, map.getNamedItem("position").getNodeValue()); need to figure out internal protocol for this
+		assertEquals(1, map.getNamedItem("position").getNodeValue()); 
 		NodeList children = first.getChildNodes();
 		for(int i = 0; i < children.getLength(); i++){
 			Node child = children.item(i);
