@@ -36,14 +36,16 @@ public class TestReportRequestController extends TestCase {
 	String key;
 	
 	String adminStr = "<request version='1.0' id='fdsfrr4'>" +
-	"<adminRequest> <user name = 'admin' password='password'/>" +
+	"<adminRequest>" + "<user name='admin' password='password' />" +
 	"</adminRequest></request>";
 	
 	TeamRocketServerModel server;
 	
-	Message adminMsg = new Message(adminStr);
+	Message adminMsg;
 	
 	public void setUp(){
+		Message.configure("decisionlines.xsd");
+		adminMsg = new Message(this.adminStr);
 		cont = new ReportRequestController(null);
 		adminSignIn = new AdminSignInRequestController(null);
 		adminSignIn.process(adminMsg);
@@ -58,7 +60,7 @@ public class TestReportRequestController extends TestCase {
 		Manager.insertDLEvent("2", numChoices, numRounds, eventQuestion, true, acceptingUsers, moderator);
 		Manager.insertDLEvent("3", numChoices, numRounds, eventQuestion, false, acceptingUsers, moderator);
 		Manager.insertDLEvent("4", numChoices, numRounds, eventQuestion, true, acceptingUsers, moderator);
-		Message.configure("decisionlines.xsd");
+		
 		
 		
 	}
@@ -76,10 +78,13 @@ public class TestReportRequestController extends TestCase {
 	}
 	
 	public void testGetReport(){
+		Message.configure("decisionlines.xsd");
 		String xmlSource = "<request version='1.0' id='test'>" +
-				"<reportRequest id ='" + key + "'> type = 'open'" + "</request>";
+				"<reportRequest key ='" + key + "' type = 'closed'/></request>";
 		
 		Message request = new Message(xmlSource);
+		System.out.println("request: " + request);
 		Message response = cont.process(request);
+		System.out.println("response: " + response);
 	}
 }

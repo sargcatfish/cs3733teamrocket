@@ -24,6 +24,7 @@ public class AdminSignInRequestController {
 		Node signInR = request.contents.getFirstChild();
 		
 		// retrieve ID		
+		System.out.print(signInR);
 		NamedNodeMap adminAtts = signInR.getFirstChild().getAttributes();
 		String admin = adminAtts.getNamedItem("name").getNodeValue();
 		String pword = adminAtts.getNamedItem("password").getNodeValue();
@@ -43,7 +44,7 @@ public class AdminSignInRequestController {
 		// client should recognize this!
 		else {//:: TODO update data base with new admin key!
 			a.setKey(adminKey);
-			xmlString =  Message.responseHeader(request.id()) + "<adminResponse key =" + adminKey + " /></response>" ;
+			xmlString =  Message.responseHeader(request.id()) + "<adminResponse key ='" + adminKey + "' /></response>" ;
 		}
 				
 		
