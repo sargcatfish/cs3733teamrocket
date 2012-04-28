@@ -95,4 +95,13 @@ public class TestManager extends TestCase {
 		
 		assertTrue(Manager.con == null);
 	}
+	
+	public void testTrimString(){
+		String test1 = "Superman";
+		String afterTrim = Manager.trimString(test1, 2);
+		assertEquals("Su", afterTrim);
+		
+		afterTrim = Manager.trimString(test1, 20);
+		assertEquals("Superman", afterTrim);
+	}
 }

@@ -17,6 +17,8 @@ import model.DLEvent;
 import model.Edge;
 import model.User;
 
+//I do not think all of these try catches are needed. We should look at this a little bit to determine if thats is true.
+
 public class Manager {
 	/**
 	 * Interface to the MySQL database.
