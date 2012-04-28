@@ -82,6 +82,8 @@ public class Manager {
 			return false;
 		}
 
+		
+		//is the try catch needed here? it is going to return something regardless.
 		try {
 			return !con.isClosed();
 		} catch (SQLException e) {
