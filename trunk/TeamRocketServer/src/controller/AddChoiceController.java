@@ -53,12 +53,7 @@ public class AddChoiceController {
 			Message response = new Message(xml) ;
 			return response ;
 		}
-//		if(temp == null){
-//			new Manager();
-//			Manager.retrieveEvent(request.id());
-//			new TeamRocketServerModel().getInstance().getTable().put(request.id(), Manager.retrieveEvent(request.id()));
-//			model.getTable().get(request.id()).addDLChoice(dlc);
-//		}
+		temp.addDLChoice(dlc);
 		String xml = Message.responseHeader(request.id()) + "<addChoiceResponse id='" + id + "' number='" + number + "' choice='" + choice + "'/></response>";
 		Message response = new Message(xml);
 		
