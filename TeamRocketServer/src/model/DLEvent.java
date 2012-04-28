@@ -154,6 +154,11 @@ public class DLEvent {
 	public void setComplete(){
 		this.isComplete = true;
 	}
+	
+	public boolean isComplete(){
+		return isComplete ;
+	}
+	
 	//added by rhollinger
 	//tested
 	public boolean signIn(String name, String pswd){
