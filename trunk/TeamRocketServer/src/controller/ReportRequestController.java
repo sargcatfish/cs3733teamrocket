@@ -36,7 +36,7 @@ public class ReportRequestController {
 		
 		Admin a = TeamRocketServerModel.getInstance().getAdmin() ;
 		String xmlString="";
-		Message response = new Message(Message.responseHeader(request.id(), "Something went horribly wrong on the server or maybe there is no open of type"));
+		Message response;
 		ResultSet m;
 
 		if (!a.verify(key)){
