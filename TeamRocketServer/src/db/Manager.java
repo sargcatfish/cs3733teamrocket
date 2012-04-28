@@ -460,7 +460,7 @@ public class Manager {
  * @return result set of event ids
  * @throws SQLException
  */
-	public static ResultSet getEventsDays(boolean isComplete, int daysOld) throws SQLException {	
+	public static ResultSet getEventsDays(boolean isComplete, int daysOld) {	
 		ResultSet result ;
 
 		try {

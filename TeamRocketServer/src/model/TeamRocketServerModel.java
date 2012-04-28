@@ -105,8 +105,15 @@ public class TeamRocketServerModel {
 		}
 		else return 0;
 	}
-	//TODO make it work
-	public static int destroyEvent(String isComplete, int daysOld) throws SQLException{
+
+	/**
+	 * destroys specified event
+	 * @author ian, wesley
+	 * @param isComplete
+	 * @param daysOld
+	 * @return number affected
+	 */
+	public static int destroyEvent(String isComplete, int daysOld) {
 		boolean a ;
 		ResultSet result1;
 		ResultSet result2;
@@ -117,10 +124,14 @@ public class TeamRocketServerModel {
 		result1 = Manager.getEventsDays(a, daysOld) ;
 		result2 = Manager.getEventsDays(a, daysOld);
 		
-		while(result1.next()){
-			if(getInstance().getTable().containsKey(result1.getString("id"))){
-			getInstance().getTable().remove(result1.getString("id"));
+		try {
+			while(result1.next()){
+				if(getInstance().getTable().containsKey(result1.getString("id"))){
+				getInstance().getTable().remove(result1.getString("id"));
+				}
 			}
+		} catch (SQLException e) {
+			throw new IllegalArgumentException(e.getMessage(), e);
 		}
 		return Manager.deleteEvent(result2);
 	}

@@ -90,14 +90,8 @@ public class DecisionLineProtocolHandler implements IProtocolHandler {
 		} else if(localName.equals("removeRequest")){
 			// More message handling
 			System.out.println("Trying to remove.\n");
-			removeController = new RemoveRequestController(st);
-			try {
-				return removeController.process(request);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
+			removeController = new RemoveRequestController(st);				
+			return removeController.process(request);
 			
 		} else if(localName.equals("reportRequest")){
 			// More message handling

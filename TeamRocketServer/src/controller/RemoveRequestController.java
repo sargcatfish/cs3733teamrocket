@@ -20,7 +20,7 @@ public class RemoveRequestController {
 	public RemoveRequestController(ClientState st){
 		state = st;
 	}
-	public Message process(Message request) throws SQLException {
+	public Message process(Message request) {
 	int result ;
 	Message response ;
 	Node signInR = request.contents.getFirstChild();
