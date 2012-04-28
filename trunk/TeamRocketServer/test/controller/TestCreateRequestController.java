@@ -60,7 +60,7 @@ public class TestCreateRequestController extends TestCase {
 			assertEquals(values[index], d.getName());
 		}
 		
-//		Manager.deleteEvent(event.getID());
+		Manager.deleteEvent(event.getID());
 		
 		 xmlSource = "<request version='1.0' id='test'><createRequest type='open' " +
 				"question='" + question + "' numChoices='" + numChoices + "' numRounds='" + numRounds + "'>" +
