@@ -46,6 +46,7 @@ public class TestReportRequestController extends TestCase {
 	public void setUp(){
 		Message.configure("decisionlines.xsd");
 		adminMsg = new Message(this.adminStr);
+//		System.out.print(adminMsg);
 		cont = new ReportRequestController(null);
 		adminSignIn = new AdminSignInRequestController(null);
 		adminSignIn.process(adminMsg);
@@ -83,8 +84,8 @@ public class TestReportRequestController extends TestCase {
 				"<reportRequest key ='" + key + "' type = 'closed'/></request>";
 		
 		Message request = new Message(xmlSource);
-		System.out.println("request: " + request);
+	//	System.out.println("request: " + request);
 		Message response = cont.process(request);
-		System.out.println("response: " + response);
+	//	System.out.println("response: " + response);
 	}
 }

@@ -63,7 +63,7 @@ public class TestSignInRequestController extends TestCase {
 		assertEquals(numRounds, Integer.parseInt(map.getNamedItem("numRounds").getNodeValue()));
 		assertEquals(eventQuestion, map.getNamedItem("question").getNodeValue());
 		assertEquals(id, map.getNamedItem("id").getNodeValue());
-		assertEquals(1, map.getNamedItem("position").getNodeValue()); 
+		assertEquals(1, Integer.parseInt(map.getNamedItem("position").getNodeValue())); 
 		NodeList children = first.getChildNodes();
 		for(int i = 0; i < children.getLength(); i++){
 			Node child = children.item(i);
