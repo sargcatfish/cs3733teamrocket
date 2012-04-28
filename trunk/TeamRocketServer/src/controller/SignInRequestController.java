@@ -63,6 +63,9 @@ public class SignInRequestController {
 			Message response = new Message(xmlString);
 			return response;
 		}
+		if(TeamRocketServerModel.getInstance().getTable().get(eventID) == null){
+			TeamRocketServerModel.getInstance().getTable().put(eventID, m);
+		}
 		TeamRocketServerModel.getInstance().getTable().get(eventID).addClientState(state); // add the client state to the local list
 		int position = m.getNextPosition(user);
 		//try to sign in as already existent user
