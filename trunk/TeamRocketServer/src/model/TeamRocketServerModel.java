@@ -123,7 +123,6 @@ public class TeamRocketServerModel {
 			getInstance().getTable().remove(result1.getString("id"));
 			}
 		}
-		
 		return Manager.deleteEvent(result2);
 	}
 
