@@ -83,6 +83,16 @@ public class TestForceRequestController extends TestCase {
 		Message request = new Message(xmlSource);
 		Message response = cont.process(request);
 		assertTrue(event1.isComplete()) ;
+		
+		String xmlSource2 = "<request version='1.0' id='test'>" +
+				"<forceRequest key ='" + key + "' id = 'shoe'/></request>";
+		
+		Message request2 = new Message(xmlSource2);
+		Message response2 = cont.process(request2);
+		Node check = response2.contents.getFirstChild() ;
+		NamedNodeMap checkA = check.getAttributes() ;
+		int val = Integer.parseInt(checkA.getNamedItem("numberAffected").getNodeValue()) ;
+		assertEquals(0, val) ;
 	}
 	
 	public void testForceDays() throws SQLException{
@@ -97,6 +107,6 @@ public class TestForceRequestController extends TestCase {
 		NamedNodeMap checkA = check.getAttributes() ;
 		int val = Integer.parseInt(checkA.getNamedItem("numberAffected").getNodeValue()) ;
 		assertTrue(event1.isComplete()) ;
-		assertEquals(7, val) ;
+		assertTrue(val > 3) ;
 	}
 }

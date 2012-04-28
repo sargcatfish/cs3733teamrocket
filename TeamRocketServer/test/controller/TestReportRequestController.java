@@ -12,7 +12,7 @@ import db.Manager;
 import junit.framework.TestCase;
 /**
  * 
- * @author Timothy Kolek
+ * @author Wesley Nitinthorn
  *
  */
 public class TestReportRequestController extends TestCase {

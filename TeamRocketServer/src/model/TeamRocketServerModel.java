@@ -9,7 +9,7 @@ import java.util.Hashtable;
 import db.Manager;
 /** Singleton model with a table of the locally stored event
  * 
- * @author Wesley
+ * @author Wesley, Ian
  *
  */
 public class TeamRocketServerModel {
@@ -66,11 +66,10 @@ public class TeamRocketServerModel {
 	 */
 	public static int forceCompleteEvent(String id){
 		
+	if (getInstance().getTable().containsKey(id)){
 		getInstance().getTable().get(id).setComplete() ;
-		if (Manager.setCompletion(id)){
-			return 1;
-		}
-		else return 0;
+	}
+		return (Manager.setCompletion(id)) ;
 	}
 	
 	/**
