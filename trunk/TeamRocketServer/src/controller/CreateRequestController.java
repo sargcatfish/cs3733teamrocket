@@ -81,7 +81,7 @@ public class CreateRequestController {
 		Manager.insertDLEvent(id, Integer.parseInt(numChoices), Integer.parseInt(numRounds), 
 				eventQuestion, isOpen, true, moderator);
 		//get the event from database after adding it.
-		Manager.retrieveEvent(request.id());
+		new TeamRocketServerModel().getInstance().getTable().put(id, Manager.retrieveEvent(id));
 		//get choice names	
 		if(!isOpen){
 			for (int i = 0; i < Integer.parseInt(numChoices); i++){

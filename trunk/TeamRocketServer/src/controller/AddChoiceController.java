@@ -47,6 +47,7 @@ public class AddChoiceController {
 		if(temp == null){
 			new Manager();
 			Manager.retrieveEvent(request.id());
+			new TeamRocketServerModel().getInstance().getTable().put(request.id(), Manager.retrieveEvent(request.id()));
 			model.getTable().get(request.id()).addDLChoice(dlc);
 		}
 		else temp.addDLChoice(dlc);
