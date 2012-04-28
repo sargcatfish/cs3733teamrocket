@@ -26,8 +26,9 @@ public class ReportRequestController {
 	}
 
 	public Message process(Message request) {
+	//	System.out.print(request);
 		Node signInR = request.contents.getFirstChild();
-		
+		System.out.print(signInR);
 		
 		NamedNodeMap adminAtts = signInR.getAttributes();
 		String key = adminAtts.getNamedItem("key").getNodeValue();
