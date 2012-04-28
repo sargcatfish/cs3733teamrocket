@@ -72,7 +72,6 @@ public class TestSignInRequestController extends TestCase {
 		Message response = cont.process(request);
 		//System.out.print(response.toString());
 		Node first = response.contents.getFirstChild(); // this should be the signInResponse
-		System.out.print(response);
 		NamedNodeMap map = first.getAttributes();
 		
 		assertEquals(numChoices, Integer.parseInt(map.getNamedItem("numChoices").getNodeValue()));

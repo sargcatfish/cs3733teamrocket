@@ -47,6 +47,7 @@ public class TestTurnResponseController extends TestCase {
 		assertEquals("", completed);
 		
 		temp.addEdge(new Edge(1,2,23));
+		temp.incrementEdges();
 		
 		response = cont.process("test");
 		

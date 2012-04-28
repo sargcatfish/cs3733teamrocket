@@ -81,7 +81,9 @@ public class CreateRequestController {
 		Manager.insertDLEvent(id, Integer.parseInt(numChoices), Integer.parseInt(numRounds), 
 				eventQuestion, isOpen, true, moderator);
 		//get the event from database after adding it.
-		new TeamRocketServerModel().getInstance().getTable().put(id, Manager.retrieveEvent(id));
+		DLEvent e = Manager.retrieveEvent(id); // create local event
+		e.addClientState(state); // add moderator clientstate
+		TeamRocketServerModel.getInstance().getTable().put(id, e); // add local event to table
 		//get choice names	
 		if(!isOpen){
 			for (int i = 0; i < Integer.parseInt(numChoices); i++){

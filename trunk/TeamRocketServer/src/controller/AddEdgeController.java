@@ -55,7 +55,7 @@ public class AddEdgeController {
 			return response ;
 		}
 		else temp.addEdge(edge);
-		
+			temp.incrementEdges();
 		String xml = Message.responseHeader(request.id()) + "<addEdgeResponse id='" + id + "' left='" + left + "' right='" + right+ "' height='" + height + "'/></response>";
 		Message response = new Message(xml);
 		
@@ -69,7 +69,8 @@ public class AddEdgeController {
 				}
 			}
 		}	
-		new TurnResponseController().process(id);
+		TurnResponseController e = new TurnResponseController();
+		e.process(id);
 		return response;
 	}
 

@@ -160,5 +160,4 @@ public class TeamRocketServerModel {
 		}
 		return Manager.deleteEvent(result2);
 	}
-
 }
