@@ -37,22 +37,21 @@ public class AddChoiceController {
 		
 		int choiceNum = Integer.parseInt(number);
 		
-		Manager.insertChoice(id, choiceNum, choice);
-		
 		//add choice to local
 		//@Wesley I dont think we add a new event to local so just doing a check here
 		//if not local then go to DB
 		DLChoice dlc = new DLChoice(choiceNum, choice); 
 		
 		// Ian
-		// I made I function in the model to do this.  GetInstance already makes a model, don't know why you're making another
+		// I made I function in the model to do this.
 		// also error handling for if it doesn't exist
 		DLEvent temp = model.getEvent(id);
 		if (temp == null){
-			String xml = Message.responseHeader(request.id(), "No event") + "<addChoiceResponse id='" + id + "' number='0' choice='0'/></response>" ;
+			String xml = Message.responseHeader(request.id(), "No event") + "<addChoiceResponse id='" + id + "' number='0' choice='" + choice + "'/></response>" ;
 			Message response = new Message(xml) ;
 			return response ;
 		}
+		Manager.insertChoice(id, choiceNum, choice);
 		temp.addDLChoice(dlc);
 		String xml = Message.responseHeader(request.id()) + "<addChoiceResponse id='" + id + "' number='" + number + "' choice='" + choice + "'/></response>";
 		Message response = new Message(xml);

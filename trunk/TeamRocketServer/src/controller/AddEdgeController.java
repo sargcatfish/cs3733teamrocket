@@ -40,9 +40,7 @@ public class AddEdgeController {
 		int leftNum = Integer.parseInt(left);
 		int rightNum = Integer.parseInt(right);
 		int heightNum = Integer.parseInt(height);
-		
-		Manager.insertEdge(id, leftNum, rightNum, heightNum);
-		
+				
 		//add edge to local
 		Edge edge = new Edge(leftNum, rightNum, heightNum);
 		// ian
@@ -56,6 +54,8 @@ public class AddEdgeController {
 		}
 		else temp.addEdge(edge);
 			temp.incrementEdges();
+			
+		Manager.insertEdge(id, leftNum, rightNum, heightNum);
 		String xml = Message.responseHeader(request.id()) + "<addEdgeResponse id='" + id + "' left='" + left + "' right='" + right+ "' height='" + height + "'/></response>";
 		Message response = new Message(xml);
 		

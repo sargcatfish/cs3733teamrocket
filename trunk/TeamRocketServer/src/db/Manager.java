@@ -394,7 +394,7 @@ public class Manager {
 
 
 	/**Change the completion status of the event with given id*/
-	// This now works
+	// Ian
 	public static int setCompletion(String id) {
 		int result = 0 ;
 		
@@ -408,6 +408,29 @@ public class Manager {
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result ;
+	}
+	
+	/**
+	 * changes event to not accept users
+	 * @author ian
+	 * @param id
+	 * @return # affected
+	 */
+	public static int setClosed(String id){
+		int result = 0 ;
+		
+		PreparedStatement pstmt;
+		try {
+			pstmt = Manager
+					.getConnection()
+					.prepareStatement(
+							"UPDATE DLEvents SET acceptingUsers = false WHERE id = ?;");
+			pstmt.setString(1, id);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return result ;
