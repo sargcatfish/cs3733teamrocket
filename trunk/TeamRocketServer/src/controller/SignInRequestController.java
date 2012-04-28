@@ -89,7 +89,7 @@ public class SignInRequestController {
 		}
 			
 		m.addUser(new User(user, password, false, position));
-		TeamRocketServerModel.getInstance().getTable().get(eventID).addUser(new User(user, password, false, position));
+		TeamRocketServerModel.getInstance().getEvent(eventID).addUser(new User(user, password, false, position));
 		if(m.getUserList().size() == m.getNumChoices())
 			Manager.setacceptingUsers(m.getID());
 		StringBuffer choices = new StringBuffer();
