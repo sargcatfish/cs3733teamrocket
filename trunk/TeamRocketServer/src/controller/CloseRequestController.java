@@ -13,7 +13,7 @@ import model.TeamRocketServerModel;
  *
  */
 public class CloseRequestController {
-	
+
 	ClientState state;
 	
 	public  CloseRequestController(ClientState st) {

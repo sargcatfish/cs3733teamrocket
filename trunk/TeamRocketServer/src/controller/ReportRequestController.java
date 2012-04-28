@@ -53,13 +53,13 @@ public class ReportRequestController {
 					while(m.next()){
 						xmlString = xmlString +
 								"<entry "+
-								"id='" + m.getString("id") + "' " +
-								"type = 'open' " + 
-								"question = '" + m.getString("eventQuestion") + "' " +
-								"numChoices = '" + m.getInt("numChoices") + "' " +
-								"numRounds = '" + m.getInt("numRounds") + "' " + 
-								"created = '" + m.getDate("dateCreated") + "' " +
-								"completed = '" + m.getBoolean("isComplete") + "' " + //  + "</reportRequestResponse></response>";
+								"id=\"" + m.getString("id") + "\" " +
+								"type = \"open\" " + 
+								"question = \"" + m.getString("eventQuestion") + "\" " +
+								"numChoices = \"" + m.getInt("numChoices") + "\" " +
+								"numRounds = \"" + m.getInt("numRounds") + "\" " + 
+								"created = \"" + m.getDate("dateCreated") + "\" " +
+								"completed = \"" + m.getBoolean("isComplete") + "\" " + //  + "</reportRequestResponse></response>";
 								"/>";
 
 					}
@@ -79,13 +79,13 @@ public class ReportRequestController {
 					while(m.next()){
 						xmlString = xmlString +
 								"<entry "+
-								"id='" + m.getString("id") + "' " +
-								"type = 'open' " + 
-								"question = '" + m.getString("eventQuestion") + "' " +
-								"numChoices = '" + m.getInt("numChoices") + "' " +
-								"numRounds = '" + m.getInt("numRounds") + "' " + 
-								"created = '" + m.getDate("dateCreated") + "' " +
-								"completed = '" + m.getBoolean("isComplete") + "' " + //  + "</reportRequestResponse></response>";
+								"id=\"" + m.getString("id") + "\" " +
+								"type = \"open\" " + 
+								"question = \"" + m.getString("eventQuestion") + "\" " +
+								"numChoices = \"" + m.getInt("numChoices") + "\" " +
+								"numRounds = \"" + m.getInt("numRounds") + "\" " + 
+								"created = \"" + m.getDate("dateCreated") + "\" " +
+								"completed = \"" + m.getBoolean("isComplete") + "\" " + //  + "</reportRequestResponse></response>";
 								"/>";
 						//Message response = new Message(xmlString);
 

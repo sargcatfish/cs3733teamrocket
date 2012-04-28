@@ -54,12 +54,12 @@ public class SignInRequestController {
 		if (m == null){
 			
 			String xmlString = Message.responseHeader(request.id(), "The event doesnt exist") +
-					"<signInResponse id='" + eventID + "' " + 
-					"type = 'open' " +
-					"question = '1' " +
-					"numChoices = '1' " + 
-					"numRounds = '1' " +
-					"position = '1'/></response>";
+					"<signInResponse id=\"" + eventID + "\" " + 
+					"type = \"open\" " +
+					"question = \"1\" " +
+					"numChoices = \"1\" " + 
+					"numRounds = \"1\" " +
+					"position = \"1\"/></response>";
 //			System.out.print(xmlString);
 			Message response = new Message(xmlString);
 			return response;
@@ -98,7 +98,7 @@ public class SignInRequestController {
 			String choice = m.getDLChoice().get(i).getName();
 			int index = m.getDLChoice().get(i).getIndex();
 			// append into entry section
-			choices.append("<choice value='" + choice + "' index='" + index + "'/>");
+			choices.append("<choice value=\"" + choice + "\" index=\"" + index + "\"/>");
 		}
 		
 		String type = new String("open");
@@ -109,13 +109,13 @@ public class SignInRequestController {
 			
 			// TODO: Error Checking! May have typed in invalid meeting id
 		if (Accepted) {
-			String xmlString =  Message.responseHeader(request.id()) + "<signInResponse id='" + eventID + "' " + 
-//			    "id = '" + eventID + "' " + 
-				"type = '" + type + "' " +
-				"question = '" + m.getEventQuestion() + "' " +
-				"numChoices = '" + m.getNumChoices() + "' " + 
-				"numRounds = '" + m.getNumRounds() + "' " +
-				"position = '" + position + "'>" + choices.toString() + "</signInResponse></response>";
+			String xmlString =  Message.responseHeader(request.id()) + "<signInResponse id=\"" + eventID + "\" " + 
+//			    "id = \"" + eventID + "\" " + 
+				"type = \"" + type + "\" " +
+				"question = \"" + m.getEventQuestion() + "\" " +
+				"numChoices = \"" + m.getNumChoices() + "\" " + 
+				"numRounds = \"" + m.getNumRounds() + "\" " +
+				"position = \"" + position + "\">" + choices.toString() + "</signInResponse></response>";
 			
 			Message response = new Message(xmlString);
 			
@@ -140,12 +140,12 @@ public class SignInRequestController {
 		
 
 		String xmlString = Message.responseHeader(request.id(), failedReason);
-		xmlString +=  "<signInResponse id='" + eventID + "' " + 
-				"type = '" + type + "' " +
-				"question = '" + m.getEventQuestion() + "' " +
-				"numChoices = '" + m.getNumChoices() + "' " + 
-				"numRounds = '" + m.getNumRounds() + "' " +
-				"position = '" + position + "'>" + choices.toString() + "</signInResponse></response>";
+		xmlString +=  "<signInResponse id=\"" + eventID + "\" " + 
+				"type = \"" + type + "\" " +
+				"question = \"" + m.getEventQuestion() + "\" " +
+				"numChoices = \"" + m.getNumChoices() + "\" " + 
+				"numRounds = \"" + m.getNumRounds() + "\" " +
+				"position = \"" + position + "\">" + choices.toString() + "</signInResponse></response>";
 
 		Message response = new Message(xmlString);
 
