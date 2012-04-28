@@ -19,7 +19,7 @@ import xml.Message;
 /**
  * Gets the createRequest, processes it, and sends back the response.
  * 
- * @author rhollinger, Nick Bosowski
+ * @author rhollinger, Nick Bosowski, Wesley Nitinthorn
  *
  */
 public class CreateRequestController {
@@ -80,6 +80,8 @@ public class CreateRequestController {
 
 		Manager.insertDLEvent(id, Integer.parseInt(numChoices), Integer.parseInt(numRounds), 
 				eventQuestion, isOpen, true, moderator);
+		//get the event from database after adding it.
+		Manager.retrieveEvent(request.id());
 		//get choice names	
 		if(!isOpen){
 			for (int i = 0; i < Integer.parseInt(numChoices); i++){

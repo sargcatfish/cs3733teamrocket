@@ -1,6 +1,7 @@
 package controller;
 
 import model.DLChoice;
+import model.DLEvent;
 import model.TeamRocketServerModel;
 
 import org.w3c.dom.NamedNodeMap;
@@ -12,7 +13,7 @@ import server.Server;
 import xml.Message;
 /**
  * 
- * @author Timothy Kolek, Nick Bosowski
+ * @author Timothy Kolek, Nick Bosowski, Wesley Nitinthorn
  *
  */
 
@@ -39,8 +40,16 @@ public class AddChoiceController {
 		Manager.insertChoice(id, choiceNum, choice);
 		
 		//add choice to local
+		//@Wesley I dont think we add a new event to local so just doing a check here
+		//if not local then go to DB
 		DLChoice dlc = new DLChoice(choiceNum, choice); 
-		model.getTable().get(request.id()).addDLChoice(dlc);
+		DLEvent temp = model.getTable().get(request.id());
+		if(temp == null){
+			new Manager();
+			Manager.retrieveEvent(request.id());
+			model.getTable().get(request.id()).addDLChoice(dlc);
+		}
+		else temp.addDLChoice(dlc);
 
 		String xml = Message.responseHeader(request.id()) + "<addChoiceResponse id='" + id + "' number='" + number + "' choice='" + choice + "'/></response>";
 		Message response = new Message(xml);
