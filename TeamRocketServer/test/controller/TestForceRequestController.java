@@ -1,5 +1,7 @@
 package controller;
 
+import java.sql.SQLException;
+
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -67,26 +69,23 @@ public class TestForceRequestController extends TestCase {
 		Manager.deleteEvent("2");
 		Manager.deleteEvent("3");
 		Manager.deleteEvent("4");
-		TeamRocketServerModel.getInstance();
 		TeamRocketServerModel.destroyEvent(id);
 		TeamRocketServerModel.destroyEvent("2");
 		TeamRocketServerModel.destroyEvent("3");
 		TeamRocketServerModel.destroyEvent("4");
 	}
 	
-	public void testForceSingle(){
+	public void testForceSingle() {
 		String xmlSource = "<request version='1.0' id='test'>" +
 				"<forceRequest key ='" + key + "' id = 'Apples123'/></request>";
 		
 		assertFalse(event1.isComplete()) ;
 		Message request = new Message(xmlSource);
-		System.out.println("request: " + request);
 		Message response = cont.process(request);
-		System.out.println("response: " + response);
 		assertTrue(event1.isComplete()) ;
 	}
 	
-	public void testForceDays(){
+	public void testForceDays() throws SQLException{
 		String xmlSource = "<request version='1.0' id='test'>" +
 				"<forceRequest key ='" + key + "' daysOld = '-1'/></request>";
 		
@@ -95,8 +94,9 @@ public class TestForceRequestController extends TestCase {
 		Message response = cont.process(request);
 		System.out.println("response: " + response);
 		Node check = response.contents.getFirstChild() ;
-		NamedNodeMap checkA = check.getFirstChild().getAttributes() ;
+		NamedNodeMap checkA = check.getAttributes() ;
 		int val = Integer.parseInt(checkA.getNamedItem("numberAffected").getNodeValue()) ;
-		assertEquals(3, val) ;
+		assertTrue(event1.isComplete()) ;
+		assertEquals(7, val) ;
 	}
 }
