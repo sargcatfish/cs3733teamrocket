@@ -50,7 +50,7 @@ public class TestReportRequestController extends TestCase {
 		cont = new ReportRequestController(null);
 		adminSignIn = new AdminSignInRequestController(null);
 		adminSignIn.process(adminMsg);
-		server = new TeamRocketServerModel().getInstance();
+		server = TeamRocketServerModel.getInstance();
 		key = server.getAdmin().getKey();
 		
 		TeamRocketServerModel.getInstance().getTable().put(id, event1);

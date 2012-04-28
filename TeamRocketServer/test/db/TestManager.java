@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import model.*;
 /**
  * 
- * @author Nick Bosowski
+ * @author Nick Bosowski Timothy Kolek
  *
  */
 
