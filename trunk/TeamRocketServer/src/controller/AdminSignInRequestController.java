@@ -33,16 +33,15 @@ public class AdminSignInRequestController {
 		adminKey = adminKey.substring(0, 13);
 		String xmlString = "";
 		
-		// get meeting object -- have user sign in!
 		Admin a = TeamRocketServerModel.getInstance().getAdmin() ;
 		
 		
 		if (!a.signIn(admin, pword)) {
 			System.err.println ("Can't sign in");
-			xmlString =  Message.responseHeader(request.id(), "Invalid credential")+"</response>"; //valid xml??
+			xmlString =  Message.responseHeader(request.id(), "Invalid credential")+"<adminResponse key ='bad' /></response>"; //valid xml??
 		}
 		// client should recognize this!
-		else {//:: TODO update data base with new admin key!
+		else {
 			a.setKey(adminKey);
 			xmlString =  Message.responseHeader(request.id()) + "<adminResponse key ='" + adminKey + "' /></response>" ;
 		}
