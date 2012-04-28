@@ -31,15 +31,15 @@ public class TeamRocketServerModel {
 	/*adding this comment so it recommits the proper file! */
 	/*You can create an event first as try to add or you can do this messy way pick?*/
 	public String addDLEvent(DLEvent d){
-		String id = Manager.generateEventID(); //generate ID for the event
-		table.put(id, d);	// add DLEvent to table
+	//	String id = Manager.generateEventID(); //generate ID for the event
+		table.put(d.getID(), d);	// add DLEvent to table //Nick 4/28/12
 		if (!Manager.insertDLEvent(d.getID(), d.getNumChoices(), d.getNumEdges(), d.getEventQuestion(),
 				d.getIsOpen(), d.isAccepting(), d.getModerator())) {
 			System.err.println("FAIL TO INSERT IN DB");
 			return "";
 		}
 		else{
-			return id;
+			return d.getID();
 		}
 	}
 	
