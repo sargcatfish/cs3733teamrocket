@@ -76,9 +76,16 @@ public class TestCloseRequestController extends TestCase {
 		assertTrue(event1.isAccepting()) ;
 		String xmlSource = "<request version='1.0' id='test'>" +
 				"<signInRequest id='" + id + "'>" +
-				"<user name='Superman'/>" + "</signInRequest></request>";
+				"<user name='GreenLantern'/>" + "</signInRequest></request>";
 		
 		Message request = new Message(xmlSource);
+		more.process(request);
+		
+		xmlSource = "<request version='1.0' id='test'>" +
+				"<signInRequest id='" + id + "'>" +
+				"<user name='Superman'/>" + "</signInRequest></request>";
+		
+		request = new Message(xmlSource);
 		more.process(request);
 		
 		xmlSource = "<request version='1.0' id='test'>" +
