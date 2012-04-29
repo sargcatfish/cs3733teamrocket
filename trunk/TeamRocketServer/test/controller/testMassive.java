@@ -6,16 +6,17 @@ import org.w3c.dom.NodeList;
 
 import junit.framework.TestCase;
 import model.DLEvent;
+import model.MockClient;
 import model.TeamRocketServerModel;
 import xml.Message;
 import db.Manager;
 
 public class testMassive extends TestCase {
 
-	AddChoiceController addChoice = new AddChoiceController(null);
-	CreateRequestController createRequest = new CreateRequestController(null);
-	SignInRequestController signIn = new SignInRequestController(null);
-	AddEdgeController addEdge = new AddEdgeController(null);
+	AddChoiceController addChoice = new AddChoiceController(new MockClient());
+	CreateRequestController createRequest = new CreateRequestController(new MockClient());
+	SignInRequestController signIn = new SignInRequestController(new MockClient());
+	AddEdgeController addEdge = new AddEdgeController(new MockClient());
 	String question = "How about a pineapple kid?";
 	int numChoices = 3;
 	int numRounds = 4;

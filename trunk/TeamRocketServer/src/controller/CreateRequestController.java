@@ -82,7 +82,7 @@ public class CreateRequestController {
 				eventQuestion, isOpen, true, moderator);
 		//get the event from database after adding it.
 		DLEvent e = Manager.retrieveEvent(id); // create local event
-		e.addClientState(state); // add moderator clientstate
+		e.addClientState(state); // add moderator clientstate TODO: comment out to not auto sign in moderator
 		TeamRocketServerModel.getInstance().getTable().put(id, e); // add local event to table
 		//get choice names	
 		if(!isOpen){
@@ -94,7 +94,7 @@ public class CreateRequestController {
 			}
 		}
 		//Sign in the moderator
-		Manager.signin(id, moderator, pswd, true, 0);
+		Manager.signin(id, moderator, pswd, true, 0); // TODO: Comment out to not auto sign in moderator
 	
 		
 		String xmlString = Message.responseHeader(request.id()) + "<createResponse id=\"" + id + "\"/></response>";
