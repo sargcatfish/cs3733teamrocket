@@ -72,8 +72,10 @@ public class AddChoiceController {
 		Iterator<ClientState> cs = TeamRocketServerModel.getInstance().getEvent(id).getStates().iterator();
 		while(cs.hasNext()){
 			ClientState next = cs.next();
-			if(!next.id().equals(state.id()))
-				next.sendMessage(response);		
+			if(next != null){
+				if(!next.id().equals(state.id()))
+					next.sendMessage(response);	
+			}
 		}
 		return response;
 	}
