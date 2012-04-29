@@ -1,4 +1,5 @@
 package model;
+import db.Manager;
 import server.ClientState;
 import xml.Message;
 
@@ -25,7 +26,7 @@ public class MockClient implements ClientState {
 	@Override
 	public String id() {
 		// TODO Auto-generated method stub
-		return null;
+		return  Manager.generateEventID();
 	}
 
 }

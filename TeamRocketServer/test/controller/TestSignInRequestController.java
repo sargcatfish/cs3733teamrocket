@@ -5,6 +5,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import model.DLEvent;
+import model.MockClient;
 import model.TeamRocketServerModel;
 import xml.Message;
 import controller.SignInRequestController;
@@ -31,8 +32,8 @@ public class TestSignInRequestController extends TestCase {
 	
 	
 	public void setUp(){
-		cont = new SignInRequestController(null);
-		create = new CreateRequestController(null);
+		cont = new SignInRequestController(new MockClient());
+		create = new CreateRequestController(new MockClient());
 		String id = "Apples123";
 		Message.configure("decisionlines.xsd");
 	//	TeamRocketServerModel.getInstance().getTable().put(id, event);
