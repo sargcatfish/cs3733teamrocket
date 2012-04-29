@@ -37,9 +37,6 @@ public class TestBroadcast extends TestCase{
 		client1 = new MockClient() ;
 		client2 = new MockClient() ;
 		client3 = new MockClient() ;
-		Server.register(client1.id(), client1) ;
-		Server.register(client2.id(), client2) ;
-		Server.register(client3.id(), client3) ;
 		cont = new SignInRequestController(client2);
 		create = new CreateRequestController(client1);
 		cont2 = new SignInRequestController(client3) ;
@@ -49,9 +46,6 @@ public class TestBroadcast extends TestCase{
 	}
 	
 	public void tearDown(){
-		Server.unregister(client1.id()) ;
-		Server.unregister(client2.id()) ;
-		Server.unregister(client3.id()) ;
 		Manager.deleteEvent(id);
 		TeamRocketServerModel.getInstance();
 		TeamRocketServerModel.destroyEvent(id);
@@ -83,6 +77,7 @@ public class TestBroadcast extends TestCase{
 		xmlSource = "<request version='1.0' id='test'>" +
 				"<signInRequest id='" + id + "'>" +
 				"<user name='Superman'/>" + "</signInRequest></request>";
+		request = new Message(xmlSource) ;
 		cont2.process(request) ;
 		
 		xmlSource = "<request version='1.0' id='test'><addChoiceRequest id='" + id + "' number='0' choice='Orange'/></request>";

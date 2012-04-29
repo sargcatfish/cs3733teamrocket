@@ -1,6 +1,7 @@
 package controller;
 
 import model.DLEvent;
+import model.MockClient;
 import model.TeamRocketServerModel;
 
 import xml.Message;
@@ -15,23 +16,36 @@ import junit.framework.TestCase;
 
 public class TestCloseRequestController extends TestCase {
 	CloseRequestController cont;
-	String id = "Apples123";
+	String id ;
 	int numChoices = 4;
 	int numRounds = 3;
 	String eventQuestion = "Are llamas evil?";
-	boolean isOpen = false;
-	boolean acceptingUsers = true;
-	String moderator = "superman";
 	String choiceName[] = {"Definitely", "Hail the llama king", "I like turtles", "Keanu Reaves"}; 
-	DLEvent event1 = new DLEvent(id, moderator, eventQuestion, numChoices, numRounds) ;
 	TeamRocketServerModel server;
+	CreateRequestController test ;
+	SignInRequestController more, more2 ;
+	MockClient client1, client2, client3 ;
 	
 	public void setUp(){
+		client1 = new MockClient() ;
+		client2 = new MockClient() ;
+		client3 = new MockClient() ;
 		Message.configure("decisionlines.xsd");
 		cont = new CloseRequestController(null);
+		test = new CreateRequestController(client1) ;
+		String xmlSource = "<request version='1.0' id='test'><createRequest type='open' " +
+				"question='" + eventQuestion + "' numChoices='" + numChoices + "' numRounds='" + numRounds + "'>" +
+				"<choice value='" + choiceName[0] + "' index='0'/>" +
+				"<choice value='" + choiceName[1] + "' index='1'/>" +
+				"<user name='THEFlash'/></createRequest></request>";
+		
+		Message request = new Message(xmlSource);
+		test.process(request) ;
+		id = test.testId;
+		more = new SignInRequestController(client2) ;
+		more2 = new SignInRequestController(client3) ;
 		server = TeamRocketServerModel.getInstance();
 	
-		Manager.insertDLEvent(id, numChoices, numRounds, eventQuestion, true, acceptingUsers, moderator);
 	}
 	
 	public void tearDown(){
@@ -39,19 +53,46 @@ public class TestCloseRequestController extends TestCase {
 		TeamRocketServerModel.destroyEvent(id);
 	}
 	
-	public void testForceSingle() {
+	public void testFailSingle() {
 		String xmlSource = "<request version='1.0' id='test'>" +
 				"<closeRequest id = 'Apples123'/></request>";
 		
+		DLEvent event1 = Manager.retrieveEvent(id) ;
 		assertTrue(event1.isAccepting()) ;
 		Message request = new Message(xmlSource);
 		cont.process(request);
-		assertFalse(TeamRocketServerModel.getInstance().getTable().get(id).isAccepting());
+		assertTrue(TeamRocketServerModel.getInstance().getEvent(id).isAccepting());
 		
 		String xmlSource2 = "<request version='1.0' id='test'>" +
 				"<closeRequest id = 'shoe'/></request>";
 		
 		Message request2 = new Message(xmlSource2);
 		cont.process(request2);
+	}
+	
+	public void testSuccess(){
+		DLEvent event1 = Manager.retrieveEvent(id) ;
+
+		assertTrue(event1.isAccepting()) ;
+		String xmlSource = "<request version='1.0' id='test'>" +
+				"<signInRequest id='" + id + "'>" +
+				"<user name='Superman'/>" + "</signInRequest></request>";
+		
+		Message request = new Message(xmlSource);
+		more.process(request);
+		
+		xmlSource = "<request version='1.0' id='test'>" +
+				"<signInRequest id='" + id + "'>" +
+				"<user name='batman'/>" + "</signInRequest></request>";
+		
+		request = new Message(xmlSource);
+		more2.process(request);
+		
+		xmlSource = "<request version='1.0' id='test'>" +
+				"<closeRequest id = '" + id + "'/></request>";
+		
+		request = new Message(xmlSource);
+		cont.process(request);
+		assertFalse(TeamRocketServerModel.getInstance().getEvent(id).isAccepting());
 	}
 }

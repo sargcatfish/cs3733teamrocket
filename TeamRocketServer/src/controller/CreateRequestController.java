@@ -4,6 +4,7 @@ import java.sql.Date;
 
 import model.DLEvent;
 import model.TeamRocketServerModel;
+import model.User;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -68,15 +69,6 @@ public class CreateRequestController {
 		if(moderator == null){
 			throw new IllegalArgumentException("No moderator was found");
 		}
-//		if (numItems - Integer.getInteger(numChoices) > 1){
-//			moderator = next.item(numItems-2).getNodeValue();
-//			pswd = next.item(numItems-1).getNodeValue();
-//		}
-//		else{
-//			moderator = next.item(numItems-1).getNodeValue();
-//			pswd = new String("");
-//			}
-		//add the event to the database
 
 		Manager.insertDLEvent(id, Integer.parseInt(numChoices), Integer.parseInt(numRounds), 
 				eventQuestion, isOpen, true, moderator);
@@ -95,7 +87,7 @@ public class CreateRequestController {
 		}
 		//Sign in the moderator
 		Manager.signin(id, moderator, pswd, true, 0); // TODO: Comment out to not auto sign in moderator
-	
+		e.addModerator(new User(moderator, pswd, true, 0)); // add moderator to user list?
 		
 		String xmlString = Message.responseHeader(request.id()) + "<createResponse id=\"" + id + "\"/></response>";
 		Message resp = new Message(xmlString);
