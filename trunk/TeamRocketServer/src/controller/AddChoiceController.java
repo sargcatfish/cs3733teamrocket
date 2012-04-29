@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import model.DLChoice;
 import model.DLEvent;
+import model.MockClient;
 import model.TeamRocketServerModel;
 
 import org.w3c.dom.NamedNodeMap;
@@ -68,14 +69,19 @@ public class AddChoiceController {
 //				}
 //			}
 //		}	
-		
+		int choicesAdded = temp.getDLChoice().size();
+		int needed = temp.getNumChoices();
 		Iterator<ClientState> cs = TeamRocketServerModel.getInstance().getEvent(id).getStates().iterator();
 		while(cs.hasNext()){
 			ClientState next = cs.next();
 			if(next != null){
-				if(!next.id().equals(state.id()))
+				if(!next.id().equals(state.id()) ||(choicesAdded == needed && !temp.getIsOpen()))
 					next.sendMessage(response);	
 			}
+		}
+		if(choicesAdded == needed && !(state instanceof MockClient)){
+			new TurnResponseController().process(id);
+			response = null;
 		}
 		return response;
 	}
