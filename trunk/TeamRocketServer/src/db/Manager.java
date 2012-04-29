@@ -560,7 +560,6 @@ int result = 0 ;
 	 */
 	public static int deleteEvent(ResultSet result){
 		int returnVal = 0 ;
-		System.out.print("here");
 		try {
 			while(result.next()){
 				deleteEvent(result.getString("id")) ;

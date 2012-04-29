@@ -24,7 +24,6 @@ public class TestCreateRequestController extends TestCase {
 	public void testController(){
 		
 		String values[] = {"McDonalds", "Wendys", "Burger King", "Sushi Palace"};
-		System.out.print(values[0]);
 		String numChoices = "4";
 		String numRounds = "3";
 		String question = "where to eat?";
