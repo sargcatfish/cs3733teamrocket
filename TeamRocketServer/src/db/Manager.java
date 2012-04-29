@@ -414,12 +414,12 @@ public class Manager {
 	}
 	
 	/**
-	 * changes event to not accept users
+	 * changes event to not accept users for closing the event by moderator
 	 * @author ian
 	 * @param id
 	 * @return # affected
 	 */
-	public static int setClosed(String id){
+	public static int setClosed(String id, int i){
 		int result = 0 ;
 		
 		PreparedStatement pstmt;
@@ -433,6 +433,18 @@ public class Manager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		try {
+			pstmt = Manager
+					.getConnection()
+					.prepareStatement(
+							"UPDATE DLEvents SET numChoices = ? WHERE id = ?;");
+			pstmt.setInt(1, i) ;
+			pstmt.setString(2, id);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 		return result ;
 	}
 	

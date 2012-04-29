@@ -12,7 +12,6 @@ import db.Manager;
 
 /**
  * wanted to isolate testing the broadcast and turn functionality
- * it all works!
  * 
  * @author ian
  *
@@ -72,6 +71,7 @@ public class TestBroadcast extends TestCase{
 		
 		Message request = new Message(xmlSource);
 		create.process(request);
+		
 		id = create.testId;
 		xmlSource = "<request version='1.0' id='test'>" +
 				"<signInRequest id='" + id + "'>" +
@@ -107,7 +107,7 @@ public class TestBroadcast extends TestCase{
 		assertEquals ("addEdgeResponse", c1response.contents.getFirstChild().getLocalName());
 		assertEquals ("addEdgeResponse", c3response.contents.getFirstChild().getLocalName());
 		
-		// it now client2's turn "again" because it is assumed the first edge is sent by the manager
+		// it is now client2's turn "again" because it is assumed the first edge is sent by the manager
 		// even though in this instance, client2 just sent the message
 		c2response = client2.getAndRemoveMessage() ;
 		assertEquals ("turnResponse", c2response.contents.getFirstChild().getLocalName()) ;

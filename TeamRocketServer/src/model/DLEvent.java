@@ -241,5 +241,10 @@ public class DLEvent {
 	public ArrayList<ClientState> getStates(){
 		return stateList;
 	}
+	
+	// changes this for closing an event
+	public void setNumChoices(int i){
+		numChoices = i ;
+	}
 
 }
