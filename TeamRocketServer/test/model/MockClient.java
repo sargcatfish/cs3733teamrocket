@@ -1,32 +1,54 @@
 package model;
+
+import java.util.ArrayList;
+
 import db.Manager;
+
 import server.ClientState;
 import xml.Message;
 
+/**
+ * Represent "client" from the point of view of the server.
+ */
 public class MockClient implements ClientState {
 
-	@Override
+	final String id;
+	Object data;
+	ArrayList<Message> messages = new ArrayList<Message>();
+	
+	// a default
+	public MockClient() {
+		this.id = Manager.generateEventID();
+	}
+	
+	// "sends" message by holding onto it for later inspection 
 	public boolean sendMessage(Message m) {
-		// TODO Auto-generated method stub
-		return false;
+		messages.add(m);
+		return true;
 	}
 
-	@Override
+	// returns the message that was first "sent" in the pipeline
+	public Message getAndRemoveMessage() {
+		if (messages.isEmpty()) { return null; }
+		
+		return messages.remove(0); 
+	}
+	
+	// store objects for later use
 	public Object setData(Object newData) {
-		// TODO Auto-generated method stub
-		return null;
+		Object old = data;
+		data = newData;
+		return old;
 	}
-
-	@Override
+	
+	// retrieve stored object (if any)
 	public Object getData() {
-		// TODO Auto-generated method stub
-		return null;
+		return data;
 	}
 
-	@Override
+	// our server-generated unique id.
 	public String id() {
-		// TODO Auto-generated method stub
-		return  Manager.generateEventID();
+		return id ;
 	}
 
 }
