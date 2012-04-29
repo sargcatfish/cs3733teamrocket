@@ -135,20 +135,13 @@ public class DLEvent {
 			this.isComplete = true;
 	}
 	
-	public void addModerator(User user){
-		if (userList == null){
-			userList = new ArrayList<User>();			
-		}
-		userList.add(user);
-	}
-	
-	//tested
 	public void addUser(User user){
 		if (userList == null){
 			userList = new ArrayList<User>();			
 		}
 		userList.add(user);
 	}
+	
 	//tested
 	public void addEdge(Edge edge){
 		if (edgeList == null){
