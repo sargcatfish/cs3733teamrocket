@@ -134,12 +134,22 @@ public class DLEvent {
 		if(numEdges == numRounds * numChoices)
 			this.isComplete = true;
 	}
-	//tested
-	public void addUser(User user){
+	
+	public void addModerator(User user){
 		if (userList == null){
 			userList = new ArrayList<User>();			
 		}
 		userList.add(user);
+	}
+	
+	//tested
+	public void addUser(User user){
+		if (!user.isModerator){
+			if (userList == null){
+				userList = new ArrayList<User>();			
+			}
+			userList.add(user);
+		}
 	}
 	//tested
 	public void addEdge(Edge edge){

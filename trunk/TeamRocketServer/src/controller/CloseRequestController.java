@@ -23,21 +23,23 @@ public class CloseRequestController {
 	public Message process(Message request) {
 		String eventID = request.contents.getFirstChild().getAttributes().getNamedItem("id").getNodeValue();
 		int choices = 0 ;
-		//TODO close Event
-		//not sure if this is the right way to do this...
+
 		DLEvent temp = TeamRocketServerModel.getInstance().getEvent(eventID) ;
-				if (temp != null){
-					temp.setAcceptingUsers(false) ;
-					choices = temp.getStates().size();
-					temp.setNumChoices(choices) ;
-				}
-		int result = Manager.setClosed(eventID, choices);
-		if (result == 0){
+		if (temp == null){
 			String xmlString = Message.responseHeader(request.id(), "No event found") + "<closeResponse/></response>" ;
 			Message response = new Message(xmlString) ;
 			return response ;
 		}
-		else { 
+		if (temp.getUserList().size() < 3){
+			String xmlString = Message.responseHeader(request.id(), "Not enough users") + "<closeResponse/></response>" ;
+			Message response = new Message(xmlString) ;
+			return response ;
+		}
+		else {
+			temp.setAcceptingUsers(false) ;
+			choices = temp.getStates().size();
+			temp.setNumChoices(choices) ;
+			Manager.setClosed(eventID, choices);
 			String xmlString = Message.responseHeader(request.id()) + "<closeResponse/></response>";
 			Message response = new Message(xmlString);
 			return response;
