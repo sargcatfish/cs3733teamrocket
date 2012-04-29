@@ -12,7 +12,7 @@ import model.TeamRocketServerModel;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-
+import model.MockClient;
 import db.Manager;
 
 /**
@@ -62,14 +62,28 @@ public class AddEdgeController {
 			String xml = Message.responseHeader(request.id()) + "<addEdgeResponse id=\"" + id + "\" left=\"" + left + "\" right=\"" + right+ "\" height=\"" + height + "\"/></response>";
 			Message response = new Message(xml);
 			
+			/* This supposedly sends to all the clients */
+//			for (String threadID : Server.ids()) {
+//				ClientState cs = Server.getState(threadID);
+//				if (id.equals(cs.getData())) {
+//					// make sure not to send to requesting client TWICE
+//					if (!cs.id().equals(state.id())) {
+//						cs.sendMessage(response);
+//					}
+//				}
+//			}
 			Iterator<ClientState> cs = TeamRocketServerModel.getInstance().getEvent(id).getStates().iterator();
+			int edges =  temp.getNumEdges();
+			int maxEdges = temp.getNumChoices() * temp.getNumRounds();
 			while(cs.hasNext()){
 				ClientState next = cs.next();
 				if(next != null && state.id() != null){
-					if(!next.id().equals(state.id()))
+					if(!next.id().equals(state.id()) || edges== maxEdges)
 						next.sendMessage(response);	
 				}
 			}
+			if(edges == maxEdges && !(state instanceof MockClient))
+				response = null;
 			TurnResponseController e = new TurnResponseController();
 			e.process(id);
 			return response;
