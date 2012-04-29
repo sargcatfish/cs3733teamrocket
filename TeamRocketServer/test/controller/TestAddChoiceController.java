@@ -3,7 +3,7 @@ package controller;
 import java.sql.Date;
 
 import model.DLEvent;
-
+import model.MockClient;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -21,7 +21,7 @@ public class TestAddChoiceController extends TestCase {
 	AddChoiceController cont;
 	
 	public void setUp(){
-		cont = new AddChoiceController(null);
+		cont = new AddChoiceController(new MockClient());
 	}
 	
 	public void testAddChoiceProcess(){

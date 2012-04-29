@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import model.DLEvent;
+import model.MockClient;
 import model.TeamRocketServerModel;
 import model.User;
 
@@ -121,6 +122,9 @@ public class SignInRequestController {
 				"position = \"" + position + "\">" + choices.toString() + "</signInResponse></response>";
 			
 			Message response = new Message(xmlString);
+			if(m.getUserList().size() == m.getNumChoices() && !(state instanceof MockClient) && !m.getIsOpen()){
+				new TurnResponseController().process(eventID);
+			}
 			return response;
 		}
 		
