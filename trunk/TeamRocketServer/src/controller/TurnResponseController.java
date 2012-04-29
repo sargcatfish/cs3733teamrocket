@@ -11,6 +11,13 @@ import server.ClientState;
 import xml.Message;
 import model.TeamRocketServerModel;
 
+/**
+ * Gets the signInRequest, processes it, and sends back the response.
+ * 
+ * @author Timothy Kolek, Nick Bosowski
+ *
+ */
+
 public class TurnResponseController {
 	int nextPosition;
 	TeamRocketServerModel model = TeamRocketServerModel.getInstance(); // retrieve the singleton

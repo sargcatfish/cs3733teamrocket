@@ -54,34 +54,41 @@ public class AddEdgeController {
 			Message response = new Message(xml) ;
 			return response ;
 		}
-		else temp.addEdge(edge);
+		else if(TeamRocketServerModel.getInstance().getEvent(id).getStates().size() == temp.getNumChoices()) {
+			temp.addEdge(edge);
 			temp.incrementEdges();
 			
-		Manager.insertEdge(id, leftNum, rightNum, heightNum);
-		String xml = Message.responseHeader(request.id()) + "<addEdgeResponse id=\"" + id + "\" left=\"" + left + "\" right=\"" + right+ "\" height=\"" + height + "\"/></response>";
-		Message response = new Message(xml);
-		
-		/* This supposedly sends to all the clients */
-		for (String threadID : Server.ids()) {
-			ClientState cs = Server.getState(threadID);
-			if (id.equals(cs.getData())) {
-				// make sure not to send to requesting client TWICE
-				if (!cs.id().equals(state.id())) {
-					cs.sendMessage(response);
+			Manager.insertEdge(id, leftNum, rightNum, heightNum);
+			String xml = Message.responseHeader(request.id()) + "<addEdgeResponse id=\"" + id + "\" left=\"" + left + "\" right=\"" + right+ "\" height=\"" + height + "\"/></response>";
+			Message response = new Message(xml);
+			
+			/* This supposedly sends to all the clients */
+			for (String threadID : Server.ids()) {
+				ClientState cs = Server.getState(threadID);
+				if (id.equals(cs.getData())) {
+					// make sure not to send to requesting client TWICE
+					if (!cs.id().equals(state.id())) {
+						cs.sendMessage(response);
+					}
 				}
 			}
-		}
-		Iterator<ClientState> cs = TeamRocketServerModel.getInstance().getEvent(id).getStates().iterator();
-		while(cs.hasNext()){
-			ClientState next = cs.next();
-			if(next != null && state.id() != null){
-				if(!next.id().equals(state.id()))
-					next.sendMessage(response);	
+			Iterator<ClientState> cs = TeamRocketServerModel.getInstance().getEvent(id).getStates().iterator();
+			while(cs.hasNext()){
+				ClientState next = cs.next();
+				if(next != null && state.id() != null){
+					if(!next.id().equals(state.id()))
+						next.sendMessage(response);	
+				}
 			}
+			TurnResponseController e = new TurnResponseController();
+			e.process(id);
+			return response;
 		}
-		TurnResponseController e = new TurnResponseController();
-		e.process(id);
-		return response;
+		else{
+			String xml = Message.responseHeader(request.id(), "Not all users are signed in") + "<addEdgeResponse id=\"" + id + "\" left=\"" + left + "\" right=\"" + right+ "\" height=\"" + height + "\"/></response>";
+			Message response = new Message(xml);
+			return response;
+		}
 	}
 
 }
