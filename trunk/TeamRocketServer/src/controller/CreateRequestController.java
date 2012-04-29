@@ -87,7 +87,6 @@ public class CreateRequestController {
 		}
 		//Sign in the moderator
 		Manager.signin(id, moderator, pswd, true, 0); // TODO: Comment out to not auto sign in moderator
-		e.addModerator(new User(moderator, pswd, true, 0)); // add moderator to user list?
 		
 		String xmlString = Message.responseHeader(request.id()) + "<createResponse id=\"" + id + "\"/></response>";
 		Message resp = new Message(xmlString);
