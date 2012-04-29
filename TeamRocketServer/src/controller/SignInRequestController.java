@@ -64,12 +64,13 @@ public class SignInRequestController {
 			Message response = new Message(xmlString);
 			return response;
 		}
-//		if(TeamRocketServerModel.getInstance().getTable().get(eventID) == null){
-//			TeamRocketServerModel.getInstance().getTable().put(eventID, m);
-//		}
+
+		boolean isModerator = false ;
 			if(!TeamRocketServerModel.getInstance().getEvent(eventID).getStates().isEmpty()){
-				if(!TeamRocketServerModel.getInstance().getEvent(eventID).getStates().get(0).id().equals(state.id()))
+				if(!TeamRocketServerModel.getInstance().getEvent(eventID).getStates().get(0).id().equals(state.id())){
 					TeamRocketServerModel.getInstance().getEvent(eventID).addClientState(state); // add the client state to the local list
+				}
+				else isModerator = true ;
 			}
 		int position = m.getNextPosition(user);
 		//try to sign in as already existent user
@@ -83,7 +84,7 @@ public class SignInRequestController {
 				failedReason = "No longer accepting users";
 				Accepted = false;
 			}
-			else if (!Manager.signin(eventID, user, password, false, position)) {
+			else if (!Manager.signin(eventID, user, password, isModerator, position)) {
 				// TODO: What if can't sign in
 				System.err.println ("Can't sign in #2");
 				failedReason = "Invalid Password";
@@ -91,8 +92,8 @@ public class SignInRequestController {
 			}
 		}
 		if (Accepted){
-		m.addUser(new User(user, password, false, position));
-		TeamRocketServerModel.getInstance().getEvent(eventID).addUser(new User(user, password, false, position));
+		m.addUser(new User(user, password, isModerator, position));
+		TeamRocketServerModel.getInstance().getEvent(eventID).addUser(new User(user, password, isModerator, position));
 		if(m.getUserList().size() == m.getNumChoices())
 			Manager.setacceptingUsers(m.getID());
 		}
