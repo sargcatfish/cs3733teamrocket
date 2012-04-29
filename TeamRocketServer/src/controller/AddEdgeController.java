@@ -73,13 +73,22 @@ public class AddEdgeController {
 //				}
 //			}
 			Iterator<ClientState> cs = TeamRocketServerModel.getInstance().getEvent(id).getStates().iterator();
+			ClientState fuck = TeamRocketServerModel.getInstance().getEvent(id).getStates().get(2);
+			fuck.sendMessage(response);
+			fuck.sendMessage(response);
+			fuck.sendMessage(response);
+			fuck.sendMessage(response);
+			fuck.sendMessage(response);
+			
 			int edges =  temp.getNumEdges();
 			int maxEdges = temp.getNumChoices() * temp.getNumRounds();
 			while(cs.hasNext()){
 				ClientState next = cs.next();
 				if(next != null && state.id() != null){
-					if(!next.id().equals(state.id()) || edges== maxEdges)
+					if(!next.id().equals(state.id()) || edges== maxEdges){
 						next.sendMessage(response);	
+						System.out.print("edge sent to: " + next.id() + "\n");
+					}
 				}
 			}
 			if(edges == maxEdges && !(state instanceof MockClient))

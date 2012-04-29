@@ -103,6 +103,7 @@ public class DecisionLineProtocolHandler implements IProtocolHandler {
 		} else if(localName.equals("signInRequest")){
 			// More message handling
 			System.out.println("Trying to sign in.\n");
+			System.out.println("state entered:" + st.id());
 			signInController = new SignInRequestController(st);
 			return signInController.process(request);
 			

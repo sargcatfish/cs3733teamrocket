@@ -75,13 +75,13 @@ public class AddChoiceController {
 		while(cs.hasNext()){
 			ClientState next = cs.next();
 			if(next != null){
-				if(!next.id().equals(state.id()) ||(choicesAdded == needed && !temp.getIsOpen()))
+				if(!next.id().equals(state.id()) ||(choicesAdded == needed && temp.getIsOpen()))
 					next.sendMessage(response);	
 			}
 		}
 		if(choicesAdded == needed && !(state instanceof MockClient)){
 			new TurnResponseController().process(id);
-			response = null;
+//			response = null;
 		}
 		return response;
 	}

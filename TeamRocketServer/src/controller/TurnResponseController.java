@@ -67,9 +67,11 @@ public class TurnResponseController {
 		else{
 			xml = Message.responseHeader(id) + "<turnResponse/></response>";		
 			response = new Message(xml);
-			if(event.getClientState()!= null)
+			if(event.getClientState()!= null){
 				event.getClientState().sendMessage(response);
-			event.incrementCurrentMaster();
+				System.out.print("sent to" + event.getClientState().id() +"\n");
+				event.incrementCurrentMaster();
+			}
 		}
 
 		return response;

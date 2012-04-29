@@ -66,9 +66,9 @@ public class SignInRequestController {
 			return response;
 		}
 
-		boolean isModerator = false ;
+		boolean isModerator = true;
 			if(!TeamRocketServerModel.getInstance().getEvent(eventID).getStates().isEmpty()){
-				isModerator = true ;
+				isModerator = false;
 				if(!TeamRocketServerModel.getInstance().getEvent(eventID).getStates().get(0).id().equals(state.id())){
 					TeamRocketServerModel.getInstance().getEvent(eventID).addClientState(state); // add the client state to the local list
 				}
