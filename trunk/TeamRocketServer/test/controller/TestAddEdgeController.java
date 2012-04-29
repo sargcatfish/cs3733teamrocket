@@ -21,7 +21,7 @@ public class TestAddEdgeController extends TestCase {
 	AddEdgeController cont;
 	
 	public void setUp(){
-		cont = new AddEdgeController(null);
+		cont = new AddEdgeController(new MockClient());
 	}
 	
 	public void testAddEdgeProcess(){

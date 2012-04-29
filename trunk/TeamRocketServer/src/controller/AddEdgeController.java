@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.Iterator;
+
 import server.ClientState;
 import server.Server;
 import xml.Message;
@@ -68,7 +70,15 @@ public class AddEdgeController {
 					cs.sendMessage(response);
 				}
 			}
-		}	
+		}
+		Iterator<ClientState> cs = TeamRocketServerModel.getInstance().getEvent(id).getStates().iterator();
+		while(cs.hasNext()){
+			ClientState next = cs.next();
+			if(next != null && state.id() != null){
+				if(!next.id().equals(state.id()))
+					next.sendMessage(response);	
+			}
+		}
 		TurnResponseController e = new TurnResponseController();
 		e.process(id);
 		return response;
