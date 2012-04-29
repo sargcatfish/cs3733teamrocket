@@ -55,7 +55,7 @@ public class TestCloseRequestController extends TestCase {
 	
 	public void testFailSingle() {
 		String xmlSource = "<request version='1.0' id='test'>" +
-				"<closeRequest id = 'Apples123'/></request>";
+				"<closeRequest id = '" + id + "'/></request>";
 		
 		DLEvent event1 = Manager.retrieveEvent(id) ;
 		assertTrue(event1.isAccepting()) ;
@@ -101,5 +101,5 @@ public class TestCloseRequestController extends TestCase {
 		request = new Message(xmlSource);
 		cont.process(request);
 		assertFalse(TeamRocketServerModel.getInstance().getEvent(id).isAccepting());
-	}
+	} 
 }
