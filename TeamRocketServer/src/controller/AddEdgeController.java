@@ -62,16 +62,6 @@ public class AddEdgeController {
 			String xml = Message.responseHeader(request.id()) + "<addEdgeResponse id=\"" + id + "\" left=\"" + left + "\" right=\"" + right+ "\" height=\"" + height + "\"/></response>";
 			Message response = new Message(xml);
 			
-			/* This supposedly sends to all the clients */
-			for (String threadID : Server.ids()) {
-				ClientState cs = Server.getState(threadID);
-				if (id.equals(cs.getData())) {
-					// make sure not to send to requesting client TWICE
-					if (!cs.id().equals(state.id())) {
-						cs.sendMessage(response);
-					}
-				}
-			}
 			Iterator<ClientState> cs = TeamRocketServerModel.getInstance().getEvent(id).getStates().iterator();
 			while(cs.hasNext()){
 				ClientState next = cs.next();
