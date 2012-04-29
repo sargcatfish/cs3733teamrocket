@@ -41,6 +41,7 @@ public class TurnResponseController {
 		int numEdges = event.getNumChoices() * event.getNumRounds();
 		if (size == numEdges){
 			xml = Message.responseHeader(id) + "<turnResponse completed=\"true\" /></response>";
+			// TODO: set completed in database and local
 		}
 		else{
 			xml = Message.responseHeader(id) + "<turnResponse/></response>";
