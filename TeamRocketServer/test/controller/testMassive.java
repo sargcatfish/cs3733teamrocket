@@ -69,6 +69,15 @@ public class testMassive extends TestCase {
 	 assertEquals(id, map.getNamedItem("id").getNodeValue());
 	 assertEquals(choices[position-1], map.getNamedItem("choice").getNodeValue());
 	 
+	 xmlSource = "<request version='1.0' id='test'><addEdgeRequest id='"+ id + 
+				"' left='0' right='1' height='300'/></request>";
+	
+	request = new Message(xmlSource);
+	response = addEdge.process(request);
+	
+	map = response.contents.getAttributes();
+	assertFalse(Boolean.parseBoolean(map.getNamedItem("success").getNodeValue()));
+	 
 	 
 	 xmlSource = "<request version='1.0' id='test'>" +
 				"<signInRequest id='" + id + "'>" +
