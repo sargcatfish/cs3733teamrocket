@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.Iterator;
+
 import model.DLChoice;
 import model.DLEvent;
 
@@ -33,6 +35,7 @@ public class TurnResponseController {
 		 * just for the next person. But we will probably also have to check in the protocol handler to send 
 		 * it to the right people. Because the completion is sent to everyone right?
 		 */
+		Message response;
 		DLEvent event = model.getEvent(id);
 		if (event == null){
 			System.out.println("Event does not exist");
@@ -50,17 +53,24 @@ public class TurnResponseController {
 			xml = Message.responseHeader(id) + "<turnResponse completed=\"true\" /></response>";
 			event.setIsComplete(true);
 			Manager.setCompletion(id);
+			response = new Message(xml);
+			
+			Iterator<ClientState> cs = TeamRocketServerModel.getInstance().getEvent(id).getStates().iterator();
+			while(cs.hasNext()){
+				ClientState next = cs.next();
+				if(next != null){
+						next.sendMessage(response);	
+				}
+			}
 			// TODO: set completed in database and local
 		}
 		else{
-			xml = Message.responseHeader(id) + "<turnResponse/></response>";
+			xml = Message.responseHeader(id) + "<turnResponse/></response>";		
+			response = new Message(xml);
+			event.incrementCurrentMaster();
+			if(event.getClientState()!= null)
+				event.getClientState().sendMessage(response);
 		}
-		
-		
-		Message response = new Message(xml);
-		event.incrementCurrentMaster();
-		if(event.getClientState()!= null)
-		event.getClientState().sendMessage(response);
 
 		return response;
 	}
