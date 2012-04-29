@@ -70,7 +70,7 @@ public class SignInRequestController {
 				if(!TeamRocketServerModel.getInstance().getEvent(eventID).getStates().get(0).id().equals(state.id())){
 					TeamRocketServerModel.getInstance().getEvent(eventID).addClientState(state); // add the client state to the local list
 				}
-				else isModerator = true ;
+				else isModerator = false ;
 			}
 		int position = m.getNextPosition(user);
 		//try to sign in as already existent user

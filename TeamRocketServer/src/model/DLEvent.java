@@ -144,12 +144,10 @@ public class DLEvent {
 	
 	//tested
 	public void addUser(User user){
-		if (!user.isModerator){
-			if (userList == null){
-				userList = new ArrayList<User>();			
-			}
-			userList.add(user);
+		if (userList == null){
+			userList = new ArrayList<User>();			
 		}
+		userList.add(user);
 	}
 	//tested
 	public void addEdge(Edge edge){
