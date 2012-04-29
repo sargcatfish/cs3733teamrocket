@@ -54,7 +54,7 @@ public class AddEdgeController {
 			Message response = new Message(xml) ;
 			return response ;
 		}
-		else if(TeamRocketServerModel.getInstance().getEvent(id).getStates().size() == temp.getNumChoices()) {
+		else if(TeamRocketServerModel.getInstance().getEvent(id).getStates().size() == temp.getNumChoices() && !temp.getComplete()) {
 			temp.addEdge(edge);
 			temp.incrementEdges();
 			
