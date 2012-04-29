@@ -90,11 +90,12 @@ public class SignInRequestController {
 				Accepted = false;
 			}
 		}
-			
+		if (Accepted){
 		m.addUser(new User(user, password, false, position));
 		TeamRocketServerModel.getInstance().getEvent(eventID).addUser(new User(user, password, false, position));
 		if(m.getUserList().size() == m.getNumChoices())
 			Manager.setacceptingUsers(m.getID());
+		}
 		StringBuffer choices = new StringBuffer();
 		
 		for (int i=0; i<m.getDLChoice().size(); i++ ) {
@@ -110,10 +111,8 @@ public class SignInRequestController {
 		}
 			
 			
-			// TODO: Error Checking! May have typed in invalid meeting id
 		if (Accepted) {
 			String xmlString =  Message.responseHeader(request.id()) + "<signInResponse id=\"" + eventID + "\" " + 
-//			    "id = \"" + eventID + "\" " + 
 				"type = \"" + type + "\" " +
 				"question = \"" + m.getEventQuestion() + "\" " +
 				"numChoices = \"" + m.getNumChoices() + "\" " + 
@@ -121,23 +120,6 @@ public class SignInRequestController {
 				"position = \"" + position + "\">" + choices.toString() + "</signInResponse></response>";
 			
 			Message response = new Message(xmlString);
-			
-//			// Must be sure to send refreshResponse to everyone else.
-//			xmlString = Message.responseHeader(request.id()) + "<refreshResponse id='" + eventID + "' " +
-//				"user = '" + user + "'/></response>";
-//			Message broadcast = new Message (xmlString);
-//			
-//			// send to all clients for this same meeting.
-//			// Now send response to all connected clients associated with same meeting ID.
-//			for (String threadID : Server.ids()) {
-//				ClientState cs = Server.getState(threadID);
-//				if (eventID.equals(cs.getData())) {
-//					// make sure not to send to requesting client TWICE
-//					if (!cs.id().equals(state.id())) {
-//						cs.sendMessage(broadcast);
-//					}
-//				}
-//			}
 			return response;
 		}
 		
@@ -151,24 +133,6 @@ public class SignInRequestController {
 				"position = \"" + position + "\">" + choices.toString() + "</signInResponse></response>";
 
 		Message response = new Message(xmlString);
-
-		// Must be sure to send refreshResponse to everyone else.
-//		xmlString = Message.responseHeader(request.id()) + "<refreshResponse id='" + eventID + "' " +
-//				"user = '" + user + "'/></response>";
-//		Message broadcast = new Message (xmlString);
-//
-//		// send to all clients for this same meeting.
-//		// Now send response to all connected clients associated with same meeting ID.
-//		for (String threadID : Server.ids()) {
-//			ClientState cs = Server.getState(threadID);
-//			if (eventID.equals(cs.getData())) {
-//				// make sure not to send to requesting client TWICE
-//				if (!cs.id().equals(state.id())) {
-//					cs.sendMessage(broadcast);
-//				}
-//			}
-//		}
-//	
 		
 		// make sure to send back to originating client the signInResponse
 		return response;
