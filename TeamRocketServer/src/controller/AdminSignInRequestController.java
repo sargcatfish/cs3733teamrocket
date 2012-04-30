@@ -9,20 +9,32 @@ import org.w3c.dom.Node;
 
 import server.ClientState;
 import xml.Message;
-
+/**
+ * Controller for the administrator to sign in
+ * @author 
+ *
+ */
 public class AdminSignInRequestController {
-
+	/** Client state: used to get the client id and other information identifying the individual client	 */
 	ClientState state;
 	
+	/**
+	 * Constructor for the AdminSingInRequestController
+	 * @param st ClientState to be set
+	 */
 	public AdminSignInRequestController(ClientState st) {
 		this.state = st;
 	}
 
-	/** When given a SignInRequest, need to generate SignInResponse. */
+	/**
+	 * Processing function to parse the request and generate the response 
+	 * @param request The request from the client to respond to
+	 * @return The generated response
+	 */
 	public Message process(Message request) {
 		Node signInR = request.contents.getFirstChild();
 		
-		// retrieve ID
+		/** retrieve ID*/
 		String admin = signInR.getFirstChild().getAttributes().getNamedItem("name").getNodeValue();
 		String pword = signInR.getFirstChild().getAttributes().getNamedItem("password").getNodeValue();
 		String adminKey = UUID.randomUUID().toString();
@@ -35,7 +47,6 @@ public class AdminSignInRequestController {
 		if (!a.signIn(admin, pword)) {
 			xmlString =  Message.responseHeader(request.id(), "Invalid credential")+"<adminResponse key ='bad'/></response>";
 		}
-		// client should recognize this!
 		else {
 			a.setKey(adminKey);
 			xmlString =  Message.responseHeader(request.id())+"<adminResponse key ='"+ adminKey +"'/></response>";
@@ -44,7 +55,6 @@ public class AdminSignInRequestController {
 		
 		Message response = new Message(xmlString);	
 		
-		// make sure to send back to originating client the adminResponse
 		return response;
 	}
 }

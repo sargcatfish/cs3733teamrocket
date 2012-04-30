@@ -16,20 +16,31 @@ import model.MockClient;
 import db.Manager;
 
 /**
- * 
+ * Controller for adding edges
  * @author Timothy Kolek, Nick Bosowski
  *
  */
 
 public class AddEdgeController {
+	/** Client state: used to get the client id and other information identifying the individual client	 */
 	ClientState state;
+	/** Model containing all of the information for events users, edges and choices locally  */
 	TeamRocketServerModel model;
 	
+	/**
+	 * Constructor for the AddEdgeController
+	 * @param cs ClientState to be set
+	 */
 	public AddEdgeController(ClientState cs){
 		this.state = cs;
 		this.model = TeamRocketServerModel.getInstance();
 	}
 	
+	/**
+	 * Processing function to parse the request and generate the response 
+	 * @param request The request from the client to respond to
+	 * @return The generated response
+	 */
 	public Message process(Message request){
 		
 		Node first = request.contents.getFirstChild();
@@ -43,11 +54,9 @@ public class AddEdgeController {
 		int rightNum = Integer.parseInt(right);
 		int heightNum = Integer.parseInt(height);
 				
-		//add edge to local
+		/** add edge to local*/
 		Edge edge = new Edge(leftNum, rightNum, heightNum);
-		// ian
-		// using new function
-		// error handling if passed an invalid id
+		
 		DLEvent temp = model.getEvent(id) ;
 		if (temp == null){
 			String xml = Message.responseHeader(request.id(), "No event") + "<addEdgeResponse id=\"" + id + "\" left=\"0\" right=\"0\" height=\"0\"/></response>" ;
