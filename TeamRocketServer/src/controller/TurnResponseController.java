@@ -48,7 +48,7 @@ public class TurnResponseController {
 //		else{
 //			size = event.getEdgeList().size();
 //		}
-		int numEdges = event.getNumChoices() * event.getNumRounds();
+		int numEdges = event.getUserList().size() * event.getNumRounds();
 		if (size == numEdges){
 			xml = Message.responseHeader(id) + "<turnResponse completed=\"true\" /></response>";
 			event.setIsComplete(true);
