@@ -105,6 +105,7 @@ public class TestRemoveRequestController extends TestCase {
 		NamedNodeMap map = first.getAttributes();
 
 		int affected = Integer.parseInt(map.getNamedItem("numberAffected").getNodeValue());
+		System.out.println(affected) ;
 		assertTrue(affected > 3);
 		assertEquals(null, Manager.retrieveEvent(id));
 		assertEquals(null, Manager.retrieveEvent("2"));

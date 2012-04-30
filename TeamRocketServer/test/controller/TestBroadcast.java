@@ -101,10 +101,5 @@ public class TestBroadcast extends TestCase{
 		assertTrue (c3response.success());
 		assertEquals ("addEdgeResponse", c1response.contents.getFirstChild().getLocalName());
 		assertEquals ("addEdgeResponse", c3response.contents.getFirstChild().getLocalName());
-		
-		// it is now client2's turn "again" because it is assumed the first edge is sent by the manager
-		// even though in this instance, client2 just sent the message
-		c2response = client2.getAndRemoveMessage() ;
-		assertEquals ("turnResponse", c2response.contents.getFirstChild().getLocalName()) ;
 	}
 }
