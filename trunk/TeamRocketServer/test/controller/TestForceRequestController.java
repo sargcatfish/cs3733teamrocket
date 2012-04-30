@@ -51,10 +51,7 @@ public class TestForceRequestController extends TestCase {
 		server = TeamRocketServerModel.getInstance();
 		key = server.getAdmin().getKey();
 		
-//		TeamRocketServerModel.getInstance().getTable().put(id, event1);
-//		TeamRocketServerModel.getInstance().getTable().put("2", event2);
-//		TeamRocketServerModel.getInstance().getTable().put("3", event3);
-//		TeamRocketServerModel.getInstance().getTable().put("4", event4);
+
 		Manager.insertDLEvent(id, numChoices, numRounds, eventQuestion, true, acceptingUsers, moderator);
 		Manager.insertDLEvent("2", numChoices, numRounds, eventQuestion, true, acceptingUsers, moderator);
 		Manager.insertDLEvent("3", numChoices, numRounds, eventQuestion, false, acceptingUsers, moderator);

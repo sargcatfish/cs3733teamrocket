@@ -79,7 +79,7 @@ public class ReportRequestController {
 						xmlString = xmlString +
 								"<entry "+
 								"id=\"" + m.getString("id") + "\" " +
-								"type = \"open\" " + 
+								"type = \"closed\" " + 
 								"question = \"" + m.getString("eventQuestion") + "\" " +
 								"numChoices = \"" + m.getInt("numChoices") + "\" " +
 								"numRounds = \"" + m.getInt("numRounds") + "\" " + 
