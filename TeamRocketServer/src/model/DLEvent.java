@@ -224,7 +224,8 @@ public class DLEvent {
 	}
 
 	public void incrementCurrentMaster() {
-		if(currentMaster < numChoices -1){
+		// changed from numChoice to stateList.size() for forceClose
+		if(currentMaster < stateList.size() -1){
 			currentMaster++;
 		}
 		else

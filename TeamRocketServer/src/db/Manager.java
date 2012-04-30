@@ -418,7 +418,7 @@ public class Manager {
 	 * @param id
 	 * @return # affected
 	 */
-	public static int setClosed(String id, int i){
+	public static int setClosed(String id){
 		int result = 0 ;
 		
 		PreparedStatement pstmt;
@@ -432,18 +432,6 @@ public class Manager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		try {
-			pstmt = Manager
-					.getConnection()
-					.prepareStatement(
-							"UPDATE DLEvents SET numChoices = ? WHERE id = ?;");
-			pstmt.setInt(1, i) ;
-			pstmt.setString(2, id);
-			result = pstmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
 		return result ;
 	}
 	
