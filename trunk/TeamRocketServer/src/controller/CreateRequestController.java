@@ -18,25 +18,36 @@ import server.ClientState;
 import xml.Message;
 
 /**
- * Gets the createRequest, processes it, and sends back the response.
+ * Controller to create an event
  * 
  * @author rhollinger, Nick Bosowski, Wesley Nitinthorn
  *
  */
 public class CreateRequestController {
+	/** Client state: used to get the client id and other information identifying the individual client	 */
 	ClientState state;
+	/** Field for testing  */
 	public String testId;
 	
+	/**
+	 * Constructor for CreateRequestController
+	 * @param st ClientState to be set
+	 */
 	public CreateRequestController(ClientState st) {
 		state = st;
 	}
 
+	/**
+	 * Processing function to parse the request and generate the response 
+	 * @param request The request from the client to respond to
+	 * @return The generated response
+	 */
 	public Message process(Message request) {
 		Node first = request.contents.getFirstChild();
 		NamedNodeMap map = first.getAttributes();
 		NodeList next = first.getChildNodes();
 		
-		//parse out all the event information
+		/** parse out all the event information */
 		String numChoices = map.getNamedItem("numChoices").getNodeValue();
 		String numRounds = map.getNamedItem("numRounds").getNodeValue();
 		String eventQuestion = map.getNamedItem("question").getNodeValue();
@@ -48,13 +59,10 @@ public class CreateRequestController {
 		if (eventType.equals(new String("open"))) {
 			isOpen = true;
 		}
-		//int numItems = next.getLength();
-		//get moderator names
 		String moderator = null;
 		String pswd = "";
 		for(int i = 0; i < next.getLength();i++){
 			if(next.item(i).getLocalName().equals("user")){
-			//	NodeList children = next.item(i).getChildNodes();
 				NamedNodeMap child = next.item(i).getAttributes();
 
 				moderator = child.getNamedItem("name").getNodeValue();
@@ -72,11 +80,13 @@ public class CreateRequestController {
 
 		Manager.insertDLEvent(id, Integer.parseInt(numChoices), Integer.parseInt(numRounds), 
 				eventQuestion, isOpen, true, moderator);
-		//get the event from database after adding it.
-		DLEvent e = Manager.retrieveEvent(id); // create local event
-		e.addClientState(state); // add moderator clientstate TODO: comment out to not auto sign in moderator
-		TeamRocketServerModel.getInstance().getTable().put(id, e); // add local event to table
-		//get choice names	
+		/** get the event from database after adding it and create local event */
+		DLEvent e = Manager.retrieveEvent(id);
+		/** add moderator */
+		e.addClientState(state); 
+		/** add local event to table */
+		TeamRocketServerModel.getInstance().getTable().put(id, e);
+		/** get choice names*/
 		if(!isOpen){
 			for (int i = 0; i < Integer.parseInt(numChoices); i++){
 			NamedNodeMap child = next.item(i).getAttributes();
@@ -85,8 +95,8 @@ public class CreateRequestController {
 				Manager.insertChoice(id, index, value);
 			}
 		}
-		//Sign in the moderator
-		Manager.signin(id, moderator, pswd, true, 0); // TODO: Comment out to not auto sign in moderator
+		/** Sign in the moderator*/
+		Manager.signin(id, moderator, pswd, true, 0);
 		
 		String xmlString = Message.responseHeader(request.id()) + "<createResponse id=\"" + id + "\"/></response>";
 		Message resp = new Message(xmlString);

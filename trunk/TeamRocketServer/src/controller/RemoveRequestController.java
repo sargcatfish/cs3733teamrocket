@@ -14,23 +14,39 @@ import server.ClientState;
 
 import xml.Message;
  
+/**
+ * Controller for administrator to remove an event
+ * @author 
+ *
+ */
 public class RemoveRequestController {
+	/** Client state: used to get the client id and other information identifying the individual client	 */
 	ClientState state;
 	
+	/** 
+	 * Constructor for RemoveRequestController
+	 * @param st ClientState to be set
+	 */
 	public RemoveRequestController(ClientState st){
 		state = st;
 	}
+	
+	/**
+	 * Processing function to parse the request and generate the response 
+	 * @param request The request from the client to respond to
+	 * @return The generated response
+	 */
 	public Message process(Message request) {
 	int result ;
 	Message response ;
 	Node signInR = request.contents.getFirstChild();
 	
-	// retrieve ID		
+	/** retrieve ID	 */
 	NamedNodeMap adminAtts = signInR.getAttributes();
 	String key = adminAtts.getNamedItem("key").getNodeValue();
 	String xmlString;
 	
-	// get meeting object -- have user sign in!
+	/** get meeting object -- have user sign in! */
 	Admin a = TeamRocketServerModel.getInstance().getAdmin() ;
 	
 	

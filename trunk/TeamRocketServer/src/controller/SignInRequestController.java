@@ -21,23 +21,32 @@ import xml.Message;
 
 
 /**
- * Gets the signInRequest, processes it, and sends back the response.
+ * Controller for a user to sign in
  * 
- * @author rhollinger, Nick Bosowski
+ * @author rhollinger, Nick Bosowski, Wesley N.
  *
  */
 public class SignInRequestController {
+	/** Client state: used to get the client id and other information identifying the individual client	 */
 	ClientState state;
 	
+	/**
+	 * Constructor for SignInRequestController
+	 * @param st ClientState to be set
+	 */
 	public SignInRequestController(ClientState st) {
 		this.state = st;
 	}
 
-	/** When given a SignInRequest, need to generate SignInResponse. */
+	/**
+	 * Processing function to parse the request and generate the response 
+	 * @param request The request from the client to respond to
+	 * @return The generated response
+	 */
 	public Message process(Message request) {
 		Node signInR = request.contents.getFirstChild();
 		
-		// retrieve ID
+		/** retrieve ID*/
 		String eventID = signInR.getAttributes().getNamedItem("id").getNodeValue();
 	
 		
@@ -49,9 +58,8 @@ public class SignInRequestController {
 			password = pNode.getNodeValue();
 		}
 		
-		// get event object -- have user sign in!
+		/**  get event object -- have user sign in! */
 		DLEvent m = Manager.retrieveEvent(eventID);
-		//Added by Wesley trying to handle the event doesn't exist
 		if (m == null){
 			
 			String xmlString = Message.responseHeader(request.id(), "The event doesnt exist") +
@@ -61,7 +69,6 @@ public class SignInRequestController {
 					"numChoices = \"1\" " + 
 					"numRounds = \"1\" " +
 					"position = \"1\"/></response>";
-//			System.out.print(xmlString);
 			Message response = new Message(xmlString);
 			return response;
 		}
@@ -74,14 +81,12 @@ public class SignInRequestController {
 				}
 			}
 		int position = m.getNextPosition(user);
-		//try to sign in as already existent user
+		/** try to sign in as already existent user */
 		boolean Accepted = true;
 		String failedReason = null;
 		if (!m.signIn(user, password)) {
-//			System.err.println ("Can't sign in #1");
-			//add as a new user
+			/** add as a new user */
 			if(!m.isAccepting()){
-				//TODO: REJECT USER THEY CANNOT JOIN
 				failedReason = "No longer accepting users";
 				Accepted = false;
 			}
@@ -103,7 +108,7 @@ public class SignInRequestController {
 		for (int i=0; i<m.getDLChoice().size(); i++ ) {
 			String choice = m.getDLChoice().get(i).getName();
 			int index = m.getDLChoice().get(i).getIndex();
-			// append into entry section
+			/** append into entry section */
 			choices.append("<choice value=\"" + choice + "\" index=\"" + index + "\"/>");
 		}
 		
@@ -139,7 +144,6 @@ public class SignInRequestController {
 
 		Message response = new Message(xmlString);
 		
-		// make sure to send back to originating client the signInResponse
 		return response;
 	}
 

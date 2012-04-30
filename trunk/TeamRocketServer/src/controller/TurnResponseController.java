@@ -14,7 +14,7 @@ import xml.Message;
 import model.TeamRocketServerModel;
 
 /**
- * Gets the signInRequest, processes it, and sends back the response.
+ * Controller to determine which users turn it is, sends only to the current turn user
  * 
  * @author Timothy Kolek, Nick Bosowski
  *
@@ -25,16 +25,13 @@ public class TurnResponseController {
 	TeamRocketServerModel model = TeamRocketServerModel.getInstance(); // retrieve the singleton
 
 
+	/**
+	 * Processing function to parse the request and generate the response
+	 * @param id The id of the event
+	 * @return The generated response
+	 */
 	public Message process(String id){
-		//int master = model.getTable().get(id).getCurrentMaster();
-		/* This isnt done but i need to go now need to figure out how to retrieve the proper client state, keep a list of them in the event,
-		 * or do that in the protocol handler?
-		 * 
-		 * probably in the protocol handler. all thats in here is deciding which message it should send. 
-		 * The one saying the event is completed because the number of edges has been reached or
-		 * just for the next person. But we will probably also have to check in the protocol handler to send 
-		 * it to the right people. Because the completion is sent to everyone right?
-		 */
+		
 		Message response;
 		DLEvent event = model.getEvent(id);
 		if (event == null){
@@ -42,12 +39,7 @@ public class TurnResponseController {
 		}
 		String xml;
 		int size = event.getNumEdges();
-//		if (event.getEdgeList() == null){
-//			size = 0;
-//		}
-//		else{
-//			size = event.getEdgeList().size();
-//		}
+		
 		int numEdges = event.getUserList().size() * event.getNumRounds();
 		if (size == numEdges){
 			xml = Message.responseHeader(id) + "<turnResponse completed=\"true\" /></response>";
