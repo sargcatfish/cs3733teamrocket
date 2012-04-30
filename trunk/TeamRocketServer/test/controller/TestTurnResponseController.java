@@ -10,6 +10,7 @@ import java.sql.Date;
 import model.DLEvent;
 import model.Edge;
 import model.MockClient;
+import model.User;
 import xml.Message;
 import junit.framework.TestCase;
 
@@ -32,6 +33,7 @@ public class TestTurnResponseController extends TestCase {
 		temp.setDateCreated(tempDate);
 		temp.addClientState(new MockClient());
 		cont.model.addTestDLEvent(temp);
+		temp.addUser(new User("bob", "bob", false, 0)) ;
 		
 		
 		
