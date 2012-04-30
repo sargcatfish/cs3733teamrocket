@@ -49,6 +49,7 @@ public class ReportRequestController {
 				try {
 					//The meaning of id???
 					xmlString =  Message.responseHeader(request.id()) + "<reportResponse>";
+					if(!(m == null)){
 					while(m.next()){
 						xmlString = xmlString +
 								"<entry "+
@@ -61,6 +62,7 @@ public class ReportRequestController {
 								"completed = \"" + m.getBoolean("isComplete") + "\" " + //  + "</reportRequestResponse></response>";
 								"/>";
 
+					}
 					}
 				}catch (SQLException e) {
 					e.printStackTrace();
@@ -75,6 +77,7 @@ public class ReportRequestController {
 				try {
 					//The meaning of id???
 					xmlString =  Message.responseHeader(request.id()) + "<reportResponse>";
+					if (!(m == null)){
 					while(m.next()){
 						xmlString = xmlString +
 								"<entry "+
@@ -88,6 +91,7 @@ public class ReportRequestController {
 								"/>";
 						//Message response = new Message(xmlString);
 
+					}
 					}
 				}catch (SQLException e) {
 					e.printStackTrace();
