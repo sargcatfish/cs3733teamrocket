@@ -5,7 +5,6 @@ import java.util.UUID;
 import model.Admin;
 import model.TeamRocketServerModel;
 
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import server.ClientState;
@@ -21,12 +20,14 @@ public class AdminSignInRequestController {
 
 	/** When given a SignInRequest, need to generate SignInResponse. */
 	public Message process(Message request) {
+		System.out.println(request);
 		Node signInR = request.contents.getFirstChild();
 		
-		// retrieve ID		
-		NamedNodeMap adminAtts = signInR.getFirstChild().getAttributes();
-		String admin = adminAtts.getNamedItem("name").getNodeValue();
-		String pword = adminAtts.getNamedItem("password").getNodeValue();
+		// retrieve ID
+		System.out.println(signInR);
+		System.out.println(request.contents.getAttributes().getNamedItem("id"));
+		String admin = signInR.getAttributes().getNamedItem("name").getNodeValue();
+		String pword = signInR.getAttributes().getNamedItem("password").getNodeValue();
 		
 		String adminKey = UUID.randomUUID().toString();
 		adminKey = adminKey.substring(0, 13);
@@ -48,6 +49,7 @@ public class AdminSignInRequestController {
 		Message response = new Message(xmlString);	
 		
 		// make sure to send back to originating client the adminResponse
+		System.out.println(response.toString());
 		return response;
 	}
 }

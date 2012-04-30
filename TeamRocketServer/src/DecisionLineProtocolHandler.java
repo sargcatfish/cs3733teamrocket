@@ -1,5 +1,3 @@
-import java.sql.SQLException;
-
 import org.w3c.dom.Node;
 
 import server.ClientState;
