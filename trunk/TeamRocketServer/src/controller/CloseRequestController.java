@@ -7,22 +7,29 @@ import model.DLEvent;
 import model.TeamRocketServerModel;
 
 /**
- * Gets the closeRequest, ensures that it is from a moderator, processes it, and sends back the response.
- * 
+ * Controller to close the event as an administrator
  * @author rhollinger, iplukens
  *
  */
 public class CloseRequestController {
-
+	/** Client state: used to get the client id and other information identifying the individual client	 */
 	ClientState state;
 	
+	/**
+	 * Controller for the CloseRequestController
+	 * @param st ClientState to be set
+	 */
 	public  CloseRequestController(ClientState st) {
 		state = st;
 	}
 
+	/**
+	 * Processing function to parse the request and generate the response 
+	 * @param request The request from the client to respond to
+	 * @return The generated response
+	 */
 	public Message process(Message request) {
 		String eventID = request.contents.getFirstChild().getAttributes().getNamedItem("id").getNodeValue();
-		int choices = 0 ;
 
 		DLEvent temp = TeamRocketServerModel.getInstance().getEvent(eventID) ;
 		if (temp == null){

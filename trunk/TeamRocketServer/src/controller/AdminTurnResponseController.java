@@ -10,14 +10,19 @@ import db.Manager;
 
 
 /***
- * force an early close
- * @author ian
+ * Controller to force an early close as administrator, sends completed message to all users
+ * @author Ian Lukens
  *
  */
 public class AdminTurnResponseController {
-	int nextPosition;
-	TeamRocketServerModel model = TeamRocketServerModel.getInstance(); // retrieve the singleton
+	/** Model containing all of the information for events users, edges and choices locally  */
+	TeamRocketServerModel model = TeamRocketServerModel.getInstance();
 
+	/**
+	 * Processing function to use the event ID to generate the response 
+	 * @param id The ID of the event to be closed by the administrator
+	 * @return Generated response to all users
+	 */
 	public Message process(String id){
 
 		Message response;
