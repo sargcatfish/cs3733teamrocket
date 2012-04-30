@@ -29,12 +29,17 @@ public class Manager {
 	 */
 
 	/** Hard-coded database access information */
+	
+	/** string = server url */
 	private static final String SERVER = "mysql.wpi.edu";
+	/** string = user */
 	private static final String USER = "meowth";
+	/** string = password */
 	private static final String PASSWORD = "xuguHN";
+	/** string = database */
 	private static final String DATABASE = "teamrocket";
 
-	// as long as you're using mysql, leave this alone.
+	/** string = database type = as long as you're using mysql, leave this alone. */
 	private static final String DATABASE_TYPE = "mysql";
 
 	/* ------------- SQL Variables ------------- */
@@ -83,9 +88,6 @@ public class Manager {
 		if (con == null) {
 			return false;
 		}
-
-		
-		//is the try catch needed here? it is going to return something regardless.
 		try {
 			return !con.isClosed();
 		} catch (SQLException e) {
@@ -100,13 +102,13 @@ public class Manager {
 	 * @return true if connection is established; false otherwise.
 	 */
 	public static boolean connect() {
-		// already connected.
+		/** already connected */
 		if (con != null) {
 			return true;
-		}
-
-		// Register the JDBC driver for MySQL. Simply accessing the class
-		// will properly initialize everything.
+		} 
+		/** Register the JDBC driver for MySQL. Simply accessing the class
+		* will properly initialize everything. 
+		*/
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException cnfe) {
@@ -122,19 +124,12 @@ public class Manager {
 			.println("Unable to locate db.config configuration file.");
 			return false;
 		}
-		/* TODO: For some reason this does not like the config file so i changed it to use the constants and it now works */
-		// Define URL for database server
-		// NOTE: must fill in DATABASE NAME
-		//		String url = "jdbc:" + DATABASE_TYPE + "://"
-		//				+ dbConfig.getProperty(SERVER) + "/"
-		//				+ dbConfig.getProperty(DATABASE);
 
 		String url = "jdbc:" + DATABASE_TYPE + "://" + SERVER +"/" + DATABASE;
 		try {
-			// Get a connection to the database for a
-			// user with the given user name and password.
-			//	con = DriverManager.getConnection(url, dbConfig.getProperty(USER),
-			//			dbConfig.getProperty(PASSWORD));
+			/** Get a connection to the database for a
+			* user with the given user name and password. 
+			*/
 			con = DriverManager.getConnection(url, USER, PASSWORD);
 			return true;
 		} catch (Exception e) {
@@ -143,32 +138,48 @@ public class Manager {
 		}
 	}
 
-	/** Generate unique meeting id. */
+	/**
+	 * Generate unique meeting id.
+	 * @return Generated ID
+	 */
 	public static String generateEventID() {
 		String id = UUID.randomUUID().toString();
 
-		// abcdefgh-abcd
+		/** format of the created string abcdefgh-abcd */
 		return id.substring(0, 13);
 	}
 
-	/** Insert DLEvent into database. */
+	/**
+	 * Insert DLEvent into database
+	 * @param id string of the event ID
+	 * @param numChoices integer of the number of choices
+	 * @param numRounds integer of the number of rounds
+	 * @param eventQuestion string of the question the decision is being made on
+	 * @param isOpen boolean is the event open
+	 * @param acceptingUsers boolean is the event accepting users
+	 * @param moderator string of the moderators name
+	 * @return true if the event was put into the database, false otherwise
+	 */
 	public static boolean insertDLEvent(String id, int numChoices, int numRounds, String eventQuestion, 
 			boolean isOpen, boolean acceptingUsers, String moderator) {
 		try {
+			/** NOW() function is used for date */
 			PreparedStatement pstmt = Manager
 					.getConnection()
 					.prepareStatement(
 							"INSERT into DLEvents(id, numChoices, numRounds, eventQuestion, dateCreated, isOpen, " +
-							"acceptingUsers, moderator, isComplete) VALUES(?,?,?,?,NOW(),?,?,?,?);"); // Used NOW() function for date
+							"acceptingUsers, moderator, isComplete) VALUES(?,?,?,?,NOW(),?,?,?,?);"); 
 			pstmt.setString(1, id);
 			pstmt.setInt(2, numChoices);
 			pstmt.setInt(3, numRounds);
-			pstmt.setString(4, trimString(eventQuestion, 32)); 	// no more than 32 characters.
-			pstmt.setBoolean(5, isOpen);								// no more than 4 characters (OPEN or CLOSE)
+			/** no more than 32 characters */
+			pstmt.setString(4, trimString(eventQuestion, 32)); 
+			/** // no more than 4 characters (OPEN or CLOSE) */
+			pstmt.setBoolean(5, isOpen);
 			pstmt.setBoolean(6,acceptingUsers);
 			pstmt.setString(7,moderator);
 			pstmt.setBoolean(8, false);							
-			// Execute the SQL statement and update database accordingly.
+			/** Execute the SQL statement and update database accordingly. */
 			pstmt.executeUpdate();
 			int numInserted = pstmt.getUpdateCount();
 			if (numInserted == 0) {
@@ -185,17 +196,25 @@ public class Manager {
 	/**
 	 * Register user with meeting AND check password if already exists. If
 	 * PASSWORD is null then treat as ""
+	 * @param eventID string of the event ID
+	 * @param user string of the user's name 
+	 * @param password string of the user's password
+	 * @param isModerator boolean is the user the moderator
+	 * @param userIndex integer of the number of the user in the order
+	 * @return true if signed in successfully, false otherwise
 	 */
 	public static boolean signin(String eventID, String user, String password, boolean isModerator, int userIndex) {
 
-		// normalize no password.
+		/** normalize no password. */
 		if (password == null) {
 			password = "";
 		}
 
 		try {
-			// check that participant not already in meeting with different
-			// pasword.
+			/**
+			 * check that participant not already in meeting with different
+			 *password.
+			 */
 			PreparedStatement pstmt = Manager
 					.getConnection()
 					.prepareStatement(
@@ -203,18 +222,18 @@ public class Manager {
 			pstmt.setString(1, eventID);
 			pstmt.setString(2, user);
 
-			// Execute the SQL statement and store result into the ResultSet
+			
+			/** Execute the SQL statement and store result into the ResultSet */
 			ResultSet result = pstmt.executeQuery();
 
-			// If there is a participant
+			/** If there is a participant */
 			if (result.next()) {
-				// check the password.
+				/** check the password. */
 				String existingPassword = result.getString("password");
 				if (!existingPassword.equals(password)) {
 					return false;
 				}
 
-				// YES we match
 				return true;
 			}
 
@@ -228,8 +247,7 @@ public class Manager {
 			pstmt.setBoolean(4, isModerator);
 			pstmt.setInt(5, userIndex);
 
-
-			// Execute the SQL statement and update database accordingly.
+			/** Execute the SQL statement and update database accordingly. */
 			pstmt.executeUpdate();
 
 			int numInserted = pstmt.getUpdateCount();
@@ -241,15 +259,14 @@ public class Manager {
 			throw new IllegalArgumentException(e.getMessage(), e);
 		}
 
-		// able to sign in.
 		return true;
 	}
 
 	/**
 	 * Retrieve meeting from database for given id, returning null if invalid
 	 * id.
-	 * 
-	 *  TODO: Fix this!
+	 * @param id string of the event id to be retrieved
+	 * @return The DLEvent with the given id
 	 */
 	public static DLEvent retrieveEvent(String id) {
 		try {
@@ -260,15 +277,17 @@ public class Manager {
 							"acceptingUsers,  moderator, isComplete FROM DLEvents WHERE id = ?;");
 			pstmt.setString(1, id);
 
-			// Execute the SQL statement and store result into the ResultSet
+			/** Execute the SQL statement and store result into the ResultSet */
 			ResultSet result = pstmt.executeQuery();
 
-			// no meeting? Return null
+			/**
+			 * no meeting? Return null
+			 */
 			if (!result.next()) {
 				return null;
 			}
 
-			// pull out the values from the DATABASE
+			/** pull out the values from the DATABASE */
 			int numChoices = result.getInt("numChoices");
 			int numRounds = result.getInt("numRounds");
 			String eventQuestion = result.getString("eventQuestion");
@@ -278,7 +297,7 @@ public class Manager {
 			String moderator = result.getString("moderator");
 			boolean isComplete = result.getBoolean("isComplete");
 
-			// construct meeting and return it
+			/** construct meeting */
 			DLEvent d = new DLEvent(id, moderator, eventQuestion, numChoices,
 					numRounds);
 			d.setDateCreated(dateCreated);
@@ -292,13 +311,13 @@ public class Manager {
 							"SELECT id, name, password, isModerator, userIndex FROM users WHERE id = ?;");
 			pstmt.setString(1, id);
 
-			// Execute the SQL statement and store result into the ResultSet
+			/** Execute the SQL statement and store result into the ResultSet */
 			ResultSet userResult = pstmt.executeQuery();
 
-			// no meeting? Return null
+			/** no meeting? Return null */
 			while (userResult.next()) {
 
-				// pull out the values from the DATABASE
+				/** pull out the values from the DATABASE */
 				String name = userResult.getString("name");
 				String password = userResult.getString("password");
 				boolean isModerator = userResult.getBoolean("isModerator");
@@ -313,16 +332,15 @@ public class Manager {
 					.prepareStatement(
 							"SELECT id, choiceIndex, choiceName FROM choices WHERE id = ?;");
 			pstmt.setString(1, id);
-
-			// Execute the SQL statement and store result into the ResultSet
+ 
+			/** Execute the SQL statement and store result into the ResultSet */
 			ResultSet choiceResult = pstmt.executeQuery();
 
-			// no meeting? Return null
 			while (choiceResult.next()) {
 
+				/** pull out the values from the DATABASE */
 				int choiceIndex = choiceResult.getInt("choiceIndex");
 				String choiceName = choiceResult.getString("choiceName");
-				// pull out the values from the DATABASE
 
 				DLChoice c = new DLChoice(choiceIndex, choiceName);
 				d.addDLChoice(c);
@@ -334,16 +352,15 @@ public class Manager {
 							"SELECT id, leftChoice, rightChoice, height FROM edges WHERE id = ?;");
 			pstmt.setString(1, id);
 
-			// Execute the SQL statement and store result into the ResultSet
+			/** Execute the SQL statement and store result into the ResultSet */
 			ResultSet edgeResult = pstmt.executeQuery();
 
-			// no meeting? Return null
 			while (edgeResult.next()) {
 
+				/** pull out the values from the DATABASE */
 				int leftChoice = edgeResult.getInt("leftChoice");
 				int rightChoice = edgeResult.getInt("rightChoice");
 				int height = edgeResult.getInt("height");
-				// pull out the values from the DATABASE
 
 				Edge e = new Edge(leftChoice, rightChoice, height);
 				d.addEdge(e);
@@ -354,15 +371,20 @@ public class Manager {
 			e.printStackTrace();
 		}
 
-		// some problem...
+		/** returns null if anything goes wrong */
 		return null;
 	}
 
 	/**
-	 * Retrieve meeting from database for given event type, returning null if invalid
+	 * 
 	 * 
 	 * 
 	 *  TODO: Fix this!
+	 */
+	/**
+	 * Retrieve meeting from database for given event type, returning null if invalid
+	 * @param type boolean  WHAT IS THIS?!!
+	 * @return the ResultSet event retrieved form the database
 	 */
 	public static ResultSet retrieveEvent(boolean type) {
 		try {
@@ -373,10 +395,10 @@ public class Manager {
 							"acceptingUsers,  moderator, isComplete FROM DLEvents WHERE isOpen = ?;");
 			pstmt.setBoolean(1, type);
 
-			// Execute the SQL statement and store result into the ResultSet
+			/** Execute the SQL statement and store result into the ResultSet */
 			ResultSet result = pstmt.executeQuery();
 
-			// no meeting? Return null
+			/** no meeting? Return null*/
 			if (!result.next()) {
 				return null;
 			}
@@ -392,8 +414,11 @@ public class Manager {
 
 
 
-	/**Change the completion status of the event with given id*/
-	// Ian
+	/**
+	 * Sets the completion of the event with the given id
+	 * @param id string of the id of the event
+	 * @return the completion (0 for not complete, 1 for complete)
+	 */
 	public static int setCompletion(String id) {
 		int result = 0 ;
 		
@@ -406,17 +431,15 @@ public class Manager {
 			pstmt.setString(1, id);
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return result ;
 	}
 	
 	/**
-	 * changes event to not accept users for closing the event by moderator
-	 * @author ian
-	 * @param id
-	 * @return # affected
+	 * Changes event to not accept users for closing the event  by the moderator
+	 * @param id string of the id of the event
+	 * @return integer of the number affected
 	 */
 	public static int setClosed(String id){
 		int result = 0 ;
@@ -435,8 +458,14 @@ public class Manager {
 		return result ;
 	}
 	
+	/**
+	 * Sets the accepting users of the event with the given id
+	 * @param id string of the id of the event
+	 * @return integer that accepting users is set to
+	 * @throws SQLException
+	 */
 	public static int setacceptingUsers(String id){
-int result = 0 ;
+		int result = 0 ;
 		
 		PreparedStatement pstmt;
 		try {
@@ -447,13 +476,20 @@ int result = 0 ;
 			pstmt.setString(1, id);
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		TeamRocketServerModel.getInstance().getTable().get(id).setAcceptingUsers(false);
 		return result ;
 	}
 
+	/**
+	 * Inserts the choice into the event with the given id
+	 * @param id string of the id of the event
+	 * @param choiceIndex the index where the choice is going to be put in the event
+	 * @param choiceName the name of the choice being added
+	 * @return returns true is the choice was added, false otherwise 
+	 * @throws SQLException
+	 */
 	public static boolean insertChoice(String id, int choiceIndex, String choiceName){
 		try {
 			PreparedStatement pstmt = Manager.getConnection().prepareStatement(
@@ -475,6 +511,15 @@ int result = 0 ;
 		return true;
 	}
 
+	/**
+	 *  Inserts the edge into the event with the given id
+	 * @param id string of the id of the event
+	 * @param leftChoice integer of the left choice line the edge connects to
+	 * @param rightChoice integer of the right choice line the edge connects to
+	 * @param height integer of the height of the edge
+	 * @return returns true is the choice was added, false otherwise 
+	 * @throws SQLException
+	 */
 	public static boolean insertEdge(String id, int leftChoice, int rightChoice, int height){
 		try {
 			PreparedStatement pstmt = Manager.getConnection().prepareStatement(
@@ -497,15 +542,13 @@ int result = 0 ;
 		return true;
 	}
 
-
-/**
- * gets ids of events of specified type and greater the specified days in age
- * @author ian lukens + wesley nitinthorn
- * @param isComplete
- * @param daysOld
- * @return result set of event ids
- * @throws SQLException
- */
+	/**
+	 * Gets the ids of the events of the specified type that are greater than the specified number of days in age
+	 * @param isComplete boolean whether the events retrieved are complete or not
+	 * @param daysOld integer for how many days old to compare the events to
+	 * @return ResultSet of all the events of the given type that are more than the given number of days old
+	 * @throws SQLException
+	 */
 	public static ResultSet getEventsDays(boolean isComplete, int daysOld) {	
 		ResultSet result ;
 
@@ -517,7 +560,7 @@ int result = 0 ;
 			pstmt.setBoolean(1, isComplete) ;
 			pstmt.setInt(2, daysOld);
 
-			// Execute the SQL statement and store result into the ResultSet
+			/** Execute the SQL statement and store result into the ResultSet */
 			result = pstmt.executeQuery();
 			return result;
 		} catch (SQLException e) {
@@ -527,10 +570,9 @@ int result = 0 ;
 	}
 	
 	/**
-	 * gets ids of events of greater than the specified days in age
-	 * @author ian lukens + wesley nitinthorn
-	 * @param daysOld
-	 * @return result set of event ids
+	 * Gets the ids of all events that are greater than the specified number of days in age
+	 * @param daysOld integer for how many days old to compare the events to
+	 * @return ResultSet of all the events that are more than the given number of days old
 	 * @throws SQLException
 	 */
 	public static ResultSet getEventsDays(int daysOld) {	
@@ -543,7 +585,7 @@ int result = 0 ;
 							"SELECT id FROM DLEvents WHERE TO_DAYS(NOW()) - TO_DAYS(dateCreated) > ?;");
 			pstmt.setInt(1, daysOld);
 
-			// Execute the SQL statement and store result into the ResultSet
+			/** Execute the SQL statement and store result into the ResultSet */
 			result = pstmt.executeQuery();
 			return result;
 		} catch (SQLException e) {
@@ -552,10 +594,9 @@ int result = 0 ;
 	}
 
 	/**
-	 * deletes events with the given ids from the database
-	 * @author ian, wesley
-	 * @param result
-	 * @return number of affected events
+	 * Deletes the events with the given ids from the database
+	 * @param result WHAT IS THIS?!!
+	 * @return integer of the number of affected events
 	 */
 	public static int deleteEvent(ResultSet result){
 		int returnVal = 0 ;
@@ -571,15 +612,11 @@ int result = 0 ;
 		return returnVal ;
 	}
 
-
-
+	
 	/**
 	 * Remove event from the database along with any corresponding users, choices, and edges.
-	 * 
-	 * TODO: Not sure this is the best way to delete users, choices, and edges.
-	 * 
-	 * @param eventID
-	 * @return true if the deletions were successful; false otherwise
+	 * @param meetingID String of the event id to delete
+	 * @return
 	 */
 	public static boolean deleteEvent(String meetingID) {
 		try {
@@ -587,7 +624,7 @@ int result = 0 ;
 					"DELETE from DLEvents WHERE id = ?;");
 			pstmt.setString(1, meetingID);
 
-			// Execute the SQL statement and update database accordingly.
+			/** Execute the SQL statement and update database accordingly.*/
 			pstmt.executeUpdate();
 
 			int numDeleted = pstmt.getUpdateCount();
@@ -603,13 +640,18 @@ int result = 0 ;
 		return  true;
 	}
 
+	/**
+	 * Delete the users that are in the event with the given id
+	 * @param meetingID string id of the meeting
+	 * @return true if 1 or more users were deleted, false otherwise
+	 */
 	public static boolean deleteUsers(String meetingID) {
 		try {
 			PreparedStatement pstmt = Manager.getConnection().prepareStatement(
 					"DELETE from users WHERE id = ?;");
 			pstmt.setString(1, meetingID);
 
-			// Execute the SQL statement and update database accordingly.
+			/** Execute the SQL statement and update database accordingly.*/
 			pstmt.executeUpdate();
 
 			int numDeleted = pstmt.getUpdateCount();
@@ -623,13 +665,18 @@ int result = 0 ;
 		return true;
 	}
 
+	/**
+	 * Delete the choices that are in the event with the given id
+	 * @param meetingID string id of the meeting
+	 * @return true if 1 or more choices were deleted, false otherwise
+	 */
 	public static boolean deleteChoices(String meetingID) {
 		try {
 			PreparedStatement pstmt = Manager.getConnection().prepareStatement(
 					"DELETE from choices WHERE id = ?;");
 			pstmt.setString(1, meetingID);
 
-			// Execute the SQL statement and update database accordingly.
+			/** Execute the SQL statement and update database accordingly.*/
 			pstmt.executeUpdate();
 
 			int numDeleted = pstmt.getUpdateCount();
@@ -643,13 +690,18 @@ int result = 0 ;
 		return true;
 	}
 
+	/**
+	 * Delete the edges that are in the event with the given id
+	 * @param meetingID string id of the meeting
+	 * @return true if 1 or more edges were deleted, false otherwise
+	 */
 	public static boolean deleteEdges(String meetingID) {
 		try {
 			PreparedStatement pstmt = Manager.getConnection().prepareStatement(
 					"DELETE from edges WHERE id = ?;");
 			pstmt.setString(1, meetingID);
 
-			// Execute the SQL statement and update database accordingly.
+			/** Execute the SQL statement and update database accordingly.*/
 			pstmt.executeUpdate();
 
 			int numDeleted = pstmt.getUpdateCount();
@@ -663,7 +715,12 @@ int result = 0 ;
 		return true;
 	}
 
-	/** Make sure string is no longer than the given length. */
+	/**
+	 * Trims the given string if it is larger than the given length
+	 * @param s The given string
+	 * @param len The length to trim the given string to
+	 * @return The trimmed string if the given string was too large, otherwise returns the given string
+	 */
 	public static String trimString(String s, int len) {
 		if (s.length() <= len) {
 			return s;
@@ -672,12 +729,10 @@ int result = 0 ;
 		return s.substring(0, len);
 	}
 
-	// Manager Class	
-	/***
-	 * change completion of events > inputted days old
-	 * @author Ian Lukens and Wesley Nitinthorn
-	 * @param daysOld
-	 * @return number changed
+	/**
+	 * Changed the completion of events that are larger than the given number of days old
+	 * @param daysOld integer for how many days old to compare the events to
+	 * @return Integer of the number of events that were changed
 	 */
 	public static int setCompletion(int daysOld) {
 
