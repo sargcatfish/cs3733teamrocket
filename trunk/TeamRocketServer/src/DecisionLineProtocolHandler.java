@@ -8,20 +8,30 @@ import xml.*;
 import controller.*;
 
 /**
+ * Protocol Handler class: determines which controller gets called based on the mxl request
  * @author Nick Bosowski
  */
 public class DecisionLineProtocolHandler implements IProtocolHandler {
 
 	/** Protocol handler knows the server in question. */
 	Server server;
+	/** Controller for adding choices	 */
 	AddChoiceController choiceController;
+	/** Controller for adding edges	 */
 	AddEdgeController  edgeController;
+	/** Controller for the administrator to sign in */
 	AdminSignInRequestController adminController;
+	/** Controller for closing an event */
 	CloseRequestController closeController;
+	/** Controller for creating an event */
 	CreateRequestController createController;
+	/** Controller for  forcing an event to close */
 	ForceRequestController forceController;
+	/** Controller for the administrator to remove an event  */
 	RemoveRequestController removeController;
+	/** Controller for the administrator to generate a report */
 	ReportRequestController reportController;
+	/** Controller for a user to sign in */
 	SignInRequestController signInController;
 	
 	
@@ -30,8 +40,8 @@ public class DecisionLineProtocolHandler implements IProtocolHandler {
 	public void setServer (Server s) {
 		this.server = s;
 	}
-	/*
-	 * TODO:
+	
+	/**
 	 * to send to just one thing you do st.sendMessage of the return
 	 * to send to multiple need to figure out how to determine which ids are part of the 
 	 * event and those that arent, but you can get an iterator of the ids to retrieve each individual client
@@ -107,7 +117,9 @@ public class DecisionLineProtocolHandler implements IProtocolHandler {
 			
 		} 
 
-		// unknown? no idea what to do
+		/**
+		 * If the message is not known, prints out an error message
+		 */
 		System.err.println("Unable to handle message:" + request);
 		return null;
 	} 
