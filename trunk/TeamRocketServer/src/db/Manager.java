@@ -574,6 +574,7 @@ int result = 0 ;
 		try {
 			while(result.next()){
 				deleteEvent(result.getString("id")) ;
+				System.out.println(result.getString("id")) ;
 				returnVal++ ;
 			}
 		} catch (SQLException e) {
@@ -698,7 +699,7 @@ int result = 0 ;
 			pstmt = Manager
 					.getConnection()
 					.prepareStatement(
-							"UPDATE DLEvents SET isComplete = true WHERE TO_DAYS(NOW()) - TO_DAYS(dateCreated) > ?;");
+							"UPDATE DLEvents SET isComplete = true WHERE !isComplete && TO_DAYS(NOW()) - TO_DAYS(dateCreated) > ?;");
 			pstmt.setInt(1, daysOld) ;
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {

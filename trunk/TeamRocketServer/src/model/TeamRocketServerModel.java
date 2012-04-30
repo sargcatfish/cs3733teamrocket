@@ -142,7 +142,7 @@ public class TeamRocketServerModel {
 		boolean a ;
 		ResultSet result1;
 		ResultSet result2;
-		if (isComplete.equals(true)){
+		if (isComplete.equals("true")){
 			a = true ;
 		}
 		else a = false ;
