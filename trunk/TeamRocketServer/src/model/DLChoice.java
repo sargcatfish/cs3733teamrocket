@@ -7,19 +7,34 @@ package model;
  *
  */
 public class DLChoice {
+	/** integer of the choice number*/
 	int choiceIndex;
+	/** string of the choice */
 	String choiceName;
 	
-public	DLChoice(int cIndex, String cName){
+	/**
+	 * Constructor for the DLChoice
+	 * @param cIndex given index of the choice
+	 * @param cName given name of the choice
+	 */
+	public	DLChoice(int cIndex, String cName){
 		choiceIndex = cIndex;
 		choiceName = cName;
 	}
 
-public String getName() {
-	return this.choiceName;
-}
+	/**
+	 * Getter for the choice name
+	 * @return string of the choice name
+	 */
+	public String getName() {
+		return this.choiceName;
+	}
 
-public int getIndex(){
-	return this.choiceIndex;
-}
+	/**
+	 * Getter for the index
+	 * @return integer of the choice index
+	 */
+	public int getIndex(){
+		return this.choiceIndex;
+	}
 }
