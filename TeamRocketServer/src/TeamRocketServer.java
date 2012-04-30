@@ -23,7 +23,7 @@ public class TeamRocketServer {
 		/**
 		 * Start server and have ProtocolHandler be responsible for all XML messages.
 		 */
-		Server server = new Server(new DecisionLineProtocolHandler(), 9370);
+		Server server = new Server(new DecisionLineProtocolHandler(), 9371);
 	
 		try {
 			server.bind();
