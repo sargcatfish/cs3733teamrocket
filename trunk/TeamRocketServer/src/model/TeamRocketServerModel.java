@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Hashtable;
 
+import controller.AdminTurnResponseController;
+
 
 import db.Manager;
 /** Singleton model with a table of the locally stored event
@@ -107,6 +109,8 @@ public class TeamRocketServerModel {
 		try{ ResultSet result = Manager.getEventsDays(daysOld) ;
 		
 		while(result.next()){
+			AdminTurnResponseController turn = new AdminTurnResponseController() ;
+			turn.process(result.getString("id")) ;
 			if(getInstance().getTable().containsKey(result.getString("id"))){
 			getInstance().getTable().get(result.getString("id")).setComplete();
 			}
