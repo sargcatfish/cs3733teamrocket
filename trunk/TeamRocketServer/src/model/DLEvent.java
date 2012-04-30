@@ -21,6 +21,7 @@ public class DLEvent {
 	private int currentMaster; // whose turn is it to add the edge?
 	private boolean isComplete;
 	private boolean acceptingUsers;
+	private boolean forcedComplete;
 
 	ArrayList<User> userList = new ArrayList<User>();
 	ArrayList<Edge> edgeList = new ArrayList<Edge>();
@@ -46,6 +47,7 @@ public class DLEvent {
 		this.acceptingUsers = true;
 		this.numEdges = 0;
 		this.currentMaster = 0;
+		this.forcedComplete = false ;
 	}
 
 	//Getters
@@ -247,6 +249,14 @@ public class DLEvent {
 	// changes this for closing an event
 	public void setNumChoices(int i){
 		numChoices = i ;
+	}
+	
+	public void forceComplete(){
+		forcedComplete = true ;
+	}
+	
+	public boolean getForced(){
+		return forcedComplete ;
 	}
 
 }

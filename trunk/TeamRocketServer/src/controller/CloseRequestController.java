@@ -37,6 +37,7 @@ public class CloseRequestController {
 		}
 		else {
 			temp.setAcceptingUsers(false) ;
+			temp.forceComplete() ;
 			Manager.setClosed(eventID);
 			String xmlString = Message.responseHeader(request.id()) + "<closeResponse/></response>";
 			Message response = new Message(xmlString);
