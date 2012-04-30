@@ -11,7 +11,7 @@ import server.ClientState;
 import xml.Message;
 /**
  * Controller for the administrator to sign in
- * @author 
+ * @author Ian Lukens, Wesley Nitinthorn
  *
  */
 public class AdminSignInRequestController {
