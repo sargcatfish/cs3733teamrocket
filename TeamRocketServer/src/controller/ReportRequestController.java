@@ -14,16 +14,30 @@ import db.Manager;
 import server.ClientState;
 import xml.Message;
 
+/**
+ * Controller for the administrator to generate reports
+ * @author 
+ *
+ */
 public class ReportRequestController {
 
+	/** Client state: used to get the client id and other information identifying the individual client	 */
 	ClientState state;
 
+	/**
+	 * Constructor for ReportRequestController
+	 * @param st ClientState to be set
+	 */
 	public ReportRequestController(ClientState st) {
 		this.state = st;
 	}
 
+	/**
+	 * Processing function to parse the request and generate the response 
+	 * @param request The request from the client to respond to
+	 * @return The generated response
+	 */
 	public Message process(Message request) {
-		// System.out.print(request);
 		Node signInR = request.contents.getFirstChild();
 
 		NamedNodeMap adminAtts = signInR.getAttributes();
@@ -43,7 +57,6 @@ public class ReportRequestController {
 			if (eventType.equals("open")) {
 				m = Manager.retrieveEvent(true);
 				try {
-					// The meaning of id???
 					xmlString = Message.responseHeader(request.id())
 							+ "<reportResponse>";
 					if (!(m == null)) {
@@ -58,8 +71,7 @@ public class ReportRequestController {
 									+ "\" " + "created = \""
 									+ m.getDate("dateCreated") + "\" "
 									+ "completed = \""
-									+ m.getBoolean("isComplete") + "\" " + // +
-									// "</reportRequestResponse></response>";
+									+ m.getBoolean("isComplete") + "\" " + 
 									"/>";
 
 						}
@@ -75,7 +87,6 @@ public class ReportRequestController {
 			else {
 				m = Manager.retrieveEvent(false);
 				try {
-					// The meaning of id???
 					xmlString = Message.responseHeader(request.id())
 							+ "<reportResponse>";
 					if (!(m == null)) {
@@ -90,10 +101,8 @@ public class ReportRequestController {
 									+ "\" " + "created = \""
 									+ m.getDate("dateCreated") + "\" "
 									+ "completed = \""
-									+ m.getBoolean("isComplete") + "\" " + // +
-									// "</reportRequestResponse></response>";
+									+ m.getBoolean("isComplete") + "\" " + 
 									"/>";
-							// Message response = new Message(xmlString);
 
 						}
 					}
