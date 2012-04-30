@@ -25,9 +25,9 @@ public class AdminSignInRequestController {
 		
 		// retrieve ID
 		System.out.println(signInR);
-		System.out.println(request.contents.getAttributes().getNamedItem("id"));
-		String admin = signInR.getAttributes().getNamedItem("name").getNodeValue();
-		String pword = signInR.getAttributes().getNamedItem("password").getNodeValue();
+		System.out.println(request.contents.getFirstChild().getFirstChild().getAttributes().getNamedItem("id"));
+		String admin = signInR.getFirstChild().getAttributes().getNamedItem("name").getNodeValue();
+		String pword = signInR.getFirstChild().getAttributes().getNamedItem("password").getNodeValue();
 		
 		String adminKey = UUID.randomUUID().toString();
 		adminKey = adminKey.substring(0, 13);
