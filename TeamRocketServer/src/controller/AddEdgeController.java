@@ -73,12 +73,6 @@ public class AddEdgeController {
 //				}
 //			}
 			Iterator<ClientState> cs = TeamRocketServerModel.getInstance().getEvent(id).getStates().iterator();
-			ClientState fuck = TeamRocketServerModel.getInstance().getEvent(id).getStates().get(2);
-			fuck.sendMessage(response);
-			fuck.sendMessage(response);
-			fuck.sendMessage(response);
-			fuck.sendMessage(response);
-			fuck.sendMessage(response);
 			
 			int edges =  temp.getNumEdges();
 			int maxEdges = temp.getNumChoices() * temp.getNumRounds();
