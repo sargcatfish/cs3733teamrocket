@@ -16,14 +16,17 @@ import db.Manager;
  *
  */
 public class TeamRocketServerModel {
-	
+	/** Instance so there will only be one TeamRocketServerModel ever */
 	static TeamRocketServerModel instance = null;
-	
+	/** Hashtable of the DLEvents  */
 	private Hashtable<String, DLEvent> table = new Hashtable<String, DLEvent>();
+	/** Creates the admin */
 	Admin admin = new Admin();
 	
-	public TeamRocketServerModel(){}
-	
+	/**
+	 * Gets the instance of the model
+	 * @return the instance
+	 */
 	public static TeamRocketServerModel getInstance() {
 		if (instance == null) {
 			instance = new TeamRocketServerModel();
@@ -31,11 +34,16 @@ public class TeamRocketServerModel {
 		return instance;
 	}
 	
-	/*adding this comment so it recommits the proper file! */
+	
 	/*You can create an event first as try to add or you can do this messy way pick?*/
+	/**
+	 * Add a DLEvent to the hashtable
+	 * @param d the event to add
+	 * @return
+	 */
 	public String addDLEvent(DLEvent d){
-	//	String id = Manager.generateEventID(); //generate ID for the event
-		table.put(d.getID(), d);	// add DLEvent to table //Nick 4/28/12
+		/** add DLEvent to table */
+		table.put(d.getID(), d);
 		if (!Manager.insertDLEvent(d.getID(), d.getNumChoices(), d.getNumEdges(), d.getEventQuestion(),
 				d.getIsOpen(), d.isAccepting(), d.getModerator())) {
 			System.err.println("FAIL TO INSERT IN DB");
@@ -46,11 +54,10 @@ public class TeamRocketServerModel {
 		}
 	}
 	
-	// ian
 	/**
 	 * Gets an event either from the database or table if present, adds to the table if not
-	 * @param id
-	 * @return the event w/ specified id
+	 * @param id id of the event to get
+	 * @return the event w/ specified id if there is one, otherwise null
 	 */
 	public DLEvent getEvent(String id){
 		DLEvent d = table.get(id);
@@ -68,13 +75,17 @@ public class TeamRocketServerModel {
 	}
 	
 	/**
-	 * Function for testing purposes
+	 * Function for testing purposes: adds DLEvent only to model
 	 * @param d DLEvent to add only to the internal HashTable
 	 */
 	public void addTestDLEvent(DLEvent d){
-		table.put(d.getID(), d);	// add DLEvent to table
+		table.put(d.getID(), d);
 	}
 	
+	/**
+	 * Getter for the administrator
+	 * @return the Admin object
+	 */
 	public Admin getAdmin(){
 		if (this.admin == null){
 			return admin = new Admin();
@@ -82,13 +93,17 @@ public class TeamRocketServerModel {
 		return this.admin;
 	}
 	
+	/**
+	 * Getter for the hash table
+	 * @return The hash table
+	 */
 	public Hashtable<String, DLEvent> getTable(){
 		return this.table;
 	}
 	
 	/***
-	 * changes completion status of event with given id
-	 * @param id
+	 * Changes completion status of event with given id
+	 * @param id string of the event id to force to complete
 	 * @return int, the number of affected events
 	 */
 	public static int forceCompleteEvent(String id){
@@ -100,9 +115,9 @@ public class TeamRocketServerModel {
 	}
 	
 	/**
-	 * changes completion status of events older than given days
-	 * @param daysOld
-	 * @return int, number of affected events
+	 * Changes completion status of events older than given days
+	 * @param daysOld given number of days old
+	 * @return int, the number of affected events
 	 * @throws SQLException 
 	 */
 	public static int forceCompleteEvent(int daysOld) {
@@ -122,10 +137,9 @@ public class TeamRocketServerModel {
 	}
 	
 	/**
-	 * destroys single event
-	 * @author ian
-	 * @param id
-	 * @return
+	 * Destroys single event with the given id
+	 * @param id string id of the event to be deleted
+	 * @return 1 if event is deleted, 0 otherwise
 	 */
 	public static int destroyEvent(String id){
 		getInstance().getTable().remove(id);
@@ -135,12 +149,12 @@ public class TeamRocketServerModel {
 		else return 0;
 	}
 
+	
 	/**
-	 * destroys specified event
-	 * @author ian, wesley
-	 * @param isComplete
-	 * @param daysOld
-	 * @return number affected
+	 * Destroys specified event depending on if it is completed and how many days old
+	 * @param isComplete string if the event is complete or not
+	 * @param daysOld integer of the number of days old
+	 * @return WHAT IS THIS??!!!
 	 */
 	public static int destroyEvent(String isComplete, int daysOld) {
 		boolean a ;

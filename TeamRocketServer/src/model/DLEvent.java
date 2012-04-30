@@ -11,7 +11,7 @@ import server.ClientState;
 public class DLEvent {
 
 	private String id;
-	private String moderatorName; //The string "name" was send in the xml assuming it's the moderator name?
+	private String moderatorName; //The string "name" was sent in the xml assuming it's the moderator name?
 	private String eventQuestion;
 	private Date dateCreated;
 	private boolean isOpen;		//True for open event
