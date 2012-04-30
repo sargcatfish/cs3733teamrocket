@@ -3,19 +3,26 @@ import java.io.IOException;
 import server.Server;
 import xml.Message;
 
-
+/**
+ * Main file for Team Rocket server
+ * @author Team Rocket
+ *
+ */
 public class TeamRocketServer {
 
 	/**
-	 * @param args
+	 * Main function
+	 * @param args No arguments
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
 		if (!Message.configure("decisionlines.xsd")) {
 			System.exit(0);
 		}
-		
-		// Start server and have ProtocolHandler be responsible for all XML messages.
+		 
+		/**
+		 * Start server and have ProtocolHandler be responsible for all XML messages.
+		 */
 		Server server = new Server(new DecisionLineProtocolHandler(), 9371);
 	
 		try {
@@ -25,7 +32,9 @@ public class TeamRocketServer {
 			System.exit(-1);
 		}
 
-		// process all requests and exit.
+		/**
+		 * process all requests and exit.
+		 */
 		System.out.println("Server awaiting client connections");
 		try {
 			server.process();
