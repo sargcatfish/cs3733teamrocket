@@ -14,7 +14,7 @@ import xml.Message;
 
 /**
  * Controller to force an event to close
- * @author 
+ * @author Ian Lukens, Wesley Nitinthorn
  *
  */
 public class ForceRequestController {

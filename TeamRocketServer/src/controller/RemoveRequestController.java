@@ -16,7 +16,7 @@ import xml.Message;
  
 /**
  * Controller for administrator to remove an event
- * @author 
+ * @author Ian Lukens, Wesley Nitinthorn
  *
  */
 public class RemoveRequestController {

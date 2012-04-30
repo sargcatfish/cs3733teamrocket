@@ -16,7 +16,7 @@ import xml.Message;
 
 /**
  * Controller for the administrator to generate reports
- * @author 
+ * @author Ian Lukens, Wesley Nitinthorn
  *
  */
 public class ReportRequestController {
