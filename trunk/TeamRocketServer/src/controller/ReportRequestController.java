@@ -3,14 +3,11 @@ package controller;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
-
 import model.TeamRocketServerModel;
 import model.Admin;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-
 
 import db.Manager;
 
@@ -26,74 +23,81 @@ public class ReportRequestController {
 	}
 
 	public Message process(Message request) {
-	//	System.out.print(request);
+		// System.out.print(request);
 		Node signInR = request.contents.getFirstChild();
-		
+
 		NamedNodeMap adminAtts = signInR.getAttributes();
 		String key = adminAtts.getNamedItem("key").getNodeValue();
-		String eventType = adminAtts.getNamedItem("type").getNodeValue() ;
+		String eventType = adminAtts.getNamedItem("type").getNodeValue();
 
-		
-		Admin a = TeamRocketServerModel.getInstance().getAdmin() ;
-		String xmlString="";
+		Admin a = TeamRocketServerModel.getInstance().getAdmin();
+		String xmlString = "";
 		Message response;
 		ResultSet m;
 
-		if (!a.verify(key)){
-			xmlString = Message.responseHeader(request.id(), "Invalid key") + "<reportResponse></reportResponse></response>" ;
+		if (!a.verify(key)) {
+			xmlString = Message.responseHeader(request.id(), "Invalid key")
+					+ "<reportResponse></reportResponse></response>";
 			response = new Message(xmlString);
-		}
-		else {
-			if (eventType.equals("open")){
-				m = Manager.retrieveEvent(true) ;
+		} else {
+			if (eventType.equals("open")) {
+				m = Manager.retrieveEvent(true);
 				try {
-					//The meaning of id???
-					xmlString =  Message.responseHeader(request.id()) + "<reportResponse>";
-					if(!(m == null)){
-					while(m.next()){
-						xmlString = xmlString +
-								"<entry "+
-								"id=\"" + m.getString("id") + "\" " +
-								"type = \"open\" " + 
-								"question = \"" + m.getString("eventQuestion") + "\" " +
-								"numChoices = \"" + m.getInt("numChoices") + "\" " +
-								"numRounds = \"" + m.getInt("numRounds") + "\" " + 
-								"created = \"" + m.getDate("dateCreated") + "\" " +
-								"completed = \"" + m.getBoolean("isComplete") + "\" " + //  + "</reportRequestResponse></response>";
-								"/>";
+					// The meaning of id???
+					xmlString = Message.responseHeader(request.id())
+							+ "<reportResponse>";
+					if (!(m == null)) {
+						while (m.next()) {
+							xmlString = xmlString + "<entry " + "id=\""
+									+ m.getString("id") + "\" "
+									+ "type = \"open\" " + "question = \""
+									+ m.getString("eventQuestion") + "\" "
+									+ "numChoices = \""
+									+ m.getInt("numChoices") + "\" "
+									+ "numRounds = \"" + m.getInt("numRounds")
+									+ "\" " + "created = \""
+									+ m.getDate("dateCreated") + "\" "
+									+ "completed = \""
+									+ m.getBoolean("isComplete") + "\" " + // +
+									// "</reportRequestResponse></response>";
+									"/>";
 
+						}
 					}
-					}
-				}catch (SQLException e) {
+				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 
 				xmlString = xmlString + "</reportResponse></response>";
 				response = new Message(xmlString);
 			}
-			
+
 			else {
-				m = Manager.retrieveEvent(false) ;
+				m = Manager.retrieveEvent(false);
 				try {
-					//The meaning of id???
-					xmlString =  Message.responseHeader(request.id()) + "<reportResponse>";
-					if (!(m == null)){
-					while(m.next()){
-						xmlString = xmlString +
-								"<entry "+
-								"id=\"" + m.getString("id") + "\" " +
-								"type = \"closed\" " + 
-								"question = \"" + m.getString("eventQuestion") + "\" " +
-								"numChoices = \"" + m.getInt("numChoices") + "\" " +
-								"numRounds = \"" + m.getInt("numRounds") + "\" " + 
-								"created = \"" + m.getDate("dateCreated") + "\" " +
-								"completed = \"" + m.getBoolean("isComplete") + "\" " + //  + "</reportRequestResponse></response>";
-								"/>";
-						//Message response = new Message(xmlString);
+					// The meaning of id???
+					xmlString = Message.responseHeader(request.id())
+							+ "<reportResponse>";
+					if (!(m == null)) {
+						while (m.next()) {
+							xmlString = xmlString + "<entry " + "id=\""
+									+ m.getString("id") + "\" "
+									+ "type = \"closed\" " + "question = \""
+									+ m.getString("eventQuestion") + "\" "
+									+ "numChoices = \""
+									+ m.getInt("numChoices") + "\" "
+									+ "numRounds = \"" + m.getInt("numRounds")
+									+ "\" " + "created = \""
+									+ m.getDate("dateCreated") + "\" "
+									+ "completed = \""
+									+ m.getBoolean("isComplete") + "\" " + // +
+									// "</reportRequestResponse></response>";
+									"/>";
+							// Message response = new Message(xmlString);
 
+						}
 					}
-					}
-				}catch (SQLException e) {
+				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 
@@ -101,6 +105,6 @@ public class ReportRequestController {
 				response = new Message(xmlString);
 			}
 		}
-		return response ;
+		return response;
 	}
 }
