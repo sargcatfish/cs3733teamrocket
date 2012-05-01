@@ -42,6 +42,8 @@ public class Manager {
 	/** string = database type = as long as you're using mysql, leave this alone. */
 	//private static final String DATABASE_TYPE = "mysql";
 	
+	/** string = server url */
+	private static final String SERVER = "localhost";
 	/** string = user */
 	private static final String USER = "whoarethey";
 	/** string = password */
@@ -134,8 +136,7 @@ public class Manager {
 			return false;
 		}
 
-		//String url = "jdbc:" + DATABASE_TYPE + "://" + SERVER +"/" + DATABASE;
-		String url = "jdbc:" + DATABASE_TYPE + "://" + DATABASE;
+		String url = "jdbc:" + DATABASE_TYPE + "://" + SERVER +"/" + DATABASE;
 		try {
 			/** Get a connection to the database for a
 			* user with the given user name and password. 
