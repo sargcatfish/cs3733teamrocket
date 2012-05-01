@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.Scanner;
 
 import server.Server;
 import xml.Message;
@@ -9,12 +10,20 @@ import xml.Message;
  *
  */
 public class TeamRocketServer {
-
+	private static Scanner sc = new Scanner (System.in);
+	static int input;
 	/**
 	 * Main function
 	 * @param args No arguments
 	 */
 	public static void main(String[] args) {
+		
+		System.out.println("Please enter the port #");
+		try {
+			input = Integer.parseInt(sc.nextLine());
+		}catch(NumberFormatException e){
+			System.out.println("Invalid input");
+		}
 		
 		if (!Message.configure("decisionlines.xsd")) {
 			System.exit(0);
@@ -23,7 +32,7 @@ public class TeamRocketServer {
 		/**
 		 * Start server and have ProtocolHandler be responsible for all XML messages.
 		 */
-		Server server = new Server(new DecisionLineProtocolHandler(), 9371);
+		Server server = new Server(new DecisionLineProtocolHandler(), input);
 	
 		try {
 			server.bind();
