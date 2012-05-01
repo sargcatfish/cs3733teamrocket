@@ -7,17 +7,20 @@ package model;
 public class Admin {
 	/** string for the name of the administrator*/
 	static String name;
-	/** string for the password of the administrator*/
-	static String pwd;
+	/** int for the password of the administrator*/
+	static int pwd;
 	/** string for the key of the administrator*/
 	static String key;
+	/** string for the password unhashed to accommodate all clients */
+	static String pwdb ;
 
 	/**
 	 * Constructor for Admin
 	 */
 	public Admin(){
 		name = "admin";
-		pwd = "password";
+		pwd = "password".hashCode();
+		pwdb = "password" ;
 		key = null;
 	}
 
@@ -36,12 +39,17 @@ public class Admin {
 	 * @return true if signs in, false otherwise
 	 */
 	public boolean signIn(String n, String p){
-		if(name.equals(n) && pwd.equals(p)){
+		if(name.equals(n) && pwdb.equals(p)){
+			return true ;
+		}
+		try{
+		if(name.equals(n) && pwd == Integer.parseInt(p)){
 			return true;
 		}
-		else {
-			return false;
+		} catch (NumberFormatException e){
+			return false ;
 		}
+		return false ;
 	}
 
 	/**

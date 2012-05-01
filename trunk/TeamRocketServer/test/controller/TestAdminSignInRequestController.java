@@ -17,6 +17,8 @@ public class TestAdminSignInRequestController extends TestCase {
 		TeamRocketServerModel server ;
 		String adminStrFail = Message.requestHeader()+"<adminRequest><user name='admin' password='pss'/></adminRequest></request>";
 		String adminStrPass = Message.requestHeader()+"<adminRequest><user name='admin' password='password'/></adminRequest></request>";
+		String pwrd = "" + "password".hashCode() ;
+		String adminHshPass = Message.requestHeader()+"<adminRequest><user name='admin' password='" + pwrd + "'/></adminRequest></request>";
 		
 		public void testWrongPassword(){
 			// setup the system
@@ -41,6 +43,23 @@ public class TestAdminSignInRequestController extends TestCase {
 			// setup the system
 			Message.configure("decisionlines.xsd");
 			adminMsg = new Message(adminStrPass);
+			adminSignIn = new AdminSignInRequestController(null);
+			
+			// process message
+			Message response = adminSignIn.process(adminMsg);
+
+			// retrieve contents
+			NamedNodeMap signInR = response.contents.getAttributes();
+			String success = signInR.getNamedItem("success").getNodeValue();
+			
+			// check if the expected response and the received are equal
+			assertEquals("true", success);
+		}
+		
+		public void testCorrectPasswordHash(){
+			// setup the system
+			Message.configure("decisionlines.xsd");
+			adminMsg = new Message(adminHshPass);
 			adminSignIn = new AdminSignInRequestController(null);
 			
 			// process message

@@ -81,7 +81,6 @@ public class AddEdgeController {
 				if(next != null && state.id() != null){
 					if(!next.id().equals(state.id()) || edges== maxEdges){
 						next.sendMessage(response);	
-						System.out.print("edge sent to: " + next.id() + "\n");
 					}
 				}
 			}
