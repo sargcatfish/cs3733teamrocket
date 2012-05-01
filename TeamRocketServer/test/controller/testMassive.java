@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 import model.DLEvent;
 import model.MockClient;
 import model.TeamRocketServerModel;
+import model.User;
 import xml.Message;
 import db.Manager;
 
@@ -167,6 +168,7 @@ public class testMassive extends TestCase {
 		
 		dbEvent = Manager.retrieveEvent(id);
 		localEvent = TeamRocketServerModel.getInstance().getTable().get(id);
+		localEvent.addUser(new User("bob", "bob", false, 0)) ; // this guy...
 		 
 		assertEquals(3,dbEvent.getDLChoice().size());
 		assertEquals(3,localEvent.getDLChoice().size());
