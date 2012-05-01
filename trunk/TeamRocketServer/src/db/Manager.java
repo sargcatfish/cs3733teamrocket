@@ -31,28 +31,17 @@ public class Manager {
 	/** Hard-coded database access information */
 	
 	/** string = server url */
-	//private static final String SERVER = "mysql.wpi.edu";
+	private static final String SERVER = "mysql.wpi.edu";
 	/** string = user */
-	//private static final String USER = "meowth";
+	private static final String USER = "meowth";
 	/** string = password */
-	//private static final String PASSWORD = "xuguHN";
+	private static final String PASSWORD = "xuguHN";
 	/** string = database */
-	//private static final String DATABASE = "teamrocket";
+	private static final String DATABASE = "teamrocket";
 
 	/** string = database type = as long as you're using mysql, leave this alone. */
-	//private static final String DATABASE_TYPE = "mysql";
-	
-	/** string = server url */
-	private static final String SERVER = "localhost";
-	/** string = user */
-	private static final String USER = "whoarethey";
-	/** string = password */
-	private static final String PASSWORD = "cs3733";
-	/** string = database */
-	private static final String DATABASE = "whoarethey";
-	/** string = database type = as long as you're using mysql, leave this alone. */
 	private static final String DATABASE_TYPE = "mysql";
-	
+
 	/* ------------- SQL Variables ------------- */
 
 	/** The SQL connection to the database */
@@ -614,7 +603,6 @@ public class Manager {
 		try {
 			while(result.next()){
 				deleteEvent(result.getString("id")) ;
-				System.out.println(result.getString("id")) ;
 				returnVal++ ;
 			}
 		} catch (SQLException e) {
