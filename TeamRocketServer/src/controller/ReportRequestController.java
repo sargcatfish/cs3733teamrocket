@@ -73,7 +73,6 @@ public class ReportRequestController {
 									+ "completed = \""
 									+ m.getBoolean("isComplete") + "\" " + 
 									"/>";
-
 						}
 					}
 				} catch (SQLException e) {
@@ -103,7 +102,6 @@ public class ReportRequestController {
 									+ "completed = \""
 									+ m.getBoolean("isComplete") + "\" " + 
 									"/>";
-
 						}
 					}
 				} catch (SQLException e) {

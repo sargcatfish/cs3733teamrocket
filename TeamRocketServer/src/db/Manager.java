@@ -383,7 +383,7 @@ public class Manager {
 	 */
 	/**
 	 * Retrieve meeting from database for given event type, returning null if invalid
-	 * @param type boolean  WHAT IS THIS?!!
+	 * @param type boolean  indicate the type of event whether it's open or closed
 	 * @return the ResultSet event retrieved form the database
 	 */
 	public static ResultSet retrieveEvent(boolean type) {
@@ -398,13 +398,13 @@ public class Manager {
 			/** Execute the SQL statement and store result into the ResultSet */
 			ResultSet result = pstmt.executeQuery();
 
-			/** no meeting? Return null*/
+			/** no meeting? Return null*//*
 			if (!result.next()) {
 				return null;
 			}
-			else {
+			else {*/
 				return result;
-			}
+			//}
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
