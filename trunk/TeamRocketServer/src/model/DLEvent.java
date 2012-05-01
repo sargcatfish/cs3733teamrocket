@@ -10,33 +10,48 @@ import server.ClientState;
  * */
 public class DLEvent {
 
+	/** id of the event */
 	private String id;
-	private String moderatorName; //The string "name" was sent in the xml assuming it's the moderator name?
+	/** name of the event moderator */
+	private String moderatorName;
+	/** question the event will decide on */
 	private String eventQuestion;
+	/** the date the event was created */
 	private Date dateCreated;
-	private boolean isOpen;		//True for open event
+	/** true for an open event, false otherwise */
+	private boolean isOpen;
+	/** integer - number of choices in the event */
 	private int numChoices;
+	/** integer - number of rounds in the event */
 	private int numRounds;
+	/** number of edges in the event */
 	private int numEdges;
-	private int currentMaster; // whose turn is it to add the edge?
+	/** the user whose turn it is to add an egde */
+	private int currentMaster; 
+	/** is the event complete */
 	private boolean isComplete;
+	/** is the event accepting users */
 	private boolean acceptingUsers;
+	/** forced complete boolean */
 	private boolean forcedComplete;
 
+	/** array list of users */
 	ArrayList<User> userList = new ArrayList<User>();
+	/** array list of edges */
 	ArrayList<Edge> edgeList = new ArrayList<Edge>();
+	/** array list of choices */
 	ArrayList<DLChoice> choiceList = new ArrayList<DLChoice>();
+	/** array list of client states */
 	ArrayList<ClientState> stateList = new ArrayList<ClientState>();
 
-	/** The setters should be doing the work of initializing the attributes 
-	 * @param numRounds 
-	 * @param numChoices
-	 * @param question 
-	 * @param name 
-	 * @param id 
-	 * 
-	 *  
-	 *  */
+	/**
+	 * Constructor for the event
+	 * @param id the id of the event
+	 * @param moderator the name of the moderator
+	 * @param question the event question
+	 * @param numChoices number of choices
+	 * @param numRounds Number of rounds
+	 */
 	public DLEvent(String id, String moderator, String question, int numChoices, int numRounds){
 		this.id = id;
 		this.moderatorName = moderator;
@@ -50,93 +65,130 @@ public class DLEvent {
 		this.forcedComplete = false ;
 	}
 
-	//Getters
-	//tested
+	/**
+	 * Getter for ID
+	 * @return the event id
+	 */
 	public String getID(){
 		return id;
 	}
-	//tested
+    /**
+     * Getter for the event question
+     * @return the event question
+     */
 	public String getEventQuestion(){
 		return eventQuestion;
 	}
-	//tested
+	/**
+	 * Getter for the date created
+	 * @return the date created
+	 */
 	public Date getDateCreated(){
 		return dateCreated;
 	}
-	//tested
+	/**
+	 * Getter for the is open boolean
+	 * @return is open boolean
+	 */
 	public boolean getIsOpen(){
 		return isOpen;
 	}
-	//tested
+	/**
+	 * Getter for the number of choices
+	 * @return the number of choices
+	 */
 	public int getNumChoices(){
 		return numChoices;
 	}
-	//tested
+	/**
+	 * Getter for the number of rounds
+	 * @return the number of rounds
+	 */
 	public int getNumRounds(){
 		return numRounds;
 	}
-	//tested
+	/**
+	 * Getter for the number of edges
+	 * @return number of edges
+	 */
 	public int getNumEdges(){
 		return numEdges;
 	}
-	//tested
+	/**
+	 * Getter for the list of users
+	 * @return the user list
+	 */
 	public ArrayList<User> getUserList(){
 		return userList;
 	}
-	//tested
+	/**
+	 * Getter for the list of edges
+	 * @return the edge list
+	 */
 	public ArrayList<Edge> getEdgeList(){
 		return edgeList;
 	}
-	//tested
+	/**
+	 * Getter for the list of choices
+	 * @return choice list
+	 */
 	public ArrayList<DLChoice> getDLChoice(){
 		return choiceList;
 	}
-	//tested
+	/**
+	 * Getter for the moderator
+	 * @return moderators name
+	 */
 	public String getModerator(){
 		return moderatorName;
 	}
-	//tested
+	/**
+	 * Getter for the completed boolean
+	 * @return completed boolean
+	 */
 	public boolean getComplete(){
 		return this.isComplete;
 	}
 
-	//Setters
-/**
-	public String setID(String id){
-		return this.id = id;
-	}
-
-	public String setEventQuestion(String ques){
-		return eventQuestion = ques;
-	}
-*/
-	//tested
+	/**
+	 * setter for the dtae created
+	 * @param date given created date
+	 * @return the date created
+	 */
 	public Date setDateCreated(Date date){
 		return dateCreated = date;
 	}
-	//tested
+	/**
+	 * setter for the is open boolean
+	 * @param isOpen given boolean
+	 * @return the is open boolean
+	 */
 	public boolean setIsOpen(boolean isOpen){
 		return this.isOpen = isOpen;
 	}
-/**
-	public int setNumChoices(int numChoice){
-		return numChoices = numChoice;
-	}
 
-	public int setNumRounds(int numRound){
-		return numRounds = numRound;
-	}
-*/
-	//tested
+	/**
+	 * setter for the number of edges
+	 * @param numEdge given number of edges
+	 * @return the new number of edges
+	 */
 	public int setNumEdges(int numEdge){
 		return numEdges = numEdge;
 	}
+	
+	/**
+	 * Increments the number oof edges by 1. If it is the last edge, is complete boolean is set to true
+	 */
 	public void incrementEdges(){
 		numEdges++;
 		if(numEdges == numRounds * numChoices)
 			this.isComplete = true;
 	}
 	
+	/**
+	 * Add given user to the user list
+	 * @param user given user
+	 */
 	public void addUser(User user){
 		if (userList == null){
 			userList = new ArrayList<User>();			
@@ -144,31 +196,46 @@ public class DLEvent {
 		userList.add(user);
 	}
 	
-	//tested
+	/**
+	 * Adds the given edge to the edge list
+	 * @param edge given edge
+	 */
 	public void addEdge(Edge edge){
 		if (edgeList == null){
 			edgeList = new ArrayList<Edge>();
 		}
 		edgeList.add(edge);
 	}
-	//tested
+	/**
+	 * Adds the choice to the choice list
+	 * @param choice given choice
+	 */
 	public void addDLChoice(DLChoice choice){
 		if (choiceList == null){
 			choiceList = new ArrayList<DLChoice>();
 		}
 		choiceList.add(choice);
 	}
-	//tested
+	/**
+	 * Sets is complete to true
+	 */
 	public void setComplete(){
 		this.isComplete = true;
 	}
-	
+	/**
+	 * Getter for the is complete boolean
+	 * @return the is complete boolean
+	 */
 	public boolean isComplete(){
 		return isComplete ;
 	}
 	
-	//added by rhollinger
-	//tested
+	/**
+	 * Sign in function
+	 * @param name the name trying to sign in
+	 * @param pswd the password trying to sign in
+	 * @return true if they are signed in, false otherwise
+	 */
 	public boolean signIn(String name, String pswd){
 		if (pswd == null){
 			pswd = new String("");
@@ -181,8 +248,8 @@ public class DLEvent {
 		}
 		return false;
 	}
-	/**added by rhollinger
-	 * 
+	/**
+	 * Gets the next position in the user list
 	 * @param name the user's name
 	 * @return either that users index (if they exist) or the next index location
 	 */
@@ -198,35 +265,48 @@ public class DLEvent {
 		
 	}
 	/**
-	 * added by rhollinger
 	 * set the event so it is no longer accepting users
 	 */
-	//tested
 	public void notAcceptingUsers(){
 		this.acceptingUsers = false;
 	}
-	//tested
+	/**
+	 * Returns if the event is accepting users
+	 * @return the accepting users boolean
+	 */
 	public boolean isAccepting(){
 		return this.acceptingUsers;
 	}
-	/* These here are only for test cases 
+	/** These here are only for test cases 
 	 * added by: nbosowski				
 	 */
-	//tested
+	/**
+	 * sets accepting users boolean to given boolean
+	 * @param b given boolean
+	 */
 	public void setAcceptingUsers(boolean b){
 		this.acceptingUsers = b;
 	}
-	//tested
+	/**
+	 * sets is complete function to given boolean
+	 * @param b given boolean
+	 */
 	public void setIsComplete(boolean b){
 		isComplete = b;
 	}
 
+	/**
+	 * Getter for the current master (user whos turn it is)
+	 * @return the current master
+	 */
 	public int getCurrentMaster() {
 		return currentMaster;
 	}
 
+	/**
+	 * Increments the current master to the next in the client state list
+	 */
 	public void incrementCurrentMaster() {
-		// changed from numChoice to stateList.size() for forceClose
 		if(currentMaster < stateList.size() -1){
 			currentMaster++;
 		}
@@ -234,27 +314,48 @@ public class DLEvent {
 			currentMaster = 0;
 	}
 	
+	/**
+	 * Adds the given client state to the state list
+	 * @param st given client state
+	 */
 	public void addClientState(ClientState st){
 		stateList.add(st);
 	}
 	
+	/**
+	 * getter for the current master
+	 * @return the current master
+	 */
 	public ClientState getClientState(){
 		return stateList.get(currentMaster);
 	}
 	
+	/**
+	 * getter the client state list
+	 * @return the client state list
+	 */
 	public ArrayList<ClientState> getStates(){
 		return stateList;
 	}
 	
-	// changes this for closing an event
+	/**
+	 * setter for the number of choices
+	 * @param i given number of choices
+	 */
 	public void setNumChoices(int i){
 		numChoices = i ;
 	}
-	
+	/**
+	 * Sets forced complete boolean to true
+	 */
 	public void forceComplete(){
 		forcedComplete = true ;
 	}
 	
+	/**
+	 * getter for the forced complete boolean
+	 * @return the forced complete boolean
+	 */
 	public boolean getForced(){
 		return forcedComplete ;
 	}
